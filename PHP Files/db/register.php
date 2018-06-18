@@ -6,7 +6,7 @@
 	// Configuration
 	$hostname = 'localhost';
 	$dbusername = 'unity';
-	$dbpassword = 'password';
+	$dbpassword = '12345';
 	$database = 'db';
 	
 	// connect to db

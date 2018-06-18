@@ -350,7 +350,7 @@ public static class Extensions
 			color.b = Convert.ToUInt32(hex.Substring(4, 2), 16) / 255f;
 			color.a = hex.Length > 6 ? Convert.ToUInt32(hex.Substring(6, 2), 16) / 255f : 1;
 		}
-		catch (Exception e)
+		catch (Exception)
 		{
 			Debug.Log("Unable to parse hex into Color");
 			color = Color.white;

@@ -6,47 +6,14 @@ using UnityEngine.UI;
 
 public class MapRaycaster : Gamelogic.Extensions.Singleton<MapRaycaster>
 {
-
 	GameObject lastClicked = null;
-
-
-	// Use this for initialization
-	void Start()
-	{
-
-	}
-
-	public static bool IsPointerOverUIObject()
-	{
-		if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
-		{
-			return true;
-		}
-
-		PointerEventData ped = new PointerEventData(EventSystem.current);
-		ped.position = Input.mousePosition;
-		if (Input.touchCount > 0)
-		{
-			ped.position = Input.GetTouch(0).position;
-		}
-		List<RaycastResult> results = new List<RaycastResult>();
-		EventSystem.current.RaycastAll(ped, results);
-
-		return results.Count > 0;
-	}
-
 
 	// Update is called once per frame
 	void Update()
 	{
 		if (Input.GetKeyUp(KeyCode.Mouse0) && !MapCamera.Instance.IsMoving && !MapCamera.Instance.HasMoved)
 		{
-
-			if (IsPointerOverUIObject())
-			{
-				return;
-			}
-
+			if (IsPointerOverUIObject()) return;
 
 			Ray touchRay = Camera.main.ScreenPointToRay(Input.mousePosition);
 			//do a simple raycast 
@@ -67,5 +34,24 @@ public class MapRaycaster : Gamelogic.Extensions.Singleton<MapRaycaster>
 				lastClicked = null;
 			}
 		}
+	}
+
+	public static bool IsPointerOverUIObject()
+	{
+		if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
+		{
+			return true;
+		}
+
+		PointerEventData ped = new PointerEventData(EventSystem.current);
+		ped.position = Input.mousePosition;
+		if (Input.touchCount > 0)
+		{
+			ped.position = Input.GetTouch(0).position;
+		}
+		List<RaycastResult> results = new List<RaycastResult>();
+		EventSystem.current.RaycastAll(ped, results);
+
+		return results.Count > 0;
 	}
 }

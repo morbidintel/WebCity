@@ -82,9 +82,6 @@ public class MapCamera : MonoBehaviour
 	Vector3 lastMousePos;
 	Vector3 currMousePos;
 
-	float lerpTargetPositionTime = 0.6f;
-	float lerpTargetPositionTimer;
-
 	public bool IsMoving { get { return (dx != 0 || dy != 0); } }
 	public bool HasMoved { get { return hasMoved; } }//applies to both pan and rotate
 	public bool HasRotated { get; private set; }

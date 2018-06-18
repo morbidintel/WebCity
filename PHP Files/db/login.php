@@ -1,12 +1,7 @@
 <?php
 	include 'error.php';
 	include 'paramscheck.php';
-	
-	// Configuration
-	$hostname = 'localhost';
-	$dbusername = 'unity';
-	$dbpassword = 'password';
-	$database = 'db';
+	include 'config.php';
 	
 	// connect to db
 	$mysqli = new mysqli($hostname, $dbusername, $dbpassword, $database);
@@ -28,9 +23,6 @@
 	// escape input for security
 	$username = $mysqli->real_escape_string($_GET['username']);
 	$pwhash = $mysqli->real_escape_string($_GET['pwhash']);
-	
-			$currtime = date('Y-m-d H:i:s');
-			echo $currtime;
 	// do query
 	$sql = "SELECT * FROM users WHERE username = '{$username}'";
 	$result = $mysqli->query($sql);
@@ -41,7 +33,7 @@
 		$all = $result->fetch_all(MYSQLI_ASSOC);
 		
 		// check if hash in url param matches with hash in db
-		if ($all[0]["pwhash"] != $pwhash)
+		if ($all[0]["pwhash"] != base64_decode($pwhash))
 			error("Incorrect password");
 		else if ($all[0]["forgetpwtime"] != NULL)
 		{
@@ -53,8 +45,8 @@
 			}
 			else
 			{
-				$sql = "UPDATE users SET forgetpwtime = NULL WHERE username = '{$username}'";
-				$result = $mysqli->query($sql);
+				//$sql = "UPDATE users SET forgetpwtime = NULL WHERE username = '{$username}'";
+				//$result = $mysqli->query($sql);
 			}
 		}
 		

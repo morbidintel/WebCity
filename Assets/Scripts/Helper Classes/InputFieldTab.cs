@@ -5,10 +5,8 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Selectable))]
 public class InputFieldTab : MonoBehaviour
 {
-	// This GameObject's Selectable component (can only have 1)
 	Selectable selectable;
 
-	// Use this for initialization
 	void Start()
 	{
 		selectable = GetComponent<Selectable>();
@@ -20,7 +18,8 @@ public class InputFieldTab : MonoBehaviour
 		if (Input.GetKeyDown(KeyCode.Tab) && EventSystem.current.currentSelectedGameObject == gameObject)
 		{
 			var system = EventSystem.current;
-			Selectable next = system.currentSelectedGameObject.GetComponent<Selectable>().FindSelectableOnDown();
+			bool hasShift = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
+			Selectable next = hasShift ? selectable.FindSelectableOnUp() : selectable.FindSelectableOnDown();
 
 			if (next != null)
 			{

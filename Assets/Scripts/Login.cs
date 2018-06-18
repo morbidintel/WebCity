@@ -1,22 +1,25 @@
-﻿using System.Collections;
-using System;
+﻿using System;
+using System.Collections;
+using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class Login : MonoBehaviour
 {
-	string loginURL = "http://webcity.online/db/login.php?username={0}&pwhash={1}";
+	string loginURL = "http://webcity.online/live/db/login.php?username={0}&pwhash={1}";
 
 	[SerializeField]
-	InputField user;
+	InputField username = null;
 	[SerializeField]
-	InputField pwd;
+	InputField password = null;
+	[SerializeField]
+	Text errorSubtitle = null;
 
 	[SerializeField]
-	ChangeScene sceneChanger;
+	ChangeScene sceneChanger = null;
 
 	[Serializable]
-	public class User
+	class User
 	{
 		public string userid, username, fbid, email, desc, isfbonly, createddate, forgetpwtime;
 		public string error;
@@ -24,16 +27,18 @@ public class Login : MonoBehaviour
 
 	IEnumerator GetCredential()
 	{
-		WWW getLogin = new WWW(string.Format(loginURL, user.text, pwd.text));
+		errorSubtitle.text = "";
+		string encodedpw = Convert.ToBase64String(Encoding.UTF8.GetBytes(password.text));
+		string url = string.Format(loginURL, WWW.EscapeURL(username.text), WWW.EscapeURL(encodedpw));
+		WWW getLogin = new WWW(url);
 		yield return getLogin;
 
 		if (getLogin.error != null)
 		{
-			Debug.Log(getLogin.error);
+			errorSubtitle.text = getLogin.error;
 		}
 		else
 		{
-			Debug.Log(getLogin.text);
 			User json = JsonUtility.FromJson<User>(getLogin.text);
 			if (json.error == null)
 			{
@@ -41,13 +46,18 @@ public class Login : MonoBehaviour
 			}
 			else
 			{
-				Debug.Log(json.error);
+				errorSubtitle.text = json.error;
 			}
 		}
 	}
 
 	public void OnClickLoginButton()
 	{
-		StartCoroutine(GetCredential());
+		if (username.text == "")
+			errorSubtitle.text = "Username cannot be empty";
+		else if (password.text == "")
+			errorSubtitle.text = "Password cannot be empty";
+		else
+			StartCoroutine(GetCredential());
 	}
 }
