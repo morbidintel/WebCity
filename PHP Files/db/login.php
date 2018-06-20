@@ -2,6 +2,7 @@
 	include 'error.php';
 	include 'paramscheck.php';
 	include 'config.php';
+	include 'pbkdf2.php';
 	
 	// connect to db
 	$mysqli = new mysqli($hostname, $dbusername, $dbpassword, $database);
@@ -33,7 +34,7 @@
 		$all = $result->fetch_all(MYSQLI_ASSOC);
 		
 		// check if hash in url param matches with hash in db
-		if ($all[0]["pwhash"] != base64_decode($pwhash))
+		if (!PBKDF2Compare($all[0]["pwhash"], base64_decode($pwhash)))
 			error("Incorrect password");
 		else if ($all[0]["forgetpwtime"] != NULL)
 		{

@@ -1,726 +1,113 @@
-[13-Jun-2018 09:26:35 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/db/login.php on line 12
-[13-Jun-2018 09:26:35 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/db/login.php:12
+[20-Jun-2018 13:20:53 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/live/db/error.php on line 6
+[20-Jun-2018 13:20:53 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/live/db/error.php:6
 Stack trace:
-#0 /home/fizu48hwyzc0/public_html/db/login.php(39): error('Incorrect passw...')
-#1 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/login.php on line 12
-[13-Jun-2018 09:34:26 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[13-Jun-2018 09:34:26 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/db/error.php:6
-Stack trace:
-#0 /home/fizu48hwyzc0/public_html/db/login.php(16): error('Parameters not ...')
-#1 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[13-Jun-2018 09:34:44 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[13-Jun-2018 09:34:44 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/db/error.php:6
-Stack trace:
-#0 /home/fizu48hwyzc0/public_html/db/login.php(16): error('Parameters not ...')
-#1 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[13-Jun-2018 09:35:12 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[13-Jun-2018 09:35:12 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/db/error.php:6
-Stack trace:
-#0 /home/fizu48hwyzc0/public_html/db/login.php(16): error('Parameters not ...')
-#1 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[13-Jun-2018 09:35:21 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[13-Jun-2018 09:35:21 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/db/error.php:6
-Stack trace:
-#0 /home/fizu48hwyzc0/public_html/db/login.php(16): error('Parameters not ...')
-#1 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[13-Jun-2018 09:35:27 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function paramscheck() in /home/fizu48hwyzc0/public_html/db/login.php:15
-Stack trace:
-#0 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/login.php on line 15
-[13-Jun-2018 10:04:08 UTC] PHP Parse error:  syntax error, unexpected 'if' (T_IF) in /home/fizu48hwyzc0/public_html/db/login.php on line 16
-[13-Jun-2018 10:04:21 UTC] PHP Parse error:  syntax error, unexpected 'if' (T_IF) in /home/fizu48hwyzc0/public_html/db/login.php on line 16
-[13-Jun-2018 10:04:23 UTC] PHP Parse error:  syntax error, unexpected 'if' (T_IF) in /home/fizu48hwyzc0/public_html/db/login.php on line 17
-[13-Jun-2018 10:04:24 UTC] PHP Parse error:  syntax error, unexpected 'if' (T_IF) in /home/fizu48hwyzc0/public_html/db/login.php on line 17
-[13-Jun-2018 10:04:25 UTC] PHP Parse error:  syntax error, unexpected 'if' (T_IF) in /home/fizu48hwyzc0/public_html/db/login.php on line 17
-[13-Jun-2018 10:04:26 UTC] PHP Parse error:  syntax error, unexpected 'if' (T_IF) in /home/fizu48hwyzc0/public_html/db/login.php on line 17
-[13-Jun-2018 10:04:27 UTC] PHP Parse error:  syntax error, unexpected 'if' (T_IF) in /home/fizu48hwyzc0/public_html/db/login.php on line 17
-[13-Jun-2018 10:04:39 UTC] PHP Parse error:  syntax error, unexpected 'if' (T_IF) in /home/fizu48hwyzc0/public_html/db/login.php on line 17
-[13-Jun-2018 10:04:40 UTC] PHP Parse error:  syntax error, unexpected 'if' (T_IF) in /home/fizu48hwyzc0/public_html/db/login.php on line 17
-[13-Jun-2018 10:04:40 UTC] PHP Parse error:  syntax error, unexpected 'if' (T_IF) in /home/fizu48hwyzc0/public_html/db/login.php on line 17
-[13-Jun-2018 10:04:41 UTC] PHP Parse error:  syntax error, unexpected 'if' (T_IF) in /home/fizu48hwyzc0/public_html/db/login.php on line 17
-[13-Jun-2018 10:04:41 UTC] PHP Parse error:  syntax error, unexpected 'if' (T_IF) in /home/fizu48hwyzc0/public_html/db/login.php on line 17
-[13-Jun-2018 10:04:42 UTC] PHP Parse error:  syntax error, unexpected 'if' (T_IF) in /home/fizu48hwyzc0/public_html/db/login.php on line 17
-[13-Jun-2018 10:05:07 UTC] PHP Parse error:  syntax error, unexpected 'if' (T_IF) in /home/fizu48hwyzc0/public_html/db/login.php on line 17
-[13-Jun-2018 10:05:09 UTC] PHP Parse error:  syntax error, unexpected 'if' (T_IF) in /home/fizu48hwyzc0/public_html/db/login.php on line 17
-[13-Jun-2018 10:05:11 UTC] PHP Parse error:  syntax error, unexpected 'if' (T_IF) in /home/fizu48hwyzc0/public_html/db/login.php on line 17
-[13-Jun-2018 10:05:49 UTC] PHP Parse error:  syntax error, unexpected 'echo' (T_ECHO) in /home/fizu48hwyzc0/public_html/db/login.php on line 17
-[13-Jun-2018 10:07:32 UTC] PHP Parse error:  syntax error, unexpected '=' in /home/fizu48hwyzc0/public_html/db/login.php on line 19
-[13-Jun-2018 10:09:10 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[13-Jun-2018 10:09:10 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/db/error.php:6
-Stack trace:
-#0 /home/fizu48hwyzc0/public_html/db/login.php(17): error('Parameter {$p} ...')
-#1 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[13-Jun-2018 10:09:34 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[13-Jun-2018 10:09:34 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/db/error.php:6
-Stack trace:
-#0 /home/fizu48hwyzc0/public_html/db/login.php(17): error('Parameter pwhas...')
-#1 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[13-Jun-2018 10:09:44 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[13-Jun-2018 10:09:44 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/db/error.php:6
-Stack trace:
-#0 /home/fizu48hwyzc0/public_html/db/login.php(17): error('Parameter 1 not...')
-#1 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[13-Jun-2018 10:10:12 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[13-Jun-2018 10:10:12 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/db/error.php:6
-Stack trace:
-#0 /home/fizu48hwyzc0/public_html/db/login.php(17): error('Parameter 1 not...')
-#1 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[13-Jun-2018 10:10:18 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[13-Jun-2018 10:10:18 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/db/error.php:6
-Stack trace:
-#0 /home/fizu48hwyzc0/public_html/db/login.php(17): error('Parameter 1 not...')
-#1 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[13-Jun-2018 10:10:21 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[13-Jun-2018 10:10:21 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/db/error.php:6
-Stack trace:
-#0 /home/fizu48hwyzc0/public_html/db/login.php(17): error('Parameter 1 not...')
-#1 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[13-Jun-2018 10:10:47 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[13-Jun-2018 10:10:47 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/db/error.php:6
-Stack trace:
-#0 /home/fizu48hwyzc0/public_html/db/login.php(17): error('Parameter 1 not...')
-#1 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[13-Jun-2018 10:10:50 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[13-Jun-2018 10:10:50 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/db/error.php:6
-Stack trace:
-#0 /home/fizu48hwyzc0/public_html/db/login.php(17): error('Parameter pwhas...')
-#1 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[13-Jun-2018 10:12:28 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[13-Jun-2018 10:12:28 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/db/error.php:6
-Stack trace:
-#0 /home/fizu48hwyzc0/public_html/db/login.php(17): error('Parameter pwhas...')
-#1 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[13-Jun-2018 10:35:37 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[13-Jun-2018 10:35:37 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/db/error.php:6
-Stack trace:
-#0 /home/fizu48hwyzc0/public_html/db/register.php(17): error('Parameter usern...')
-#1 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[13-Jun-2018 10:38:24 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method mysqli::error() in /home/fizu48hwyzc0/public_html/db/register.php:39
-Stack trace:
-#0 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/register.php on line 39
-[13-Jun-2018 10:38:25 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method mysqli::error() in /home/fizu48hwyzc0/public_html/db/register.php:39
-Stack trace:
-#0 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/register.php on line 39
-[13-Jun-2018 10:38:35 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method mysqli::error() in /home/fizu48hwyzc0/public_html/db/register.php:39
-Stack trace:
-#0 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/register.php on line 39
-[13-Jun-2018 10:38:38 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method mysqli::error() in /home/fizu48hwyzc0/public_html/db/register.php:39
-Stack trace:
-#0 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/register.php on line 39
-[13-Jun-2018 10:38:40 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method mysqli::error() in /home/fizu48hwyzc0/public_html/db/register.php:39
-Stack trace:
-#0 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/register.php on line 39
-[13-Jun-2018 10:38:40 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method mysqli::error() in /home/fizu48hwyzc0/public_html/db/register.php:39
-Stack trace:
-#0 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/register.php on line 39
-[13-Jun-2018 10:38:53 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method mysqli::error() in /home/fizu48hwyzc0/public_html/db/register.php:40
-Stack trace:
-#0 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/register.php on line 40
-[13-Jun-2018 10:39:08 UTC] PHP Fatal error:  Uncaught Error: Call to a member function error() on boolean in /home/fizu48hwyzc0/public_html/db/register.php:40
-Stack trace:
-#0 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/register.php on line 40
-[13-Jun-2018 10:39:38 UTC] PHP Fatal error:  Uncaught Error: Call to a member function error() on boolean in /home/fizu48hwyzc0/public_html/db/register.php:40
-Stack trace:
-#0 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/register.php on line 40
-[13-Jun-2018 10:39:55 UTC] PHP Fatal error:  Uncaught Error: Call to a member function error() on boolean in /home/fizu48hwyzc0/public_html/db/register.php:40
-Stack trace:
-#0 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/register.php on line 40
-[13-Jun-2018 10:43:12 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on boolean in /home/fizu48hwyzc0/public_html/db/register.php:35
-Stack trace:
-#0 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/register.php on line 35
-[13-Jun-2018 10:43:28 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on boolean in /home/fizu48hwyzc0/public_html/db/register.php:35
-Stack trace:
-#0 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/register.php on line 35
-[13-Jun-2018 10:45:09 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on boolean in /home/fizu48hwyzc0/public_html/db/register.php:35
-Stack trace:
-#0 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/register.php on line 35
-[13-Jun-2018 10:49:39 UTC] PHP Notice:  Undefined variable: hostname in /home/fizu48hwyzc0/public_html/db/login.php on line 14
-[13-Jun-2018 10:49:39 UTC] PHP Notice:  Undefined variable: password in /home/fizu48hwyzc0/public_html/db/login.php on line 14
-[13-Jun-2018 10:49:39 UTC] PHP Notice:  Undefined variable: database in /home/fizu48hwyzc0/public_html/db/login.php on line 14
-[13-Jun-2018 10:49:39 UTC] PHP Warning:  mysqli::__construct(): (HY000/1045): Access denied for user 'delta'@'localhost' (using password: NO) in /home/fizu48hwyzc0/public_html/db/login.php on line 14
-[13-Jun-2018 10:49:39 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[13-Jun-2018 10:49:39 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/db/error.php:6
-Stack trace:
-#0 /home/fizu48hwyzc0/public_html/db/login.php(15): error('Access denied f...')
-#1 /home/fizu48hwyzc0/public_html/db/login.php(54): login('delta', 'delta1234')
-#2 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[13-Jun-2018 10:50:20 UTC] PHP Notice:  Undefined variable: host in /home/fizu48hwyzc0/public_html/db/login.php on line 14
-[13-Jun-2018 10:50:20 UTC] PHP Notice:  Undefined variable: dbusername in /home/fizu48hwyzc0/public_html/db/login.php on line 14
-[13-Jun-2018 10:50:20 UTC] PHP Notice:  Undefined variable: dbpassword in /home/fizu48hwyzc0/public_html/db/login.php on line 14
-[13-Jun-2018 10:50:20 UTC] PHP Notice:  Undefined variable: db in /home/fizu48hwyzc0/public_html/db/login.php on line 14
-[13-Jun-2018 10:50:20 UTC] PHP Warning:  mysqli::__construct(): (HY000/1045): Access denied for user ''@'localhost' (using password: NO) in /home/fizu48hwyzc0/public_html/db/login.php on line 14
-[13-Jun-2018 10:50:20 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[13-Jun-2018 10:50:20 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/db/error.php:6
-Stack trace:
-#0 /home/fizu48hwyzc0/public_html/db/login.php(15): error('Access denied f...')
-#1 /home/fizu48hwyzc0/public_html/db/login.php(54): login('delta', 'delta1234')
-#2 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[13-Jun-2018 10:50:59 UTC] PHP Fatal error:  Cannot redeclare error() (previously declared in /home/fizu48hwyzc0/public_html/db/error.php:3) in /home/fizu48hwyzc0/public_html/db/error.php on line 8
-[13-Jun-2018 10:51:17 UTC] PHP Fatal error:  Cannot redeclare error() (previously declared in /home/fizu48hwyzc0/public_html/db/error.php:3) in /home/fizu48hwyzc0/public_html/db/error.php on line 8
-[13-Jun-2018 10:51:20 UTC] PHP Fatal error:  Cannot redeclare error() (previously declared in /home/fizu48hwyzc0/public_html/db/error.php:3) in /home/fizu48hwyzc0/public_html/db/error.php on line 8
-[13-Jun-2018 10:52:28 UTC] PHP Fatal error:  Cannot redeclare error() (previously declared in /home/fizu48hwyzc0/public_html/db/error.php:3) in /home/fizu48hwyzc0/public_html/db/error.php on line 8
-[13-Jun-2018 10:55:05 UTC] PHP Fatal error:  Cannot redeclare error() (previously declared in /home/fizu48hwyzc0/public_html/db/error.php:3) in /home/fizu48hwyzc0/public_html/db/error.php on line 8
-[13-Jun-2018 10:55:12 UTC] PHP Fatal error:  Cannot redeclare error() (previously declared in /home/fizu48hwyzc0/public_html/db/error.php:3) in /home/fizu48hwyzc0/public_html/db/error.php on line 8
-[13-Jun-2018 10:55:14 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on boolean in /home/fizu48hwyzc0/public_html/db/register.php:35
-Stack trace:
-#0 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/register.php on line 35
-[13-Jun-2018 10:55:40 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on boolean in /home/fizu48hwyzc0/public_html/db/register.php:35
-Stack trace:
-#0 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/register.php on line 35
-[13-Jun-2018 10:56:02 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on boolean in /home/fizu48hwyzc0/public_html/db/register.php:34
-Stack trace:
-#0 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/register.php on line 34
-[13-Jun-2018 10:56:15 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on boolean in /home/fizu48hwyzc0/public_html/db/register.php:34
-Stack trace:
-#0 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/register.php on line 34
-[13-Jun-2018 10:56:35 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on boolean in /home/fizu48hwyzc0/public_html/db/register.php:34
-Stack trace:
-#0 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/register.php on line 34
-[13-Jun-2018 10:59:16 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[13-Jun-2018 10:59:16 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/db/error.php:6
-Stack trace:
-#0 /home/fizu48hwyzc0/public_html/db/login.php(17): error('Parameter usern...')
-#1 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[13-Jun-2018 10:59:29 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[13-Jun-2018 10:59:29 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/db/error.php:6
-Stack trace:
-#0 /home/fizu48hwyzc0/public_html/db/login.php(17): error('Parameter usern...')
-#1 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[13-Jun-2018 10:59:33 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[13-Jun-2018 10:59:33 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/db/error.php:6
-Stack trace:
-#0 /home/fizu48hwyzc0/public_html/db/login.php(17): error('Parameter usern...')
-#1 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[13-Jun-2018 10:59:35 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[13-Jun-2018 10:59:35 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/db/error.php:6
-Stack trace:
-#0 /home/fizu48hwyzc0/public_html/db/login.php(17): error('Parameter usern...')
-#1 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[13-Jun-2018 11:00:01 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[13-Jun-2018 11:00:01 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/db/error.php:6
-Stack trace:
-#0 /home/fizu48hwyzc0/public_html/db/login.php(17): error('Parameter usern...')
-#1 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[13-Jun-2018 11:00:03 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[13-Jun-2018 11:00:03 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/db/error.php:6
-Stack trace:
-#0 /home/fizu48hwyzc0/public_html/db/login.php(17): error('Parameter usern...')
-#1 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[13-Jun-2018 11:01:16 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[13-Jun-2018 11:01:16 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/db/error.php:6
-Stack trace:
-#0 /home/fizu48hwyzc0/public_html/db/login.php(17): error('Parameter usern...')
-#1 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[13-Jun-2018 11:05:38 UTC] PHP Notice:  Undefined index: pwhash in /home/fizu48hwyzc0/public_html/db/login.php on line 29
-[13-Jun-2018 11:05:38 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[13-Jun-2018 11:05:38 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/db/error.php:6
-Stack trace:
-#0 /home/fizu48hwyzc0/public_html/db/login.php(54): error('No results')
-#1 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[13-Jun-2018 11:06:26 UTC] PHP Notice:  Undefined index: pwhash in /home/fizu48hwyzc0/public_html/db/login.php on line 29
-[13-Jun-2018 11:06:26 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[13-Jun-2018 11:06:26 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/db/error.php:6
-Stack trace:
-#0 /home/fizu48hwyzc0/public_html/db/login.php(54): error('No results')
-#1 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[13-Jun-2018 11:06:49 UTC] PHP Notice:  Undefined index: pwhash in /home/fizu48hwyzc0/public_html/db/login.php on line 29
-[13-Jun-2018 11:06:49 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[13-Jun-2018 11:06:49 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/db/error.php:6
-Stack trace:
-#0 /home/fizu48hwyzc0/public_html/db/login.php(54): error('No results')
-#1 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[13-Jun-2018 11:07:39 UTC] PHP Notice:  Undefined index: pwhash in /home/fizu48hwyzc0/public_html/db/login.php on line 29
-[13-Jun-2018 11:07:39 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[13-Jun-2018 11:07:39 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/db/error.php:6
-Stack trace:
-#0 /home/fizu48hwyzc0/public_html/db/login.php(54): error('No results')
-#1 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[13-Jun-2018 11:07:48 UTC] PHP Notice:  Undefined index: pwhash in /home/fizu48hwyzc0/public_html/db/login.php on line 29
-[13-Jun-2018 11:07:48 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[13-Jun-2018 11:07:48 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/db/error.php:6
-Stack trace:
-#0 /home/fizu48hwyzc0/public_html/db/login.php(54): error('No results')
-#1 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[13-Jun-2018 11:08:02 UTC] PHP Notice:  Undefined index: pwhash in /home/fizu48hwyzc0/public_html/db/login.php on line 29
-[13-Jun-2018 11:08:03 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[13-Jun-2018 11:08:03 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/db/error.php:6
-Stack trace:
-#0 /home/fizu48hwyzc0/public_html/db/login.php(54): error('No results')
-#1 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[13-Jun-2018 11:08:50 UTC] PHP Notice:  Undefined index: pwhash in /home/fizu48hwyzc0/public_html/db/login.php on line 29
-[13-Jun-2018 11:09:24 UTC] PHP Notice:  Undefined index: pwhash in /home/fizu48hwyzc0/public_html/db/login.php on line 29
-[13-Jun-2018 11:09:59 UTC] PHP Notice:  Undefined index: pwhash in /home/fizu48hwyzc0/public_html/db/login.php on line 29
-[13-Jun-2018 11:14:04 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[13-Jun-2018 11:14:04 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/db/error.php:6
-Stack trace:
-#0 /home/fizu48hwyzc0/public_html/db/login.php(54): error('No results')
-#1 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[13-Jun-2018 16:57:50 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[13-Jun-2018 16:57:50 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/db/error.php:6
-Stack trace:
-#0 /home/fizu48hwyzc0/public_html/db/register.php(18): error('Parameter pwhas...')
-#1 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[13-Jun-2018 16:59:04 UTC] PHP Fatal error:  Uncaught Error: Call to a member function error() on boolean in /home/fizu48hwyzc0/public_html/db/register.php:42
-Stack trace:
-#0 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/register.php on line 42
-[13-Jun-2018 17:04:02 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[13-Jun-2018 17:04:02 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/db/error.php:6
-Stack trace:
-#0 /home/fizu48hwyzc0/public_html/db/register.php(32): error('Username exists')
-#1 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[13-Jun-2018 17:04:11 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[13-Jun-2018 17:04:11 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/db/error.php:6
-Stack trace:
-#0 /home/fizu48hwyzc0/public_html/db/register.php(32): error('Username exists')
-#1 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[13-Jun-2018 17:04:17 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[13-Jun-2018 17:04:17 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/db/error.php:6
-Stack trace:
-#0 /home/fizu48hwyzc0/public_html/db/register.php(32): error('Username exists')
-#1 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[13-Jun-2018 17:20:55 UTC] PHP Warning:  array_column() expects parameter 1 to be array, object given in /home/fizu48hwyzc0/public_html/db/register.php on line 33
-[13-Jun-2018 17:20:55 UTC] PHP Warning:  array_search() expects parameter 2 to be array, null given in /home/fizu48hwyzc0/public_html/db/register.php on line 33
-[13-Jun-2018 17:20:55 UTC] PHP Warning:  array_column() expects parameter 1 to be array, object given in /home/fizu48hwyzc0/public_html/db/register.php on line 35
-[13-Jun-2018 17:20:55 UTC] PHP Warning:  array_search() expects parameter 2 to be array, null given in /home/fizu48hwyzc0/public_html/db/register.php on line 35
-[13-Jun-2018 17:20:55 UTC] PHP Warning:  array_column() expects parameter 1 to be array, object given in /home/fizu48hwyzc0/public_html/db/register.php on line 37
-[13-Jun-2018 17:20:55 UTC] PHP Warning:  array_search() expects parameter 2 to be array, null given in /home/fizu48hwyzc0/public_html/db/register.php on line 37
-[13-Jun-2018 17:21:27 UTC] PHP Warning:  array_column() expects parameter 1 to be array, object given in /home/fizu48hwyzc0/public_html/db/register.php on line 33
-[13-Jun-2018 17:21:27 UTC] PHP Warning:  array_search() expects parameter 2 to be array, null given in /home/fizu48hwyzc0/public_html/db/register.php on line 33
-[13-Jun-2018 17:21:27 UTC] PHP Warning:  array_column() expects parameter 1 to be array, object given in /home/fizu48hwyzc0/public_html/db/register.php on line 35
-[13-Jun-2018 17:21:27 UTC] PHP Warning:  array_search() expects parameter 2 to be array, null given in /home/fizu48hwyzc0/public_html/db/register.php on line 35
-[13-Jun-2018 17:21:27 UTC] PHP Warning:  array_column() expects parameter 1 to be array, object given in /home/fizu48hwyzc0/public_html/db/register.php on line 37
-[13-Jun-2018 17:21:27 UTC] PHP Warning:  array_search() expects parameter 2 to be array, null given in /home/fizu48hwyzc0/public_html/db/register.php on line 37
-[13-Jun-2018 17:24:52 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[13-Jun-2018 17:24:52 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/db/error.php:6
-Stack trace:
-#0 /home/fizu48hwyzc0/public_html/db/register.php(41): error('array search')
-#1 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[13-Jun-2018 17:25:04 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[13-Jun-2018 17:25:04 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/db/error.php:6
-Stack trace:
-#0 /home/fizu48hwyzc0/public_html/db/register.php(41): error('array search')
-#1 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[13-Jun-2018 17:25:18 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/fizu48hwyzc0/public_html/db/register.php on line 37
-[13-Jun-2018 17:25:33 UTC] PHP Notice:  Undefined offset: 0 in /home/fizu48hwyzc0/public_html/db/register.php on line 34
-[13-Jun-2018 17:25:33 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[13-Jun-2018 17:25:33 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/db/error.php:6
-Stack trace:
-#0 /home/fizu48hwyzc0/public_html/db/register.php(42): error('array search')
-#1 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[13-Jun-2018 17:26:09 UTC] PHP Notice:  Undefined variable: results in /home/fizu48hwyzc0/public_html/db/register.php on line 31
-[13-Jun-2018 17:26:09 UTC] PHP Notice:  Trying to get property 'num_rows' of non-object in /home/fizu48hwyzc0/public_html/db/register.php on line 31
-[13-Jun-2018 17:26:12 UTC] PHP Notice:  Undefined variable: results in /home/fizu48hwyzc0/public_html/db/register.php on line 31
-[13-Jun-2018 17:26:12 UTC] PHP Notice:  Trying to get property 'num_rows' of non-object in /home/fizu48hwyzc0/public_html/db/register.php on line 31
-[13-Jun-2018 17:26:23 UTC] PHP Notice:  Undefined variable: results in /home/fizu48hwyzc0/public_html/db/register.php on line 31
-[13-Jun-2018 17:26:23 UTC] PHP Notice:  Trying to get property 'num_rows' of non-object in /home/fizu48hwyzc0/public_html/db/register.php on line 31
-[13-Jun-2018 17:26:39 UTC] PHP Notice:  Undefined variable: results in /home/fizu48hwyzc0/public_html/db/register.php on line 32
-[13-Jun-2018 17:26:39 UTC] PHP Notice:  Trying to get property 'num_rows' of non-object in /home/fizu48hwyzc0/public_html/db/register.php on line 32
-[13-Jun-2018 17:27:04 UTC] PHP Notice:  Array to string conversion in /home/fizu48hwyzc0/public_html/db/register.php on line 35
-[13-Jun-2018 17:27:04 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[13-Jun-2018 17:27:04 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/db/error.php:6
-Stack trace:
-#0 /home/fizu48hwyzc0/public_html/db/register.php(43): error('array search')
-#1 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[13-Jun-2018 17:27:25 UTC] PHP Notice:  Array to string conversion in /home/fizu48hwyzc0/public_html/db/register.php on line 35
-[13-Jun-2018 17:27:25 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[13-Jun-2018 17:27:25 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/db/error.php:6
-Stack trace:
-#0 /home/fizu48hwyzc0/public_html/db/register.php(43): error('array search')
-#1 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[13-Jun-2018 17:27:57 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[13-Jun-2018 17:27:57 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/db/error.php:6
-Stack trace:
-#0 /home/fizu48hwyzc0/public_html/db/register.php(43): error('array search')
-#1 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[13-Jun-2018 17:29:37 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[13-Jun-2018 17:29:37 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/db/error.php:6
-Stack trace:
-#0 /home/fizu48hwyzc0/public_html/db/register.php(43): error('array search')
-#1 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[13-Jun-2018 17:30:35 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[13-Jun-2018 17:30:35 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/db/error.php:6
-Stack trace:
-#0 /home/fizu48hwyzc0/public_html/db/register.php(37): error('Username exist')
-#1 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[13-Jun-2018 17:30:41 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[13-Jun-2018 17:30:41 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/db/error.php:6
-Stack trace:
-#0 /home/fizu48hwyzc0/public_html/db/register.php(36): error('Username exist')
-#1 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[13-Jun-2018 17:31:13 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[13-Jun-2018 17:31:13 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/db/error.php:6
-Stack trace:
-#0 /home/fizu48hwyzc0/public_html/db/register.php(40): error('Email already r...')
-#1 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[13-Jun-2018 17:31:36 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[13-Jun-2018 17:31:36 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/db/error.php:6
-Stack trace:
-#0 /home/fizu48hwyzc0/public_html/db/register.php(38): error('Facebook ID alr...')
-#1 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[15-Jun-2018 07:13:38 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[15-Jun-2018 07:13:38 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/db/error.php:6
-Stack trace:
-#0 /home/fizu48hwyzc0/public_html/db/login.php(43): error('Incorrect passw...')
-#1 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[15-Jun-2018 07:13:44 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[15-Jun-2018 07:13:44 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/db/error.php:6
-Stack trace:
-#0 /home/fizu48hwyzc0/public_html/db/login.php(43): error('Incorrect passw...')
-#1 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[15-Jun-2018 07:13:47 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[15-Jun-2018 07:13:47 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/db/error.php:6
-Stack trace:
-#0 /home/fizu48hwyzc0/public_html/db/login.php(45): error('User has activa...')
-#1 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[15-Jun-2018 07:37:11 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[15-Jun-2018 07:37:11 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/db/error.php:6
-Stack trace:
-#0 /home/fizu48hwyzc0/public_html/db/login.php(25): error('Parameter usern...')
-#1 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[15-Jun-2018 08:09:48 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[15-Jun-2018 08:09:48 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/db/error.php:6
-Stack trace:
-#0 /home/fizu48hwyzc0/public_html/db/login.php(57): error('No results')
-#1 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[15-Jun-2018 08:09:54 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[15-Jun-2018 08:09:54 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/db/error.php:6
-Stack trace:
-#0 /home/fizu48hwyzc0/public_html/db/login.php(43): error('Incorrect passw...')
-#1 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[15-Jun-2018 08:32:58 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[15-Jun-2018 08:32:58 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/db/error.php:6
-Stack trace:
-#0 /home/fizu48hwyzc0/public_html/db/login.php(25): error('Parameter usern...')
-#1 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[15-Jun-2018 08:34:13 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[15-Jun-2018 08:34:13 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/db/error.php:6
-Stack trace:
-#0 /home/fizu48hwyzc0/public_html/db/login.php(25): error('Parameter usern...')
-#1 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[15-Jun-2018 08:35:03 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[15-Jun-2018 08:35:03 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/db/error.php:6
-Stack trace:
-#0 /home/fizu48hwyzc0/public_html/db/login.php(25): error('Parameter usern...')
-#1 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[15-Jun-2018 08:35:55 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[15-Jun-2018 08:35:55 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/db/error.php:6
-Stack trace:
-#0 /home/fizu48hwyzc0/public_html/db/login.php(43): error('Incorrect passw...')
-#1 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[15-Jun-2018 08:37:48 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[15-Jun-2018 08:37:48 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/db/error.php:6
-Stack trace:
-#0 /home/fizu48hwyzc0/public_html/db/login.php(43): error('Incorrect passw...')
-#1 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[15-Jun-2018 08:38:54 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[15-Jun-2018 08:38:54 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/db/error.php:6
-Stack trace:
-#0 /home/fizu48hwyzc0/public_html/db/login.php(43): error('Incorrect passw...')
-#1 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[15-Jun-2018 08:43:33 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[15-Jun-2018 08:43:33 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/db/error.php:6
-Stack trace:
-#0 /home/fizu48hwyzc0/public_html/db/login.php(43): error('Incorrect passw...')
-#1 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[15-Jun-2018 09:00:24 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[15-Jun-2018 09:00:24 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/db/error.php:6
-Stack trace:
-#0 /home/fizu48hwyzc0/public_html/db/login.php(43): error('Incorrect passw...')
-#1 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[15-Jun-2018 09:00:27 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[15-Jun-2018 09:00:27 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/db/error.php:6
-Stack trace:
-#0 /home/fizu48hwyzc0/public_html/db/login.php(43): error('Incorrect passw...')
-#1 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[15-Jun-2018 09:01:27 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[15-Jun-2018 09:01:27 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/db/error.php:6
-Stack trace:
-#0 /home/fizu48hwyzc0/public_html/db/login.php(43): error('Incorrect passw...')
-#1 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[15-Jun-2018 09:02:57 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[15-Jun-2018 09:02:57 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/db/error.php:6
-Stack trace:
-#0 /home/fizu48hwyzc0/public_html/db/login.php(58): error('No results')
-#1 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[15-Jun-2018 09:03:00 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[15-Jun-2018 09:03:00 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/db/error.php:6
-Stack trace:
-#0 /home/fizu48hwyzc0/public_html/db/login.php(58): error('No results')
-#1 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[15-Jun-2018 09:03:01 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[15-Jun-2018 09:03:01 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/db/error.php:6
-Stack trace:
-#0 /home/fizu48hwyzc0/public_html/db/login.php(58): error('No results')
-#1 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[15-Jun-2018 09:03:29 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[15-Jun-2018 09:03:29 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/db/error.php:6
-Stack trace:
-#0 /home/fizu48hwyzc0/public_html/db/login.php(58): error('No results')
-#1 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[15-Jun-2018 09:03:32 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[15-Jun-2018 09:03:32 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/db/error.php:6
-Stack trace:
-#0 /home/fizu48hwyzc0/public_html/db/login.php(43): error('Incorrect passw...')
-#1 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[15-Jun-2018 09:03:48 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[15-Jun-2018 09:03:48 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/db/error.php:6
-Stack trace:
-#0 /home/fizu48hwyzc0/public_html/db/login.php(58): error('No results')
-#1 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[15-Jun-2018 09:04:15 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[15-Jun-2018 09:04:15 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/db/error.php:6
-Stack trace:
-#0 /home/fizu48hwyzc0/public_html/db/login.php(58): error('No results')
-#1 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[15-Jun-2018 09:05:01 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[15-Jun-2018 09:05:01 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/db/error.php:6
-Stack trace:
-#0 /home/fizu48hwyzc0/public_html/db/login.php(25): error('Parameter usern...')
-#1 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[15-Jun-2018 09:05:39 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[15-Jun-2018 09:05:39 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/db/error.php:6
-Stack trace:
-#0 /home/fizu48hwyzc0/public_html/db/login.php(43): error('Incorrect passw...')
-#1 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[15-Jun-2018 09:06:25 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[15-Jun-2018 09:06:25 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/db/error.php:6
-Stack trace:
-#0 /home/fizu48hwyzc0/public_html/db/login.php(43): error('Incorrect passw...')
-#1 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[15-Jun-2018 09:10:03 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[15-Jun-2018 09:10:03 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/db/error.php:6
-Stack trace:
-#0 /home/fizu48hwyzc0/public_html/db/login.php(58): error('No results')
-#1 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[15-Jun-2018 09:10:03 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[15-Jun-2018 09:10:03 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/db/error.php:6
-Stack trace:
-#0 /home/fizu48hwyzc0/public_html/db/login.php(58): error('No results')
-#1 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[15-Jun-2018 10:51:42 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on boolean in /home/fizu48hwyzc0/public_html/db/login.php:68
-Stack trace:
-#0 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/login.php on line 68
-[15-Jun-2018 20:38:23 UTC] PHP Warning:  mysqli::__construct(): (HY000/1045): Access denied for user 'unity'@'localhost' (using password: YES) in /home/fizu48hwyzc0/public_html/db/login.php on line 12
-[15-Jun-2018 20:38:23 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[15-Jun-2018 20:38:23 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/db/error.php:6
-Stack trace:
-#0 /home/fizu48hwyzc0/public_html/db/login.php(13): error('Access denied f...')
-#1 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[15-Jun-2018 20:38:31 UTC] PHP Warning:  mysqli::__construct(): (HY000/1045): Access denied for user 'unity'@'localhost' (using password: YES) in /home/fizu48hwyzc0/public_html/db/login.php on line 12
-[15-Jun-2018 20:38:31 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[15-Jun-2018 20:38:31 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/db/error.php:6
-Stack trace:
-#0 /home/fizu48hwyzc0/public_html/db/login.php(13): error('Access denied f...')
-#1 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[15-Jun-2018 20:40:58 UTC] PHP Warning:  mysqli::__construct(): (HY000/1045): Access denied for user 'unity'@'localhost' (using password: YES) in /home/fizu48hwyzc0/public_html/db/login.php on line 12
-[15-Jun-2018 20:40:58 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[15-Jun-2018 20:40:58 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/db/error.php:6
-Stack trace:
-#0 /home/fizu48hwyzc0/public_html/db/login.php(13): error('Access denied f...')
-#1 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[15-Jun-2018 20:41:24 UTC] PHP Warning:  mysqli::__construct(): (HY000/1045): Access denied for user 'unity'@'localhost' (using password: YES) in /home/fizu48hwyzc0/public_html/db/login.php on line 12
-[15-Jun-2018 20:41:24 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[15-Jun-2018 20:41:24 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/db/error.php:6
-Stack trace:
-#0 /home/fizu48hwyzc0/public_html/db/login.php(13): error('Access denied f...')
-#1 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[15-Jun-2018 20:41:27 UTC] PHP Warning:  mysqli::__construct(): (HY000/1045): Access denied for user 'unity'@'localhost' (using password: YES) in /home/fizu48hwyzc0/public_html/db/login.php on line 12
-[15-Jun-2018 20:41:27 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[15-Jun-2018 20:41:27 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/db/error.php:6
-Stack trace:
-#0 /home/fizu48hwyzc0/public_html/db/login.php(13): error('Access denied f...')
-#1 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[15-Jun-2018 20:41:43 UTC] PHP Warning:  mysqli::__construct(): (HY000/1045): Access denied for user 'unity'@'localhost' (using password: YES) in /home/fizu48hwyzc0/public_html/db/login.php on line 12
-[15-Jun-2018 20:41:43 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[15-Jun-2018 20:41:43 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/db/error.php:6
-Stack trace:
-#0 /home/fizu48hwyzc0/public_html/db/login.php(13): error('Access denied f...')
-#1 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[15-Jun-2018 20:44:12 UTC] PHP Warning:  mysqli::__construct(): (HY000/1045): Access denied for user 'unity'@'localhost' (using password: YES) in /home/fizu48hwyzc0/public_html/db/login.php on line 12
-[15-Jun-2018 20:44:12 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[15-Jun-2018 20:44:12 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/db/error.php:6
-Stack trace:
-#0 /home/fizu48hwyzc0/public_html/db/login.php(13): error('Access denied f...')
-#1 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[15-Jun-2018 20:44:15 UTC] PHP Warning:  mysqli::__construct(): (HY000/1045): Access denied for user 'unity'@'localhost' (using password: YES) in /home/fizu48hwyzc0/public_html/db/login.php on line 12
-[15-Jun-2018 20:44:15 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[15-Jun-2018 20:44:15 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/db/error.php:6
-Stack trace:
-#0 /home/fizu48hwyzc0/public_html/db/login.php(13): error('Access denied f...')
-#1 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[15-Jun-2018 20:44:27 UTC] PHP Warning:  mysqli::__construct(): (HY000/1045): Access denied for user 'unity'@'localhost' (using password: YES) in /home/fizu48hwyzc0/public_html/db/login.php on line 12
-[15-Jun-2018 20:44:27 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[15-Jun-2018 20:44:27 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/db/error.php:6
-Stack trace:
-#0 /home/fizu48hwyzc0/public_html/db/login.php(13): error('Access denied f...')
-#1 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[15-Jun-2018 20:44:30 UTC] PHP Warning:  mysqli::__construct(): (HY000/1045): Access denied for user 'unity'@'localhost' (using password: YES) in /home/fizu48hwyzc0/public_html/db/login.php on line 12
-[15-Jun-2018 20:44:30 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[15-Jun-2018 20:44:30 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/db/error.php:6
-Stack trace:
-#0 /home/fizu48hwyzc0/public_html/db/login.php(13): error('Access denied f...')
-#1 {main}
-  thrown in /home/fizu48hwyzc0/public_html/db/error.php on line 6
-[18-Jun-2018 14:08:10 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/live/db/error.php on line 6
-[18-Jun-2018 14:08:10 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/live/db/error.php:6
-Stack trace:
-#0 /home/fizu48hwyzc0/public_html/live/db/login.php(64): error('No results')
+#0 /home/fizu48hwyzc0/public_html/live/db/register.php(35): error('Username exist')
 #1 {main}
   thrown in /home/fizu48hwyzc0/public_html/live/db/error.php on line 6
-[18-Jun-2018 14:08:10 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/live/db/error.php on line 6
-[18-Jun-2018 14:08:10 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/live/db/error.php:6
+[20-Jun-2018 13:22:30 UTC] PHP Fatal error:  Uncaught Error: Call to a member function error() on boolean in /home/fizu48hwyzc0/public_html/live/db/register.php:54
 Stack trace:
-#0 /home/fizu48hwyzc0/public_html/live/db/login.php(64): error('No results')
-#1 {main}
-  thrown in /home/fizu48hwyzc0/public_html/live/db/error.php on line 6
-[18-Jun-2018 14:08:10 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/live/db/error.php on line 6
-[18-Jun-2018 14:08:10 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/live/db/error.php:6
+#0 {main}
+  thrown in /home/fizu48hwyzc0/public_html/live/db/register.php on line 54
+[20-Jun-2018 13:26:09 UTC] PHP Fatal error:  Uncaught Error: Call to a member function error() on boolean in /home/fizu48hwyzc0/public_html/live/db/register.php:54
 Stack trace:
-#0 /home/fizu48hwyzc0/public_html/live/db/login.php(64): error('No results')
-#1 {main}
-  thrown in /home/fizu48hwyzc0/public_html/live/db/error.php on line 6
-[18-Jun-2018 14:08:11 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/live/db/error.php on line 6
-[18-Jun-2018 14:08:11 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/live/db/error.php:6
-Stack trace:
-#0 /home/fizu48hwyzc0/public_html/live/db/login.php(64): error('No results')
-#1 {main}
-  thrown in /home/fizu48hwyzc0/public_html/live/db/error.php on line 6
-[18-Jun-2018 14:09:06 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/live/db/error.php on line 6
-[18-Jun-2018 14:09:06 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/live/db/error.php:6
-Stack trace:
-#0 /home/fizu48hwyzc0/public_html/live/db/login.php(64): error('No results')
-#1 {main}
-  thrown in /home/fizu48hwyzc0/public_html/live/db/error.php on line 6
-[18-Jun-2018 14:09:23 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/live/db/error.php on line 6
-[18-Jun-2018 14:09:23 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/live/db/error.php:6
-Stack trace:
-#0 /home/fizu48hwyzc0/public_html/live/db/login.php(64): error('No results')
-#1 {main}
-  thrown in /home/fizu48hwyzc0/public_html/live/db/error.php on line 6
-[18-Jun-2018 14:10:07 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/live/db/error.php on line 6
-[18-Jun-2018 14:10:07 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/live/db/error.php:6
-Stack trace:
-#0 /home/fizu48hwyzc0/public_html/live/db/login.php(64): error('No results')
-#1 {main}
-  thrown in /home/fizu48hwyzc0/public_html/live/db/error.php on line 6
-[18-Jun-2018 14:10:17 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/live/db/error.php on line 6
-[18-Jun-2018 14:10:17 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/live/db/error.php:6
-Stack trace:
-#0 /home/fizu48hwyzc0/public_html/live/db/login.php(64): error('No results')
-#1 {main}
-  thrown in /home/fizu48hwyzc0/public_html/live/db/error.php on line 6
-[18-Jun-2018 14:10:23 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/live/db/error.php on line 6
-[18-Jun-2018 14:10:23 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/live/db/error.php:6
-Stack trace:
-#0 /home/fizu48hwyzc0/public_html/live/db/login.php(37): error('Incorrect passw...')
-#1 {main}
-  thrown in /home/fizu48hwyzc0/public_html/live/db/error.php on line 6
-[18-Jun-2018 14:10:29 UTC] PHP Notice:  Undefined variable: mysqli in /home/fizu48hwyzc0/public_html/live/db/error.php on line 6
-[18-Jun-2018 14:10:29 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/fizu48hwyzc0/public_html/live/db/error.php:6
-Stack trace:
-#0 /home/fizu48hwyzc0/public_html/live/db/login.php(37): error('Incorrect passw...')
-#1 {main}
-  thrown in /home/fizu48hwyzc0/public_html/live/db/error.php on line 6
+#0 {main}
+  thrown in /home/fizu48hwyzc0/public_html/live/db/register.php on line 54
+[20-Jun-2018 13:27:48 UTC] PHP Notice:  Trying to get property 'error' of non-object in /home/fizu48hwyzc0/public_html/live/db/register.php on line 54
+[20-Jun-2018 13:30:44 UTC] PHP Notice:  Trying to get property 'error' of non-object in /home/fizu48hwyzc0/public_html/live/db/register.php on line 52
+[20-Jun-2018 13:31:26 UTC] PHP Notice:  Trying to get property 'error' of non-object in /home/fizu48hwyzc0/public_html/live/db/register.php on line 52
+[20-Jun-2018 13:57:11 UTC] PHP Notice:  Uninitialized string offset: 36 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:57:11 UTC] PHP Notice:  Uninitialized string offset: 20 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:57:11 UTC] PHP Notice:  Uninitialized string offset: 37 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:57:11 UTC] PHP Notice:  Uninitialized string offset: 21 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:57:11 UTC] PHP Notice:  Uninitialized string offset: 38 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:57:11 UTC] PHP Notice:  Uninitialized string offset: 22 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:57:11 UTC] PHP Notice:  Uninitialized string offset: 39 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:57:11 UTC] PHP Notice:  Uninitialized string offset: 23 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:57:11 UTC] PHP Notice:  Uninitialized string offset: 40 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:57:11 UTC] PHP Notice:  Uninitialized string offset: 24 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:57:11 UTC] PHP Notice:  Uninitialized string offset: 41 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:57:11 UTC] PHP Notice:  Uninitialized string offset: 25 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:57:11 UTC] PHP Notice:  Uninitialized string offset: 42 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:57:11 UTC] PHP Notice:  Uninitialized string offset: 26 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:57:11 UTC] PHP Notice:  Uninitialized string offset: 43 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:57:11 UTC] PHP Notice:  Uninitialized string offset: 27 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:57:11 UTC] PHP Notice:  Uninitialized string offset: 44 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:57:11 UTC] PHP Notice:  Uninitialized string offset: 28 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:57:11 UTC] PHP Notice:  Uninitialized string offset: 45 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:57:11 UTC] PHP Notice:  Uninitialized string offset: 29 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:57:11 UTC] PHP Notice:  Uninitialized string offset: 46 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:57:11 UTC] PHP Notice:  Uninitialized string offset: 30 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:57:11 UTC] PHP Notice:  Uninitialized string offset: 47 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:57:11 UTC] PHP Notice:  Uninitialized string offset: 31 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:57:11 UTC] PHP Notice:  Uninitialized string offset: 48 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:57:11 UTC] PHP Notice:  Uninitialized string offset: 32 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:57:11 UTC] PHP Notice:  Uninitialized string offset: 49 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:57:11 UTC] PHP Notice:  Uninitialized string offset: 33 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:57:11 UTC] PHP Notice:  Uninitialized string offset: 50 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:57:11 UTC] PHP Notice:  Uninitialized string offset: 34 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:57:11 UTC] PHP Notice:  Uninitialized string offset: 51 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:57:11 UTC] PHP Notice:  Uninitialized string offset: 35 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:57:15 UTC] PHP Notice:  Uninitialized string offset: 36 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:57:15 UTC] PHP Notice:  Uninitialized string offset: 20 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:57:15 UTC] PHP Notice:  Uninitialized string offset: 37 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:57:15 UTC] PHP Notice:  Uninitialized string offset: 21 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:57:15 UTC] PHP Notice:  Uninitialized string offset: 38 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:57:15 UTC] PHP Notice:  Uninitialized string offset: 22 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:57:15 UTC] PHP Notice:  Uninitialized string offset: 39 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:57:15 UTC] PHP Notice:  Uninitialized string offset: 23 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:57:15 UTC] PHP Notice:  Uninitialized string offset: 40 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:57:15 UTC] PHP Notice:  Uninitialized string offset: 24 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:57:15 UTC] PHP Notice:  Uninitialized string offset: 41 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:57:15 UTC] PHP Notice:  Uninitialized string offset: 25 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:57:15 UTC] PHP Notice:  Uninitialized string offset: 42 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:57:15 UTC] PHP Notice:  Uninitialized string offset: 26 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:57:15 UTC] PHP Notice:  Uninitialized string offset: 43 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:57:15 UTC] PHP Notice:  Uninitialized string offset: 27 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:57:15 UTC] PHP Notice:  Uninitialized string offset: 44 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:57:15 UTC] PHP Notice:  Uninitialized string offset: 28 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:57:15 UTC] PHP Notice:  Uninitialized string offset: 45 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:57:15 UTC] PHP Notice:  Uninitialized string offset: 29 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:57:15 UTC] PHP Notice:  Uninitialized string offset: 46 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:57:15 UTC] PHP Notice:  Uninitialized string offset: 30 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:57:15 UTC] PHP Notice:  Uninitialized string offset: 47 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:57:15 UTC] PHP Notice:  Uninitialized string offset: 31 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:57:15 UTC] PHP Notice:  Uninitialized string offset: 48 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:57:15 UTC] PHP Notice:  Uninitialized string offset: 32 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:57:15 UTC] PHP Notice:  Uninitialized string offset: 49 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:57:15 UTC] PHP Notice:  Uninitialized string offset: 33 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:57:15 UTC] PHP Notice:  Uninitialized string offset: 50 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:57:15 UTC] PHP Notice:  Uninitialized string offset: 34 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:57:15 UTC] PHP Notice:  Uninitialized string offset: 51 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:57:15 UTC] PHP Notice:  Uninitialized string offset: 35 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:58:37 UTC] PHP Notice:  Uninitialized string offset: 36 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:58:37 UTC] PHP Notice:  Uninitialized string offset: 20 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:58:37 UTC] PHP Notice:  Uninitialized string offset: 37 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:58:37 UTC] PHP Notice:  Uninitialized string offset: 21 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:58:37 UTC] PHP Notice:  Uninitialized string offset: 38 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:58:37 UTC] PHP Notice:  Uninitialized string offset: 22 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:58:37 UTC] PHP Notice:  Uninitialized string offset: 39 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:58:37 UTC] PHP Notice:  Uninitialized string offset: 23 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:58:37 UTC] PHP Notice:  Uninitialized string offset: 40 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:58:37 UTC] PHP Notice:  Uninitialized string offset: 24 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:58:37 UTC] PHP Notice:  Uninitialized string offset: 41 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:58:37 UTC] PHP Notice:  Uninitialized string offset: 25 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:58:37 UTC] PHP Notice:  Uninitialized string offset: 42 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:58:37 UTC] PHP Notice:  Uninitialized string offset: 26 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:58:37 UTC] PHP Notice:  Uninitialized string offset: 43 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:58:37 UTC] PHP Notice:  Uninitialized string offset: 27 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:58:37 UTC] PHP Notice:  Uninitialized string offset: 44 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:58:37 UTC] PHP Notice:  Uninitialized string offset: 28 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:58:37 UTC] PHP Notice:  Uninitialized string offset: 45 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:58:37 UTC] PHP Notice:  Uninitialized string offset: 29 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:58:37 UTC] PHP Notice:  Uninitialized string offset: 46 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:58:37 UTC] PHP Notice:  Uninitialized string offset: 30 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:58:37 UTC] PHP Notice:  Uninitialized string offset: 47 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:58:37 UTC] PHP Notice:  Uninitialized string offset: 31 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:58:37 UTC] PHP Notice:  Uninitialized string offset: 48 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:58:37 UTC] PHP Notice:  Uninitialized string offset: 32 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:58:37 UTC] PHP Notice:  Uninitialized string offset: 49 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:58:37 UTC] PHP Notice:  Uninitialized string offset: 33 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:58:37 UTC] PHP Notice:  Uninitialized string offset: 50 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:58:37 UTC] PHP Notice:  Uninitialized string offset: 34 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:58:37 UTC] PHP Notice:  Uninitialized string offset: 51 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17
+[20-Jun-2018 13:58:37 UTC] PHP Notice:  Uninitialized string offset: 35 in /home/fizu48hwyzc0/public_html/live/db/pbkdf2.php on line 17

@@ -3,7 +3,7 @@
 	function error($msg)
 	{
 		echo "{\"error\": \"{$msg}\"}";
-		$mysqli->close();
+		if (isset($mysql)) $mysqli->close();
 		exit();
 	}
 ?>

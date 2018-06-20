@@ -1,12 +1,9 @@
-<?php
-
-$to = 'zaihao90@hotmail.com';
-$subject = 'WebCity Forget Password';
-$headers = "From: webcity.online@webcity.online" . "\r\n";
-$headers .= "MIME-Version: 1.0\r\n";
-$headers .= "Content-Type: text/html; charset=UTF-8\r\n";
-$message = '<p><strong>Click <a href="http://webcity.online">here</a></strong> to reset password</p>';
-
-mail($to, $subject, $message, $headers);
-echo "Mail Sent to user";
+<?php
+   $to = "zaihao90@hotmail.com"; // <– replace with your address here
+   $subject = "Test mail";
+   $message = "Hello! This is a simple test email message.";
+   $from = "webcity.online@webcity.online";
+   $headers = "From:" . $from;
+   mail($to,$subject,$message,$headers);
+   echo "Mail Sent.";
 ?>

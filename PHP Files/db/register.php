@@ -1,5 +1,5 @@
 <?php
-	//http://webcity.online/db/register.php?username=echo&pwhash=echo1234&fbid=echofbid&email=echo@echo.com&desc=&isfbonly=0
+	//http://webcity.online/live/db/register.php?username=echo&pwhash=echo1234&fbid=echofbid&email=echo@echo.com&desc=&isfbonly=0
 	include 'error.php';
 	include 'paramscheck.php';
 	
@@ -33,26 +33,23 @@
 		$result = $result->fetch_all(MYSQLI_ASSOC);
 		if (in_array($username, array_column($result, 'username')))
 			error('Username exist');
-		else if (in_array($fbid, array_column($result, 'fbid')))
+		else if (!empty($fbid) && in_array($fbid, array_column($result, 'fbid')))
 			error('Facebook ID already used');
-		else if (in_array($email, array_column($result, 'email')))
+		else if (!empty($email) && in_array($email, array_column($result, 'email')))
 			error('Email already registered');
 		else
 			error('User exists');
 	}
 	
 	// add to database
-	$query = "INSERT INTO users VALUES (UUID(), '{$username}', '{$pwhash}', '{$fbid}', '{$email}', '{$desc}', {$isfbonly}, CURRENT_TIMESTAMP)";
+	$query = "INSERT INTO users VALUES (UUID(), '{$username}', '{$pwhash}', '{$fbid}', '{$email}', '{$desc}', {$isfbonly}, CURRENT_TIMESTAMP, NULL)";
 	$result = $mysqli->query($query);
 	if ($result === TRUE)
 	{
 		// show newly created user
 		echo exec("php login.php {$username} {$pwhash}");
 	}
-	else
-	{
-		error($result->error());
-	}
+	else error($mysqli->error);
 	
 	$mysqli->close();
 ?>
