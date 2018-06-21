@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using Gamelogic.Extensions;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -81,6 +80,9 @@ public class MapCamera : MonoBehaviour
 	//store mouse positions for this frame and last frame
 	Vector3 lastMousePos;
 	Vector3 currMousePos;
+
+	float lerpTargetPositionTime = 0.6f;
+	float lerpTargetPositionTimer;
 
 	public bool IsMoving { get { return (dx != 0 || dy != 0); } }
 	public bool HasMoved { get { return hasMoved; } }//applies to both pan and rotate
@@ -179,6 +181,7 @@ public class MapCamera : MonoBehaviour
 	{
 		return Mathf.InverseLerp(minDistance, maxDistance, distance);
 	}
+
 	public float GetExpoZoom()
 	{
 		float zoomF = 8.0f - Mathf.Log(distance, 2.0f);
@@ -189,6 +192,7 @@ public class MapCamera : MonoBehaviour
 		float pct = (zoomF - zoomFmin)/(zoomFmax - zoomFmin);
 		return pct;
 	}
+
 	public void SetExpoZoom(float percentage)
 	{
 		float zoomFmin = 8.0f - Mathf.Log(minDistance, 2.0f);

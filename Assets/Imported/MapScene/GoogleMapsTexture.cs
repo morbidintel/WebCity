@@ -40,7 +40,6 @@ public class GoogleMapsTexture : OnlineTexture
 		initialSector = TileXYToQuadKey (tileX, tileY, initialZoom + 1);
 	}
 
-
 	// Function taken from "Bing Maps Tile System": https://msdn.microsoft.com/en-us/library/bb259689.aspx
 	public static string TileXYToQuadKey(int tileX, int tileY, int levelOfDetail)
 	{
@@ -122,7 +121,7 @@ public class GoogleMapsTexture : OnlineTexture
         QuadKeyToTileXY(quadkey, out tilex, out tiley, out zoom);
         url = url.Replace("{x}", tilex.ToString());
         url = url.Replace("{y}", tiley.ToString());
-        url = url.Replace("{z}", zoom.ToString());
+        url = url.Replace ("{z}", zoom.ToString());
 		return url;
 	}
 
