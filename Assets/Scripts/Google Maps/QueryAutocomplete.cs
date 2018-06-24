@@ -2,6 +2,7 @@
 
 namespace Google_Maps
 {
+	[Serializable]
 	public class QueryAutocomplete
 	{
 		public static readonly string URL = "https://maps.googleapis.com/maps/api/place/queryautocomplete/json?key=AIzaSyBAm0l1jdDejOC9Smk9WviPNvjeAb2XBbI&input={0}";

@@ -2,9 +2,27 @@
 
 namespace Google_Maps
 {
+	/*
+	 * Documentation
+	 * https://developers.google.com/places/web-service/details#PlaceDetailsResults
+	 * 
+	 * Basic
+		The Basic category includes the following fields:
+		address_component, adr_address, alt_id, formatted_address, geometry, icon, id, name, permanently_closed, photo, place_id, scope, type, url, utc_offset, vicinity
+
+		Contact
+		The Contact category includes the following fields:
+		formatted_phone_number, international_phone_number, opening_hours, website
+
+		Atmosphere
+		The Atmosphere category includes the following fields:
+		price_level, rating, review
+	 */
 	[Serializable]
 	public class PlaceDetails
 	{
+		public static readonly string URL = "https://maps.googleapis.com/maps/api/place/details/json?key=AIzaSyBAm0l1jdDejOC9Smk9WviPNvjeAb2XBbI&placeid={0}&fields={1}";
+
 		[Serializable]
 		public class AddressComponent
 		{
@@ -101,6 +119,6 @@ namespace Google_Maps
 		}
 
 		public Result result;
-		public string status;
+		public string status, error_message;
 	}
 }

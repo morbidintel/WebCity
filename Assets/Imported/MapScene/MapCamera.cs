@@ -470,4 +470,11 @@ public class MapCamera : MonoBehaviour
 			lastMousePos = Vector3.zero;
 		}
 	}
+
+	public static Vector3 LatLongToUnity(float lat, float lng)
+	{
+		lat = ((lat + 180) % 360) - 180;
+		lng = ((lng + 360) % 720) - 360;
+		return new Vector3(lng * (512f / 9f), 0, lat * (1024f / 9f));
+	}
 }
