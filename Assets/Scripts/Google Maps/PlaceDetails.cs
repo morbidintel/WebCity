@@ -34,6 +34,10 @@ namespace Google_Maps
 		public class Coords
 		{
 			public float lat, lng;
+			public override string ToString()
+			{
+				return string.Format("Lat: {0}, Long: {1}", lat, lng);
+			}
 		}
 
 		[Serializable]

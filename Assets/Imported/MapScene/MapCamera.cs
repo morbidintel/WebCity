@@ -88,6 +88,9 @@ public class MapCamera : MonoBehaviour
 	public bool HasMoved { get { return hasMoved; } }//applies to both pan and rotate
 	public bool HasRotated { get; private set; }
 
+	[SerializeField]
+	Transform mapAreaPlane = null;
+
 	// Use this for initialization
 	void Start()
 	{
@@ -471,10 +474,24 @@ public class MapCamera : MonoBehaviour
 		}
 	}
 
-	public static Vector3 LatLongToUnity(float lat, float lng)
+	public static Vector3 LatLongToUnity(Google_Maps.PlaceDetails.Coords coords)
 	{
-		lat = ((lat + 180) % 360) - 180;
-		lng = ((lng + 360) % 720) - 360;
-		return new Vector3(lng * (512f / 9f), 0, lat * (1024f / 9f));
+		return LatLongToUnity(coords.lat, coords.lng);
+	}
+
+	public static Vector3 LatLongToUnity(float latitude, float longitude)
+	{
+		float sinLatitude = Mathf.Sin(latitude * Mathf.PI / 180.0f);
+
+		float pixelX = (((longitude + 180) / 360) ); //from 0.0 to 1.0
+		float pixelY = 1.0f - ((0.5f - Mathf.Log((1 + sinLatitude) / (1 - sinLatitude)) / (4 * Mathf.PI)) ); //from 0.0 to 1.0
+
+		var bounds = Instance.mapAreaPlane.GetComponent<BoxCollider>().bounds;
+		Vector3 minPos = bounds.min;
+		Vector3 maxPos = bounds.max;
+		float mapX = Mathf.Lerp(minPos.x, maxPos.x, pixelX);
+		float mapZ = Mathf.Lerp(minPos.z, maxPos.z, pixelY);
+
+		return new Vector3(mapX, 0, mapZ);
 	}
 }

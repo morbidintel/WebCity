@@ -34,10 +34,17 @@ public class MapSearch : MonoBehaviour
 	GameObject itemTemplate = null;
 
 	List<DropdownItem> items = new List<DropdownItem>();
-
 	QueryAutocomplete result = null;
 	Coroutine coroutine;
 	GameObject blocker = null;
+
+	bool isSearchSelected
+	{
+		get
+		{
+			return EventSystem.current.currentSelectedGameObject == input.gameObject;
+		}
+	}
 
 	// Use this for initialization
 	void Start()
@@ -46,18 +53,18 @@ public class MapSearch : MonoBehaviour
 		Debug.Assert(dropdownHolder != null);
 		Debug.Assert(itemTemplate != null);
 		itemTemplate.SetActive(false);
-
-		Debug.Log(MapCamera.LatLongToUnity(1.3253651f, 103.754333f));
 	}
 
 	// Update is called once per frame
 	void Update()
 	{
-		if (input.isFocused &&
+		if (isSearchSelected &&
 			input.text != "" &&
 			!dropdownHolder.gameObject.activeInHierarchy &&
 			coroutine == null)
+		{
 			ShowDropdown();
+		}
 	}
 
 	void AddItems(IEnumerable<string> texts)
@@ -107,7 +114,7 @@ public class MapSearch : MonoBehaviour
 		if (value != "")
 		{
 			string url = string.Format(QueryAutocomplete.URL, WWW.EscapeURL(value));
-			WWW www = new WWW(url);
+			WWW www = new WWW(PHPProxy.Escape(url));
 			yield return www;
 			if (www.error != null)
 			{
@@ -129,9 +136,8 @@ public class MapSearch : MonoBehaviour
 		}
 
 		ClearDropdown();
-		if (result != null)
-			AddItems(result.predictions?.Select(p => p.description));
-		ShowDropdown();
+		if (result != null) AddItems(result.predictions?.Select(p => p.description));
+		if (isSearchSelected) ShowDropdown();
 
 		input.MoveTextEnd(false);
 
@@ -151,7 +157,7 @@ public class MapSearch : MonoBehaviour
 		string place_id = result != null ? result.predictions[index].place_id : "";
 		if (place_id == "") yield break;
 		string url = string.Format(PlaceDetails.URL, WWW.EscapeURL(place_id), "geometry");
-		WWW www = new WWW(url);
+		WWW www = new WWW(PHPProxy.Escape(url));
 		yield return www;
 		if (www.error != null)
 		{
@@ -168,11 +174,11 @@ public class MapSearch : MonoBehaviour
 		}
 
 		var location = place.result.geometry.location;
-		Debug.Log(location.lat + "\n" + location.lng);
-		MapCamera.Instance.SetExpoZoom(.75f);
-		Vector3 target = MapCamera.LatLongToUnity(location.lat, location.lng);
-		Debug.Log(target);
-		MapCamera.Instance.SetFocusTarget(target);
+		var viewport = place.result.geometry.viewport;
+		float diag = (MapCamera.LatLongToUnity(viewport.northeast) - MapCamera.LatLongToUnity(viewport.southwest)).magnitude;
+		MapCamera.Instance.Distance = diag;
+		MapCamera.Instance.SetFocusTarget(MapCamera.LatLongToUnity(location.lat, location.lng));
+		EventSystem.current.SetSelectedGameObject(null);
 
 		coroutine = null;
 	}

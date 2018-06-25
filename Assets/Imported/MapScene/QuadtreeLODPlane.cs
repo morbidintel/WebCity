@@ -277,7 +277,7 @@ public class QuadtreeLODPlane : MonoBehaviour
 
 	private DistanceTestResult DoDistanceTest()
 	{
-		const float THRESHOLD_FACTOR = 3;
+		const float THRESHOLD_FACTOR = 1.5f;
 
 		Vector3 cameraPos = Camera.main.transform.position;
 		float distanceCameraBorder = Vector3.Distance (cameraPos, mRenderer.bounds.ClosestPoint (cameraPos));

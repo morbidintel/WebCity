@@ -15,7 +15,7 @@ public abstract class OnlineTexture : MonoBehaviour
 
 	public static int totalrequests = 0; //total tiles requested from server
 	public static int totalInMemory = 0; //tiles currently loaded with texture
-	const int tilesInMemoryLimit = 4096; //when tiles in memory reaches this limit, we need to start purging some tiles
+	const int tilesInMemoryLimit = 256; //when tiles in memory reaches this limit, we need to start purging some tiles
 
 	public void Start()
 	{
@@ -50,7 +50,6 @@ public abstract class OnlineTexture : MonoBehaviour
 		RequestTexture("0");
 	}
 
-
 #if UNITY_EDITOR
 	// Make this update with editor.
 	void OnEnable()
@@ -70,7 +69,6 @@ public abstract class OnlineTexture : MonoBehaviour
 		}
 	}
 #endif
-
 
 	public void Update()
 	{
@@ -104,15 +102,13 @@ public abstract class OnlineTexture : MonoBehaviour
 
 	protected virtual void OnDestroy()
 	{
-
+		--totalInMemory;
 	}
-
 
 	public bool IsDownloading()
 	{
 		return textureLoaded == false && ((request_ != null && !request_.isDone) || texture == null);
 	}
-
 
 	protected abstract string GenerateRequestURL(string nodeID);
 	public void CopyTo(OnlineTexture copy)
