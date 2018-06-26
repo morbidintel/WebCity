@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
+using PhpDB;
 
 public class Register : MonoBehaviour
 {
@@ -37,7 +38,7 @@ public class Register : MonoBehaviour
 		}
 		else
 		{
-			Login.User json = JsonUtility.FromJson<Login.User>(www.text);
+			LoginUser json = JsonUtility.FromJson<LoginUser>(www.text);
 			if (json.error == null)
 			{
 				sceneChanger.LoadScene("Map Scene");

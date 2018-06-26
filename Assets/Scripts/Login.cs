@@ -3,11 +3,10 @@ using System.Collections;
 using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
+using PhpDB;
 
 public class Login : MonoBehaviour
 {
-	string loginURL = "http://webcity.online/live/db/login.php?username={0}&pwhash={1}";
-
 	[SerializeField]
 	InputField username = null, password = null;
 	[SerializeField]
@@ -16,18 +15,12 @@ public class Login : MonoBehaviour
 	[SerializeField]
 	ChangeScene sceneChanger = null;
 
-	[Serializable]
-	public class User
-	{
-		public string userid, username, fbid, email, desc, isfbonly, createddate, forgetpwtime;
-		public string error;
-	}
 
 	IEnumerator LoginCoroutine()
 	{
 		errorSubtitle.text = "";
 		string encodedpw = Convert.ToBase64String(Encoding.UTF8.GetBytes(password.text));
-		string url = string.Format(loginURL, WWW.EscapeURL(username.text), WWW.EscapeURL(encodedpw));
+		string url = string.Format(LoginUser.URL, WWW.EscapeURL(username.text), WWW.EscapeURL(encodedpw));
 		WWW www = new WWW(url);
 		yield return www;
 
@@ -37,7 +30,7 @@ public class Login : MonoBehaviour
 		}
 		else
 		{
-			User json = JsonUtility.FromJson<User>(www.text);
+			LoginUser json = JsonUtility.FromJson<LoginUser>(www.text);
 			if (json.error == null)
 			{
 				sceneChanger.LoadScene("Map Scene");

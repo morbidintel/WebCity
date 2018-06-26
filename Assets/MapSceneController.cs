@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class MapSceneController : Singleton<MapSceneController>
 {
-	const int pruneTileLimit = 256; //delete invisible tiles when total tiles exceed this limit
+	const int pruneTileLimit = 512; //delete invisible tiles when total tiles exceed this limit
 	const float pruneTilesTimerMax = 1f;
 	[SerializeField]
 	ChangeScene sceneChanger;
