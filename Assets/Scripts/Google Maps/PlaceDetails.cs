@@ -1,7 +1,23 @@
 ﻿using System;
 
-namespace Google_Maps
+namespace GoogleMaps
 {
+	[Serializable]
+	public class Coords
+	{
+		public float lat, lng;
+		public Coords() { }
+		public Coords(float lat, float lng)
+		{
+			this.lat = lat;
+			this.lng = lng;
+		}
+		public override string ToString()
+		{
+			return string.Format("{0},{1}", lat, lng);
+		}
+	}
+
 	/*
 	 * Documentation
 	 * https://developers.google.com/places/web-service/details#PlaceDetailsResults
@@ -28,16 +44,6 @@ namespace Google_Maps
 		{
 			public string long_name, short_name;
 			public string[] types;
-		}
-
-		[Serializable]
-		public class Coords
-		{
-			public float lat, lng;
-			public override string ToString()
-			{
-				return string.Format("Lat: {0}, Long: {1}", lat, lng);
-			}
 		}
 
 		[Serializable]

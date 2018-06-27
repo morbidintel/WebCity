@@ -38,7 +38,7 @@ public class Register : MonoBehaviour
 		}
 		else
 		{
-			LoginUser json = JsonUtility.FromJson<LoginUser>(www.text);
+			LoginResult json = JsonUtility.FromJson<LoginResult>(www.text);
 			if (json.error == null)
 			{
 				sceneChanger.LoadScene("Map Scene");

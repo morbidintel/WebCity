@@ -343,7 +343,7 @@ public class MapCamera : MonoBehaviour
 			Vector2 pan = GetTwoFingerPanAmount();
 
 			//get panning if applied
-			if (Input.GetKey(KeyCode.Mouse2) || pan != Vector2.zero)
+			if (Input.GetKey(KeyCode.Mouse2) || Input.GetKey(KeyCode.Mouse0) || pan != Vector2.zero)
 			{
 				if (!MapRaycaster.IsPointerOverUIObject())
 				{
@@ -408,7 +408,7 @@ public class MapCamera : MonoBehaviour
 		float minAngleAtCurrentZoom = Mathf.Lerp(minAngleAtMinZoom, minAngleAtMaxZoom, GetZoom());
 
 		//apply mouse movement to camera
-		if ((Input.GetKey(KeyCode.Mouse1) || Input.GetKey(KeyCode.Mouse0)) && PointInClickArea(Input.mousePosition))
+		if (Input.GetKey(KeyCode.Mouse1) && PointInClickArea(Input.mousePosition))
 		{
 			if (!MapRaycaster.IsPointerOverUIObject())
 			{
@@ -474,7 +474,7 @@ public class MapCamera : MonoBehaviour
 		}
 	}
 
-	public static Vector3 LatLongToUnity(Google_Maps.PlaceDetails.Coords coords)
+	public static Vector3 LatLongToUnity(GoogleMaps.Coords coords)
 	{
 		return LatLongToUnity(coords.lat, coords.lng);
 	}
@@ -483,7 +483,7 @@ public class MapCamera : MonoBehaviour
 	{
 		float sinLatitude = Mathf.Sin(latitude * Mathf.PI / 180.0f);
 
-		float pixelX = (((longitude + 180) / 360) ); //from 0.0 to 1.0
+		float pixelX = (longitude + 180) / 360; //from 0.0 to 1.0
 		float pixelY = 1.0f - ((0.5f - Mathf.Log((1 + sinLatitude) / (1 - sinLatitude)) / (4 * Mathf.PI)) ); //from 0.0 to 1.0
 
 		var bounds = Instance.mapAreaPlane.GetComponent<BoxCollider>().bounds;
@@ -493,5 +493,39 @@ public class MapCamera : MonoBehaviour
 		float mapZ = Mathf.Lerp(minPos.z, maxPos.z, pixelY);
 
 		return new Vector3(mapX, 0, mapZ);
+	}
+
+	public static GoogleMaps.Coords UnityToLatLong(Vector3 pos)
+	{
+		var bounds = Instance.mapAreaPlane.GetComponent<BoxCollider>().bounds;
+		Vector3 minPos = bounds.min;
+		Vector3 maxPos = bounds.max;
+		float pixelX = Mathf.InverseLerp(minPos.x, maxPos.x, pos.x);
+		float pixelY = Mathf.InverseLerp(minPos.x, maxPos.x, pos.z);
+
+		float lng = (pixelX * 360f) - 180f;
+		float lat = Mathf.Exp((0.5f - (1 - pixelY)) * (4f * Mathf.PI));
+		lat = Mathf.Asin((lat - 1f) / (lat + 1f)) / (Mathf.PI / 180.0f);
+
+		return new GoogleMaps.Coords(lat, lng);
+	}
+
+	public GoogleMaps.Coords GetCameraCoords()
+	{
+		return UnityToLatLong(targetPosition);
+	}
+
+	public void SetCameraViewport(GoogleMaps.PlaceDetails.Geometry geometry)
+	{
+		var location = geometry.location;
+		var viewport = geometry.viewport;
+		float diag = (LatLongToUnity(viewport.northeast) - LatLongToUnity(viewport.southwest)).magnitude;
+		distance = diag;
+		SetFocusTarget(LatLongToUnity(location.lat, location.lng));
+	}
+
+	public float GetRadius()
+	{
+		return distance * 2500f;
 	}
 }

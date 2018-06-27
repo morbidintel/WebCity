@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-using Google_Maps;
+using GoogleMaps;
 
 public class MapSearch : MonoBehaviour
 {
@@ -113,7 +113,10 @@ public class MapSearch : MonoBehaviour
 		yield return new WaitForSecondsRealtime(.5f);
 		if (value != "")
 		{
-			string url = string.Format(QueryAutocomplete.URL, WWW.EscapeURL(value));
+			string url = string.Format(QueryAutocomplete.URL + "&location={1}&radius={2}",
+				WWW.EscapeURL(value),
+				MapCamera.Instance.GetCameraCoords().ToString(),
+				MapCamera.Instance.GetRadius());
 			WWW www = new WWW(PHPProxy.Escape(url));
 			yield return www;
 			if (www.error != null)
@@ -173,11 +176,8 @@ public class MapSearch : MonoBehaviour
 			yield break;
 		}
 
-		var location = place.result.geometry.location;
-		var viewport = place.result.geometry.viewport;
-		float diag = (MapCamera.LatLongToUnity(viewport.northeast) - MapCamera.LatLongToUnity(viewport.southwest)).magnitude;
-		MapCamera.Instance.Distance = diag;
-		MapCamera.Instance.SetFocusTarget(MapCamera.LatLongToUnity(location.lat, location.lng));
+		if (place?.result?.geometry != null)
+			MapCamera.Instance.SetCameraViewport(place.result.geometry);
 		EventSystem.current.SetSelectedGameObject(null);
 
 		coroutine = null;

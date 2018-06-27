@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Google_Maps
+namespace GoogleMaps
 {
 	[Serializable]
 	public class QueryAutocomplete

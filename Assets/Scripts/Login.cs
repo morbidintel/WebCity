@@ -20,7 +20,7 @@ public class Login : MonoBehaviour
 	{
 		errorSubtitle.text = "";
 		string encodedpw = Convert.ToBase64String(Encoding.UTF8.GetBytes(password.text));
-		string url = string.Format(LoginUser.URL, WWW.EscapeURL(username.text), WWW.EscapeURL(encodedpw));
+		string url = string.Format(LoginResult.URL, WWW.EscapeURL(username.text), WWW.EscapeURL(encodedpw));
 		WWW www = new WWW(url);
 		yield return www;
 
@@ -30,7 +30,7 @@ public class Login : MonoBehaviour
 		}
 		else
 		{
-			LoginUser json = JsonUtility.FromJson<LoginUser>(www.text);
+			LoginResult json = JsonUtility.FromJson<LoginResult>(www.text);
 			if (json.error == null)
 			{
 				sceneChanger.LoadScene("Map Scene");
