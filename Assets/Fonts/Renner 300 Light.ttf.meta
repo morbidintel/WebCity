@@ -1,0 +1,24 @@
+fileFormatVersion: 2
+guid: 017c9d7c1bba2e3418c415f523f4ab75
+timeCreated: 1530192584
+licenseType: Pro
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 15
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Renner*
+  fontNames:
+  - Renner*
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 3b235410640c22846b90e2d007b511eb, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

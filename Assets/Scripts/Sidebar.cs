@@ -6,12 +6,13 @@ using DG.Tweening;
 using PhpDB;
 using GoogleMaps;
 
-public class Sidebar : MonoBehaviour
+public class Sidebar : Gamelogic.Extensions.Singleton<Sidebar>
 {
 	[SerializeField]
 	DOTweenAnimation sidebarTween = null, arrowTween = null;
 
 	public bool IsHidden { get; private set; } = false;
+	public float TweenMaxX { get { return sidebarTween.endValueV3.x; } }
 
 	// Use this for initialization
 	void Start()
@@ -24,19 +25,19 @@ public class Sidebar : MonoBehaviour
 	{
 	}
 
-	public void HideSidebar()
+	public void ToggleSidebar()
 	{
 		if (IsHidden)
-		{
-			sidebarTween.DOPlayBackwards();
-			arrowTween.DOPlayBackwards();
-		}
-		else
 		{
 			sidebarTween.DOPlayForward();
 			arrowTween.DOPlayForward();
 		}
-
+		else
+		{
+			sidebarTween.DOPlayBackwards();
+			arrowTween.DOPlayBackwards();
+		}
+		
 		IsHidden = !IsHidden;
 	}
 
@@ -84,6 +85,6 @@ public class Sidebar : MonoBehaviour
 			yield break;
 		}
 
-		MapTagManager.Instance.ShowPlaceOnMap(place, Color.blue);
+		MapTagManager.Instance.ShowPlaceOnMap(place);
 	}
 }

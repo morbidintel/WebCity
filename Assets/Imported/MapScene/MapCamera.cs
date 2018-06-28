@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Gamelogic.Extensions;
 
 //hch: this orbital camera differs from a usual orbit camera in 2 ways
 //1. panning amount is distance dependant, the closer the zoom, the less pan is applied
@@ -472,6 +473,10 @@ public class MapCamera : MonoBehaviour
 			currMousePos = Vector3.zero;
 			lastMousePos = Vector3.zero;
 		}
+
+		// move viewport rect with sidebar movement
+		float sidebarx = Sidebar.Instance.RectTransform().anchoredPosition.x / Sidebar.Instance.TweenMaxX;
+		Camera.main.rect = new Rect(Mathf.Lerp(0, 0.249f, sidebarx), 0, Mathf.Lerp(0.751f, 1, 1 - sidebarx), 1);
 	}
 
 	public static Vector3 LatLongToUnity(GoogleMaps.Coords coords)
@@ -522,6 +527,7 @@ public class MapCamera : MonoBehaviour
 		float diag = (LatLongToUnity(viewport.northeast) - LatLongToUnity(viewport.southwest)).magnitude;
 		distance = diag;
 		SetFocusTarget(LatLongToUnity(location.lat, location.lng));
+		if (!Sidebar.Instance.IsHidden) targetPosition = targetPosition.WithIncX(-distance / 3.5f);
 	}
 
 	public float GetRadius()

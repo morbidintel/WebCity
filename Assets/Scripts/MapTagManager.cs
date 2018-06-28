@@ -24,12 +24,7 @@ public class MapTagManager : Gamelogic.Extensions.Singleton<MapTagManager>
 
 	}
 
-	public void ShowPlaceOnMap(PlaceDetails place)
-	{
-		ShowPlaceOnMap(place, Color.black);
-	}
-
-	public void ShowPlaceOnMap(PlaceDetails place, Color color)
+	public void ShowPlaceOnMap(PlaceDetails place, Color? color = null)
 	{
 		if (place?.result?.geometry == null || place?.result?.name == null) return;
 
@@ -37,7 +32,7 @@ public class MapTagManager : Gamelogic.Extensions.Singleton<MapTagManager>
 		MapTag tag = Instantiate(tagPrefab, tagsHolder).GetComponent<MapTag>();
 		tag.transform.position = pos;
 		tag.placeName.text = place.result.name;
-		tag.placeName.color = color;
+		tag.placeName.color = color.HasValue ? color.Value : tag.placeName.color;
 
 		tags.Add(tag);
 	}

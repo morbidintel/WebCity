@@ -9,6 +9,7 @@ namespace PhpDB
 	public class Place
 	{
 		public string placeid, itineraryid, googleid, createddate;
+		int labelid;
 	}
 
 	[Serializable]

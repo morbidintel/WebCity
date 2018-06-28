@@ -19,5 +19,9 @@ public class MapTag : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
+		Vector3 ptVec = transform.position - Camera.main.transform.position;
+		Vector3 ptProj = Vector3.Project(ptVec, Camera.main.transform.forward);
+		Vector3 newScale = Vector3.one * (ptProj.magnitude / 500.0f);
+		if (newScale.x < .5f) transform.localScale = newScale;
 	}
 }
