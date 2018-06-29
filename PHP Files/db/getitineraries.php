@@ -17,7 +17,7 @@
 	if($result->num_rows > 0)
 	{
 		// get results in a nice key-value array
-		$all = $result->fetch_all(MYSQLI_ASSOC);
+		$all['itineraries'] = $result->fetch_all(MYSQLI_ASSOC);
 		
 		// output as json
 		echo json_encode($all);

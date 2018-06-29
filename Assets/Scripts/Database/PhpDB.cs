@@ -37,8 +37,16 @@ namespace PhpDB
 	public class LoginResult
 	{
 		public static readonly string URL = "http://webcity.online/live/db/login.php?username={0}&pwhash={1}";
-		public string userid, username, fbid, email, desc, isfbonly, createddate, forgetpwtime;
+		public string userid, username, fbid, email, desc;
+		public int isfbonly = 0;
+		public DateTime createddate, forgetpwtime;
 		public string error;
+
+		public LoginResult(string userid, string username)
+		{
+			this.userid = userid;
+			this.username = username;
+		}
 	}
 
 	[Serializable]
@@ -53,5 +61,7 @@ namespace PhpDB
 	public class GetItinerariesResult
 	{
 		public static readonly string URL = "http://webcity.online/live/db/getitineraries.php?userid={0}";
+		public Itinerary[] itineraries;
+		public string error;
 	}
 }

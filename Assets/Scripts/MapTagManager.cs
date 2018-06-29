@@ -36,4 +36,10 @@ public class MapTagManager : Gamelogic.Extensions.Singleton<MapTagManager>
 
 		tags.Add(tag);
 	}
+
+	public void ClearMapTags()
+	{
+		foreach (var t in tags) Destroy(t);
+		tags.Clear();
+	}
 }

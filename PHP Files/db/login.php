@@ -24,6 +24,7 @@
 	// escape input for security
 	$username = $mysqli->real_escape_string($_GET['username']);
 	$pwhash = $mysqli->real_escape_string($_GET['pwhash']);
+
 	// do query
 	$sql = "SELECT * FROM users WHERE username = '{$username}'";
 	$result = $mysqli->query($sql);
@@ -34,7 +35,7 @@
 		$all = $result->fetch_all(MYSQLI_ASSOC);
 		
 		// check if hash in url param matches with hash in db
-		if (!PBKDF2Compare($all[0]["pwhash"], base64_decode($pwhash)))
+		if (PHP_SAPI != 'cli' && !PBKDF2Compare($all[0]["pwhash"], base64_decode($pwhash)))
 			error("Incorrect password");
 		else if ($all[0]["forgetpwtime"] != NULL)
 		{

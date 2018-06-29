@@ -13,7 +13,7 @@ public class MapTag : MonoBehaviour
 	// Use this for initialization
 	void Start()
 	{
-		
+
 	}
 
 	// Update is called once per frame
@@ -23,5 +23,10 @@ public class MapTag : MonoBehaviour
 		Vector3 ptProj = Vector3.Project(ptVec, Camera.main.transform.forward);
 		Vector3 newScale = Vector3.one * (ptProj.magnitude / 500.0f);
 		if (newScale.x < .5f) transform.localScale = newScale;
+	}
+
+	void OnDestroy()
+	{
+		Destroy(gameObject);
 	}
 }

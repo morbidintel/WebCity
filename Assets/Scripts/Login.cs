@@ -15,6 +15,7 @@ public class Login : MonoBehaviour
 	[SerializeField]
 	ChangeScene sceneChanger = null;
 
+	public LoginResult user { get; private set; } = null;
 
 	IEnumerator LoginCoroutine()
 	{
@@ -30,14 +31,15 @@ public class Login : MonoBehaviour
 		}
 		else
 		{
-			LoginResult json = JsonUtility.FromJson<LoginResult>(www.text);
-			if (json.error == null)
+			user = JsonUtility.FromJson<LoginResult>(www.text);
+			if (user.error == null)
 			{
+				PersistentUser.Create(user);
 				sceneChanger.LoadScene("Map Scene");
 			}
 			else
 			{
-				errorSubtitle.text = json.error;
+				errorSubtitle.text = user.error;
 			}
 		}
 	}

@@ -527,7 +527,6 @@ public class MapCamera : MonoBehaviour
 		float diag = (LatLongToUnity(viewport.northeast) - LatLongToUnity(viewport.southwest)).magnitude;
 		distance = diag;
 		SetFocusTarget(LatLongToUnity(location.lat, location.lng));
-		if (!Sidebar.Instance.IsHidden) targetPosition = targetPosition.WithIncX(-distance / 3.5f);
 	}
 
 	public float GetRadius()

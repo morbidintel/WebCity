@@ -26,8 +26,8 @@ public class Register : MonoBehaviour
 		errorSubtitle.text = "";
 		string pwhash = PBKDF2Hash.Hash(password.text);
 		string url = string.Format(registerURL,
-			WWW.EscapeURL(username.text), 
-			WWW.EscapeURL(pwhash), 
+			WWW.EscapeURL(username.text),
+			WWW.EscapeURL(pwhash),
 			WWW.EscapeURL(email.text));
 		WWW www = new WWW(url);
 		yield return www;
@@ -41,6 +41,7 @@ public class Register : MonoBehaviour
 			LoginResult json = JsonUtility.FromJson<LoginResult>(www.text);
 			if (json.error == null)
 			{
+				PersistentUser.Create(json);
 				sceneChanger.LoadScene("Map Scene");
 			}
 			else
