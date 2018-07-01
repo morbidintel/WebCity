@@ -5,10 +5,16 @@ using UnityEngine.UI;
 using PhpDB;
 using GoogleMaps;
 
+public class PlaceListItemData
+{
+	public Place place = null;
+	public PlaceDetails placeDetails = null;
+	public Vector3 pos = Vector3.zero;
+}
+
 public class PlaceListItem : MonoBehaviour
 {
-	public Place place { get; private set; }
-	public PlaceDetails placeDetails = null;
+	public PlaceListItemData data { get; private set; } = new PlaceListItemData();
 
 	[SerializeField]
 	Text nameLabel = null;
@@ -22,9 +28,9 @@ public class PlaceListItem : MonoBehaviour
 		Destroy(gameObject);
 	}
 
-	public void Init(Place data)
+	public void Init(Place place)
 	{
-		place = data;
+		this.data.place = place;
 		StartCoroutine(GetPlaceCoroutine(place.googleid));
 		button.onClick.AddListener(() => Sidebar.Instance.OnClickPlaceItem(this));
 		isLoading = true;
@@ -33,9 +39,9 @@ public class PlaceListItem : MonoBehaviour
 	IEnumerator GetPlaceCoroutine(string place_id)
 	{
 		if (place_id == "") yield break;
-		if (placeDetails != null)
+		if (data.placeDetails == null)
 		{
-			string url = string.Format(PlaceDetails.URL, WWW.EscapeURL(place_id), "name,geometry");
+			string url = string.Format(PlaceDetails.URL, WWW.EscapeURL(place_id), "name,geometry,place_id");
 			WWW www = new WWW(PHPProxy.Escape(url));
 			yield return www;
 			if (www.error != null)
@@ -44,17 +50,18 @@ public class PlaceListItem : MonoBehaviour
 				yield break;
 			}
 
-			placeDetails = JsonUtility.FromJson<PlaceDetails>(www.text);
+			data.placeDetails = JsonUtility.FromJson<PlaceDetails>(www.text);
 		}
 
-		if (placeDetails.status != "OK")
+		if (data.placeDetails.status != "OK")
 		{
-			Debug.Log(placeDetails.error_message);
+			Debug.Log(data.placeDetails.error_message);
 			yield break;
 		}
 
-		nameLabel.text = placeDetails.result.name;
+		nameLabel.text = data.placeDetails.result.name;
 		isLoading = false;
-		MapTagManager.Instance.ShowPlaceOnMap(placeDetails);
+		data.pos = MapCamera.LatLongToUnity(data.placeDetails.result.geometry.location);
+		MapTagManager.Instance.ShowPlaceOnMap(data.placeDetails);
 	}
 }

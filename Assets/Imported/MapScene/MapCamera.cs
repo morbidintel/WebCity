@@ -117,14 +117,14 @@ public class MapCamera : MonoBehaviour
 		anchorPosition = targetPosition;
 	}
 
-	public void Reset(Transform trans, Vector3 tPos)
+	public void Reset(Vector3 tPos, Quaternion quat, float height)
 	{
 		targetPosition = tPos;
-		elevation = Mathf.Repeat(trans.eulerAngles.x, 360.0f);
-		azimuth = Mathf.Repeat(trans.eulerAngles.y, 360.0f);
+		elevation = Mathf.Repeat(quat.eulerAngles.x, 360.0f);
+		azimuth = Mathf.Repeat(quat.eulerAngles.y, 360.0f);
 		if (realAzimuth - azimuth > 180.0f) azimuth += 360.0f;
 		else if (azimuth - realAzimuth > 180.0f) azimuth -= 360.0f;
-		distance = (trans.transform.position - targetPosition).magnitude;
+		this.distance = height;
 		HasRotated = false;
 	}
 
@@ -527,6 +527,7 @@ public class MapCamera : MonoBehaviour
 		float diag = (LatLongToUnity(viewport.northeast) - LatLongToUnity(viewport.southwest)).magnitude;
 		distance = diag;
 		SetFocusTarget(LatLongToUnity(location.lat, location.lng));
+		azimuth = 0;
 	}
 
 	public float GetRadius()

@@ -1,8 +1,10 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using PhpDB;
+using GoogleMaps;
 
 public class ItineraryListItem : MonoBehaviour
 {
@@ -15,7 +17,7 @@ public class ItineraryListItem : MonoBehaviour
 	[SerializeField]
 	Image loading = null;
 
-	public List<PlaceListItem> places = new List<PlaceListItem>();
+	public List<PlaceListItemData> placesData = new List<PlaceListItemData>();
 
 	public void Init(Itinerary data)
 	{

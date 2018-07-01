@@ -58,51 +58,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af5e26cef2b5c08488b1719df1c1ae6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  placeDetails:
-    result:
-      address_components: []
-      geometry:
-        location:
-          lat: 0
-          lng: 0
-        viewport:
-          northeast:
-            lat: 0
-            lng: 0
-          southwest:
-            lat: 0
-            lng: 0
-      opening_hours:
-        open_now: 0
-        periods:
-          close:
-            day: 0
-            time: 
-          open:
-            day: 0
-            time: 
-        weekday_text: []
-      photos: []
-      permanently_closed: 0
-      rating: 0
-      reviews: []
-      types: []
-      utc_offset: 0
-      adr_address: 
-      formatted_address: 
-      formatted_phone_number: 
-      icon: 
-      id: 
-      international_phone_number: 
-      name: 
-      place_id: 
-      reference: 
-      scope: 
-      url: 
-      vicinity: 
-      website: 
-    status: 
-    error_message: 
   nameLabel: {fileID: 114964581802757644}
   button: {fileID: 114877707893769768}
 --- !u!114 &114615564957840686
@@ -194,12 +149,12 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 12800000, guid: 017c9d7c1bba2e3418c415f523f4ab75, type: 3}
-    m_FontSize: 35
+    m_FontSize: 25
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 10
+    m_MinSize: 2
     m_MaxSize: 45
-    m_Alignment: 0
+    m_Alignment: 3
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0

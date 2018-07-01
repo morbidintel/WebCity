@@ -37,6 +37,7 @@ public class MapSearch : MonoBehaviour
 	QueryAutocomplete result = null;
 	Coroutine coroutine;
 	GameObject blocker = null;
+	MapTag currentTag = null;
 
 	bool isSearchSelected
 	{
@@ -108,79 +109,11 @@ public class MapSearch : MonoBehaviour
 		items.Clear();
 	}
 
-	IEnumerator AutocompleteCoroutine(string value)
-	{
-		yield return new WaitForSecondsRealtime(.5f);
-		if (value != "")
-		{
-			string url = string.Format(QueryAutocomplete.URL + "&location={1}&radius={2}",
-				WWW.EscapeURL(value),
-				MapCamera.Instance.GetCameraCoords().ToString(),
-				MapCamera.Instance.GetRadius());
-			WWW www = new WWW(PHPProxy.Escape(url));
-			yield return www;
-			if (www.error != null)
-			{
-				Debug.Log(www.error);
-				yield break;
-			}
-
-			result = JsonUtility.FromJson<QueryAutocomplete>(www.text);
-
-			if (result.status != "OK")
-			{
-				Debug.Log(result.error_message);
-				yield break;
-			}
-		}
-		else
-		{
-			result = null;
-		}
-
-		ClearDropdown();
-		if (result != null) AddItems(result.predictions?.Select(p => p.description));
-		if (isSearchSelected) ShowDropdown();
-
-		input.MoveTextEnd(false);
-
-		coroutine = null;
-	}
-
 	// called by the InputField.OnValueChanged(string)
 	public void Autocomplete(string value)
 	{
 		if (coroutine != null) StopCoroutine(coroutine);
 		coroutine = StartCoroutine(AutocompleteCoroutine(value));
-	}
-
-	IEnumerator GoToPlaceCoroutine(int index)
-	{
-		input.text = result.predictions[index].description;
-		string place_id = result != null ? result.predictions[index].place_id : "";
-		if (place_id == "") yield break;
-		string url = string.Format(PlaceDetails.URL, WWW.EscapeURL(place_id), "geometry");
-		WWW www = new WWW(PHPProxy.Escape(url));
-		yield return www;
-		if (www.error != null)
-		{
-			Debug.Log(www.error);
-			yield break;
-		}
-
-		PlaceDetails place = JsonUtility.FromJson<PlaceDetails>(www.text);
-
-		if (place.status != "OK")
-		{
-			Debug.Log(place.error_message);
-			yield break;
-		}
-
-		if (place?.result?.geometry != null)
-			MapCamera.Instance.SetCameraViewport(place.result.geometry);
-		EventSystem.current.SetSelectedGameObject(null);
-
-		coroutine = null;
 	}
 
 	// called by the Button.OnClick()
@@ -222,5 +155,76 @@ public class MapSearch : MonoBehaviour
 		blockerButton.onClick.AddListener(HideDropdown);
 
 		return blocker;
+	}
+
+	IEnumerator AutocompleteCoroutine(string value)
+	{
+		yield return new WaitForSecondsRealtime(.5f);
+		if (value != "")
+		{
+			string url = string.Format(QueryAutocomplete.URL + "&location={1}&radius={2}",
+				WWW.EscapeURL(value),
+				MapCamera.Instance.GetCameraCoords().ToString(),
+				MapCamera.Instance.GetRadius());
+			WWW www = new WWW(PHPProxy.Escape(url));
+			yield return www;
+			if (www.error != null)
+			{
+				Debug.Log(www.error);
+				yield break;
+			}
+
+			result = JsonUtility.FromJson<QueryAutocomplete>(www.text);
+
+			if (result.status != "OK")
+			{
+				Debug.Log(result.error_message);
+				yield break;
+			}
+		}
+		else
+		{
+			result = null;
+		}
+
+		ClearDropdown();
+		if (result != null) AddItems(result.predictions?.Select(p => p.description));
+		if (isSearchSelected) ShowDropdown();
+
+		input.MoveTextEnd(false);
+
+		coroutine = null;
+	}
+
+	IEnumerator GoToPlaceCoroutine(int index)
+	{
+		input.text = result.predictions[index].description;
+		string place_id = result != null ? result.predictions[index].place_id : "";
+		if (place_id == "") yield break;
+		string url = string.Format(PlaceDetails.URL, WWW.EscapeURL(place_id), "name,geometry,place_id");
+		WWW www = new WWW(PHPProxy.Escape(url));
+		yield return www;
+		if (www.error != null)
+		{
+			Debug.Log(www.error);
+			yield break;
+		}
+
+		PlaceDetails place = JsonUtility.FromJson<PlaceDetails>(www.text);
+
+		if (place.status != "OK")
+		{
+			Debug.Log(place.error_message);
+			yield break;
+		}
+
+		if (place?.result?.geometry != null)
+			MapCamera.Instance.SetCameraViewport(place.result.geometry);
+		EventSystem.current.SetSelectedGameObject(null);
+		if (currentTag) MapTagManager.Instance.ClearMapTag(currentTag);
+		currentTag = MapTagManager.Instance.ShowPlaceOnMap(place);
+		currentTag.place = place;
+
+		coroutine = null;
 	}
 }

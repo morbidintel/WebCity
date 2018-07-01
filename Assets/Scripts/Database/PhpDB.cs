@@ -64,4 +64,19 @@ namespace PhpDB
 		public Itinerary[] itineraries;
 		public string error;
 	}
+
+	[Serializable]
+	public class AddItineraryResult : GetItinerariesResult
+	{
+		public new static string URL =
+			"http://webcity.online/live/db/additinerary.php?userid={0}&name={1}&colors={2}";
+		public static string DefaultColors = "61BD4F%2CF2D600%2CFF9F1A%2CEB5A46%2CC377E0%2C0079BF%2C00C2E0%2C51E898%2CFF78CB%2C4D4D4D";
+	}
+
+	[Serializable]
+	public class AddPlaceResult : GetPlacesResult
+	{
+		public new static string URL =
+			"http://webcity.online/live/db/addplace.php?itineraryid={0}&googleid={1}";
+	}
 }

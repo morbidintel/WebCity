@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using DG.Tweening;
 using PhpDB;
 using GoogleMaps;
+using System;
 
 public class Sidebar : Gamelogic.Extensions.Singleton<Sidebar>
 {
@@ -22,6 +23,8 @@ public class Sidebar : Gamelogic.Extensions.Singleton<Sidebar>
 
 	List<ItineraryListItem> itineraries = new List<ItineraryListItem>();
 	List<PlaceListItem> placesShown = new List<PlaceListItem>();
+
+	ItineraryListItem currentItinerary = null;
 
 	public bool IsHidden { get; private set; } = false;
 	public bool ShowItineraries { get; private set; } = true;
@@ -59,6 +62,21 @@ public class Sidebar : Gamelogic.Extensions.Singleton<Sidebar>
 		IsHidden = !IsHidden;
 	}
 
+	public void ToggleLists()
+	{
+		if (ShowItineraries)
+		{
+			itinerariesTween.DOPlayForward();
+			placesTween.DOPlayForward();
+		}
+		else
+		{
+			itinerariesTween.DOPlayBackwards();
+			placesTween.DOPlayBackwards();
+		}
+		ShowItineraries = !ShowItineraries;
+	}
+
 	ItineraryListItem AddItineraryListItem(Itinerary itinerary)
 	{
 		ItineraryListItem item = Instantiate(itineraryItemPrefab, itinerariesHolder)
@@ -91,17 +109,26 @@ public class Sidebar : Gamelogic.Extensions.Singleton<Sidebar>
 
 	public void OnClickPlaceItem(PlaceListItem item)
 	{
-		if (item.placeDetails != null)
-			MapCamera.Instance.SetCameraViewport(item.placeDetails.result.geometry);
+		if (item.data.placeDetails != null)
+			MapCamera.Instance.SetCameraViewport(item.data.placeDetails.result.geometry);
 	}
 
 	public void OnClickReturnToItineraries()
 	{
-		itinerariesTween.DOPlayBackwards();
-		placesTween.DOPlayBackwards();
-		ShowItineraries = true;
+		currentItinerary = null;
+		ToggleLists();
 		ClearPlaceItems();
 		MapTagManager.Instance.ClearMapTags();
+	}
+
+	public void OnSubmitNewItinerary(string itineraryName)
+	{
+		StartCoroutine(AddItineraryCoroutine(itineraryName));
+	}
+
+	public void OnClickAddPlaceTooltip(PlaceDetails place)
+	{
+		StartCoroutine(AddPlaceCoroutine(currentItinerary, place));
 	}
 
 	IEnumerator GetItinerariesCoroutine()
@@ -128,11 +155,13 @@ public class Sidebar : Gamelogic.Extensions.Singleton<Sidebar>
 		{
 			AddItineraryListItem(itinerary);
 		}
+
+		currentItinerary = null;
 	}
 
 	IEnumerator GetPlacesInItineraryCoroutine(ItineraryListItem item)
 	{
-		if (item.places.Count == 0)
+		if (item.placesData.Count == 0)
 		{
 			string url = string.Format(GetPlacesResult.URL, WWW.EscapeURL(item.itinerary.itineraryid));
 			WWW www = new WWW(url);
@@ -148,32 +177,50 @@ public class Sidebar : Gamelogic.Extensions.Singleton<Sidebar>
 			if (json.error != null)
 			{
 				Debug.Log(json.error);
-				yield break;
 			}
-
-			foreach (var place in json.places)
+			else
 			{
-				item.places.Add(AddPlaceListItem(place));
-			}
+				foreach (var place in json.places)
+				{
+					var newItem = AddPlaceListItem(place);
+					var data = new PlaceListItemData();
+					data = newItem.data;
+					item.placesData.Add(data);
+				}
 
-			yield return new WaitUntil(() => placesShown.All(p => !p.isLoading));
+				yield return new WaitUntil(() => placesShown.All(p => !p.isLoading));
+			}
 		}
 		else
 		{
-			foreach (var place in item.places)
+			foreach (var place in item.placesData)
 			{
 				AddPlaceListItem(place.place);
 			}
 		}
 
-		itinerariesTween.DOPlayForward();
-		placesTween.DOPlayForward();
-		ShowItineraries = false;
+		currentItinerary = item;
+		ToggleLists();
+		if (placesShown.Count > 0)
+		{
+			// move camera to see all places
+			var positions = item.placesData.Select(p => p.pos);
+			Vector3 center = positions
+			.Aggregate(Vector3.zero, (total, next) => total + next)
+			/ item.placesData.Count;
+			float maxDist = positions
+			.Aggregate(0f, (total, next) =>
+			{
+				float dist = (next - center).magnitude;
+				return dist > total ? dist : total;
+			});
+			MapCamera.Instance.Reset(center, Quaternion.Euler(90, 0, 0), maxDist * 2f);
+		}
 	}
 
 	IEnumerator GetPlaceCoroutine(string place_id)
 	{
-		string url = string.Format(PlaceDetails.URL, WWW.EscapeURL(place_id), "name,geometry");
+		string url = string.Format(PlaceDetails.URL, WWW.EscapeURL(place_id), "name,geometry,place_id");
 		WWW www = new WWW(PHPProxy.Escape(url));
 		yield return www;
 		if (www.error != null)
@@ -191,5 +238,61 @@ public class Sidebar : Gamelogic.Extensions.Singleton<Sidebar>
 		}
 
 		MapTagManager.Instance.ShowPlaceOnMap(place);
+	}
+
+	IEnumerator AddItineraryCoroutine(string itineraryName)
+	{
+		LoginResult user = PersistentUser.User;
+		string url = string.Format(AddItineraryResult.URL, WWW.EscapeURL(user.userid), WWW.EscapeURL(itineraryName), AddItineraryResult.DefaultColors);
+		WWW www = new WWW(url);
+		yield return www;
+
+		if (www.error != null)
+		{
+			Debug.Log(www.error);
+			yield break;
+		}
+
+		AddItineraryResult json = JsonUtility.FromJson<AddItineraryResult>(www.text);
+		if (json.error != null)
+		{
+			Debug.Log(json.error);
+			yield break;
+		}
+
+		AddItineraryListItem(json.itineraries[0]);
+	}
+
+	IEnumerator AddPlaceCoroutine(ItineraryListItem itinerary, PlaceDetails place)
+	{
+		LoginResult user = PersistentUser.User;
+		string url = string.Format(AddPlaceResult.URL, WWW.EscapeURL(itinerary.itinerary.itineraryid), WWW.EscapeURL(place.result.place_id));
+		WWW www = new WWW(url);
+		yield return www;
+
+		if (www.error != null)
+		{
+			Debug.Log(www.error);
+			yield break;
+		}
+
+		AddPlaceResult json = JsonUtility.FromJson<AddPlaceResult>(www.text);
+		if (json.error != null)
+		{
+			Debug.Log(json.error);
+			yield break;
+		}
+		else if (json.places.Length > 0)
+		{
+			var newItem = AddPlaceListItem(json.places[0]);
+			var data = new PlaceListItemData();
+			data = newItem.data;
+			itinerary.placesData.Add(data);
+		}
+	}
+
+	IEnumerator EditItineraryCoroutine()
+	{
+		yield break;
 	}
 }

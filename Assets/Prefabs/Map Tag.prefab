@@ -73,7 +73,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1824099730267992}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 1301386320, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
@@ -129,8 +129,8 @@ MonoBehaviour:
   m_Script: {fileID: -900027084, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_EffectColor: {r: 1, g: 1, b: 1, a: 0.5}
-  m_EffectDistance: {x: 1, y: -1}
+  m_EffectColor: {r: 1, g: 1, b: 1, a: 1}
+  m_EffectDistance: {x: 2, y: -2}
   m_UseGraphicAlpha: 1
 --- !u!114 &114678787103485408
 MonoBehaviour:
@@ -144,6 +144,51 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   placeName: {fileID: 114927447706639426}
+  place:
+    result:
+      address_components: []
+      geometry:
+        location:
+          lat: 0
+          lng: 0
+        viewport:
+          northeast:
+            lat: 0
+            lng: 0
+          southwest:
+            lat: 0
+            lng: 0
+      opening_hours:
+        open_now: 0
+        periods:
+          close:
+            day: 0
+            time: 
+          open:
+            day: 0
+            time: 
+        weekday_text: []
+      photos: []
+      permanently_closed: 0
+      rating: 0
+      reviews: []
+      types: []
+      utc_offset: 0
+      adr_address: 
+      formatted_address: 
+      formatted_phone_number: 
+      icon: 
+      id: 
+      international_phone_number: 
+      name: 
+      place_id: 
+      reference: 
+      scope: 
+      url: 
+      vicinity: 
+      website: 
+    status: 
+    error_message: 
   ignoreCameraZoom: 1
 --- !u!114 &114896403273071466
 MonoBehaviour:
@@ -353,11 +398,11 @@ RectTransform:
   m_Father: {fileID: 224634730468454640}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 37.5, y: 59.25}
-  m_Pivot: {x: 0.5, y: 0}
+  m_SizeDelta: {x: 38, y: 60}
+  m_Pivot: {x: 0, y: 0}
 --- !u!224 &224565599096004590
 RectTransform:
   m_ObjectHideFlags: 1
@@ -371,9 +416,9 @@ RectTransform:
   m_Father: {fileID: 224634730468454640}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 25, y: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 45, y: 0}
   m_SizeDelta: {x: 200, y: 75}
   m_Pivot: {x: 0, y: 0}
 --- !u!224 &224634730468454640
@@ -383,8 +428,8 @@ RectTransform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1824099730267992}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalPosition: {x: 0, y: 0, z: -0}
+  m_LocalScale: {x: 0.9, y: 0.9, z: 0.9}
   m_Children:
   - {fileID: 224021105461380090}
   - {fileID: 224565599096004590}
@@ -393,6 +438,6 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: -0}
+  m_SizeDelta: {x: 245, y: 75}
+  m_Pivot: {x: 0, y: 0}

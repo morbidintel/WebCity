@@ -38,7 +38,7 @@ public class MapRaycaster : Gamelogic.Extensions.Singleton<MapRaycaster>
 
 	public static bool IsPointerOverUIObject()
 	{
-		if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
+		if (EventSystem.current.IsPointerOverGameObject())
 		{
 			return true;
 		}

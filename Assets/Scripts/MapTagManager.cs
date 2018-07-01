@@ -24,9 +24,9 @@ public class MapTagManager : Gamelogic.Extensions.Singleton<MapTagManager>
 
 	}
 
-	public void ShowPlaceOnMap(PlaceDetails place, Color? color = null)
+	public MapTag ShowPlaceOnMap(PlaceDetails place, Color? color = null)
 	{
-		if (place?.result?.geometry == null || place?.result?.name == null) return;
+		if (place?.result?.geometry == null || place?.result?.name == null) return null;
 
 		Vector3 pos = MapCamera.LatLongToUnity(place.result.geometry.location);
 		MapTag tag = Instantiate(tagPrefab, tagsHolder).GetComponent<MapTag>();
@@ -35,6 +35,12 @@ public class MapTagManager : Gamelogic.Extensions.Singleton<MapTagManager>
 		tag.placeName.color = color.HasValue ? color.Value : tag.placeName.color;
 
 		tags.Add(tag);
+		return tag;
+	}
+
+	public void ClearMapTag(MapTag tag)
+	{
+		if (tags.Remove(tag)) Destroy(tag);
 	}
 
 	public void ClearMapTags()
