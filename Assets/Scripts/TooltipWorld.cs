@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using GoogleMaps;
 
 public class TooltipWorld : TooltipMenu, IPointerClickHandler, IDragHandler, IPointerUpHandler, IScrollHandler
 {
 	GraphicRaycaster gRayCaster = null;
 
-	MapTag tag = null;
+	PlaceDetails place = null;
 
 	// Use this for initialization
 	protected override void Start()
@@ -40,15 +41,14 @@ public class TooltipWorld : TooltipMenu, IPointerClickHandler, IDragHandler, IPo
 
 	public void OpenTooltip(MapTag tag)
 	{
-		this.tag = tag;
+		place = tag.place;
 		OpenTooltip();
 		tooltipRoot.transform.position = tag.transform.position;
 	}
 
 	public void OnClickAddToItinerary()
 	{
-		// TODO: tag.place seems empty...
-		Sidebar.Instance.OnClickAddPlaceTooltip(tag.place);
+		Sidebar.Instance.OnClickAddPlaceTooltip(place);
 		CloseTooltip();
 	}
 

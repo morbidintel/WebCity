@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Gamelogic.Extensions;
+using System;
 
 //hch: this orbital camera differs from a usual orbit camera in 2 ways
 //1. panning amount is distance dependant, the closer the zoom, the less pan is applied
@@ -484,33 +485,36 @@ public class MapCamera : MonoBehaviour
 		return LatLongToUnity(coords.lat, coords.lng);
 	}
 
-	public static Vector3 LatLongToUnity(float latitude, float longitude)
+	public static Vector3 LatLongToUnity(double latitude, double longitude)
 	{
-		float sinLatitude = Mathf.Sin(latitude * Mathf.PI / 180.0f);
+		double sinLatitude = Math.Sin(latitude * Math.PI / 180.0);
 
-		float pixelX = (longitude + 180) / 360; //from 0.0 to 1.0
-		float pixelY = 1.0f - ((0.5f - Mathf.Log((1 + sinLatitude) / (1 - sinLatitude)) / (4 * Mathf.PI)) ); //from 0.0 to 1.0
+		double pixelX = (longitude + 180.0) / 360.0; //from 0.0 to 1.0
+		double pixelY = 1.0 - ((0.5 - Math.Log((1.0 + sinLatitude) / (1.0 - sinLatitude)) / (4.0 * Math.PI)) ); //from 0.0 to 1.0
 
 		var bounds = Instance.mapAreaPlane.GetComponent<BoxCollider>().bounds;
 		Vector3 minPos = bounds.min;
 		Vector3 maxPos = bounds.max;
-		float mapX = Mathf.Lerp(minPos.x, maxPos.x, pixelX);
-		float mapZ = Mathf.Lerp(minPos.z, maxPos.z, pixelY);
+		float mapX = Mathf.Lerp(minPos.x, maxPos.x, (float)pixelX);
+		float mapZ = Mathf.Lerp(minPos.z, maxPos.z, (float)pixelY);
 
 		return new Vector3(mapX, 0, mapZ);
 	}
+
+	static double Clamp01(double value) { if (value < 0.0) return 0.0; else if (value > 1.0) return 1.0; else return value; }
 
 	public static GoogleMaps.Coords UnityToLatLong(Vector3 pos)
 	{
 		var bounds = Instance.mapAreaPlane.GetComponent<BoxCollider>().bounds;
 		Vector3 minPos = bounds.min;
 		Vector3 maxPos = bounds.max;
-		float pixelX = Mathf.InverseLerp(minPos.x, maxPos.x, pos.x);
-		float pixelY = Mathf.InverseLerp(minPos.x, maxPos.x, pos.z);
 
-		float lng = (pixelX * 360f) - 180f;
-		float lat = Mathf.Exp((0.5f - (1 - pixelY)) * (4f * Mathf.PI));
-		lat = Mathf.Asin((lat - 1f) / (lat + 1f)) / (Mathf.PI / 180.0f);
+		double pixelX = Clamp01((pos.x - minPos.x) / (maxPos.x - minPos.x));
+		double pixelY = Clamp01((pos.z - minPos.x) / (maxPos.x - minPos.x));
+
+		double lng = (pixelX * 360.0) - 180.0;
+		double lat = Math.Exp((0.5 - (1.0 - pixelY)) * (4.0 * Math.PI));
+		lat = Math.Asin((lat - 1.0) / (lat + 1.0)) / (Math.PI / 180.0);
 
 		return new GoogleMaps.Coords(lat, lng);
 	}

@@ -5,9 +5,9 @@ namespace GoogleMaps
 	[Serializable]
 	public class Coords
 	{
-		public float lat, lng;
+		public double lat, lng;
 		public Coords() { }
-		public Coords(float lat, float lng)
+		public Coords(double lat, double lng)
 		{
 			this.lat = lat;
 			this.lng = lng;
