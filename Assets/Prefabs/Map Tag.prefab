@@ -220,7 +220,7 @@ MonoBehaviour:
     status: 
     error_message: 
   ignoreCameraZoom: 1
-  tagHeight: 0.35
+  tagHeight: 0.2
 --- !u!114 &114896403273071466
 MonoBehaviour:
   m_ObjectHideFlags: 1

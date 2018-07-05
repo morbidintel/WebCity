@@ -64,12 +64,13 @@ namespace Wrld
 
         private static string GetStreamingAssetsDir()
         {
+			var path = "";
 #if UNITY_EDITOR_OSX || UNITY_EDITOR_WIN || UNITY_STANDALONE
-            var path = Application.streamingAssetsPath + "/WrldResources";
+            path = Application.streamingAssetsPath + "/WrldResources";
 #elif UNITY_IOS
-            var path = "Data/Raw/WrldResources/";
+            path = "Data/Raw/WrldResources/";
 #elif UNITY_ANDROID
-            var path = "jar:file://" + Application.dataPath + "!/assets/";
+            path = "jar:file://" + Application.dataPath + "!/assets/";
 #endif
             return path;
         }

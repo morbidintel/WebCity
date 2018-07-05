@@ -524,12 +524,19 @@ public class MapCamera : MonoBehaviour
 		return UnityToLatLong(targetPosition);
 	}
 
-	public void SetCameraViewport(GoogleMaps.PlaceDetails.Geometry geometry)
+	public void SetCameraViewport(GoogleMaps.PlaceDetails.Geometry geometry, float dist = -1)
 	{
 		var location = geometry.location;
 		var viewport = geometry.viewport;
-		float diag = (LatLongToUnity(viewport.northeast) - LatLongToUnity(viewport.southwest)).magnitude;
-		distance = diag;
+		if (dist == -1)
+		{
+			float diag = (LatLongToUnity(viewport.northeast) - LatLongToUnity(viewport.southwest)).magnitude;
+			distance = Mathf.Clamp(diag, 0.5f, maxDistance);
+		}
+		else
+		{
+			distance = dist;
+		}
 		SetFocusTarget(LatLongToUnity(location.lat, location.lng));
 		azimuth = 0;
 	}

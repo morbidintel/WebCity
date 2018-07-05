@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using GoogleMaps;
 
-public class MapTag : MonoBehaviour, IPointerClickHandler
+public class MapTag : MonoBehaviour, IPointerClickHandler, IDragHandler, IPointerUpHandler, IScrollHandler
 {
 	[SerializeField]
 	public Text placeName = null;
@@ -16,12 +16,17 @@ public class MapTag : MonoBehaviour, IPointerClickHandler
 	public bool ignoreCameraZoom = true;
 	public float tagHeight = 0.4f;
 
+	GraphicRaycaster gRayCaster = null;
+
 	// Use this for initialization
 	void Start()
 	{
 		name = placeName?.text;
 		line.useWorldSpace = true;
 		line.loop = false;
+		line.material.shader = Shader.Find("UI/Unlit/Transparent");
+
+		gRayCaster = GetComponent<GraphicRaycaster>();
 	}
 
 	// Update is called once per frame
@@ -52,5 +57,30 @@ public class MapTag : MonoBehaviour, IPointerClickHandler
 	{
 		if (place != null && !Sidebar.Instance.ShowItineraries)
 			TooltipManager.Instance.OpenAddPlaceTooltip(this);
+	}
+
+	public void OnDrag(PointerEventData eventData)
+	{
+		gRayCaster.enabled = false;
+	}
+
+	public void OnPointerUp(PointerEventData eventData)
+	{
+		gRayCaster.enabled = true;
+	}
+
+	Coroutine coroutine = null;
+	public void OnScroll(PointerEventData eventData)
+	{
+		gRayCaster.enabled = !eventData.IsScrolling();
+		if (coroutine != null) StopCoroutine(coroutine);
+		coroutine = StartCoroutine(EnableRaycasterCoroutine(0.2f));
+	}
+
+	IEnumerator EnableRaycasterCoroutine(float delay)
+	{
+		yield return new WaitForSecondsRealtime(delay);
+		gRayCaster.enabled = true;
+		coroutine = null;
 	}
 }
