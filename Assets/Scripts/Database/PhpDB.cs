@@ -79,4 +79,11 @@ namespace PhpDB
 		public new static string URL =
 			"http://webcity.online/live/db/addplace.php?itineraryid={0}&googleid={1}";
 	}
+	
+	[Serializable]
+	public class RemovePlaceResult : GetPlacesResult
+	{
+		public new static string URL =
+			"http://webcity.online/live/db/removeplace.php?itineraryid={0}&googleid={1}";
+	}
 }

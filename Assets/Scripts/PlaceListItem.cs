@@ -10,6 +10,19 @@ public class PlaceListItemData
 	public Place place = null;
 	public PlaceDetails placeDetails = null;
 	public Vector3 pos = Vector3.zero;
+	public PlaceListItemData() { }
+	public PlaceListItemData(Place place, PlaceDetails placeDetails, Vector3 pos)
+	{
+		this.place = place;
+		this.placeDetails = placeDetails;
+		this.pos = pos;
+	}
+	public PlaceListItemData(PlaceListItemData data)
+	{
+		place = data.place;
+		placeDetails = data.placeDetails;
+		pos = data.pos;
+	}
 }
 
 public class PlaceListItem : MonoBehaviour

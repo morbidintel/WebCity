@@ -11,6 +11,8 @@ public class TooltipWorld : TooltipMenu, IPointerClickHandler, IDragHandler, IPo
 
 	PlaceDetails place = null;
 
+	public System.Action<PlaceDetails> action = null;
+
 	// Use this for initialization
 	protected override void Start()
 	{
@@ -44,6 +46,12 @@ public class TooltipWorld : TooltipMenu, IPointerClickHandler, IDragHandler, IPo
 		place = tag.place;
 		OpenTooltip();
 		tooltipRoot.transform.position = tag.transform.position;
+	}
+
+	public void OnClick()
+	{
+		action.Invoke(place);
+		CloseTooltip();
 	}
 
 	public void OnClickAddToItinerary()

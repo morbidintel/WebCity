@@ -131,10 +131,17 @@ public class Sidebar : Gamelogic.Extensions.Singleton<Sidebar>
 		StartCoroutine(AddPlaceCoroutine(currentItinerary, place));
 	}
 
+	public void OnClickRemovePlaceTooltip(PlaceDetails place)
+	{
+		StartCoroutine(RemovePlaceCoroutine(currentItinerary, place));
+	}
+
 	IEnumerator GetItinerariesCoroutine()
 	{
 		LoginResult user = PersistentUser.User;
-		string url = string.Format(GetItinerariesResult.URL, WWW.EscapeURL(user.userid));
+		string url = string.Format(
+			GetItinerariesResult.URL,
+			WWW.EscapeURL(user.userid));
 		WWW www = new WWW(url);
 		yield return www;
 
@@ -159,11 +166,13 @@ public class Sidebar : Gamelogic.Extensions.Singleton<Sidebar>
 		currentItinerary = null;
 	}
 
-	IEnumerator GetPlacesInItineraryCoroutine(ItineraryListItem item)
+	IEnumerator GetPlacesInItineraryCoroutine(ItineraryListItem itinerary)
 	{
-		if (item.placesData.Count == 0)
+		if (itinerary.placesData.Count == 0)
 		{
-			string url = string.Format(GetPlacesResult.URL, WWW.EscapeURL(item.itinerary.itineraryid));
+			string url = string.Format(
+				GetPlacesResult.URL,
+				WWW.EscapeURL(itinerary.itinerary.itineraryid));
 			WWW www = new WWW(url);
 			yield return www;
 
@@ -183,9 +192,7 @@ public class Sidebar : Gamelogic.Extensions.Singleton<Sidebar>
 				foreach (var place in json.places)
 				{
 					var newItem = AddPlaceListItem(place);
-					var data = new PlaceListItemData();
-					data = newItem.data;
-					item.placesData.Add(data);
+					itinerary.placesData.Add(newItem.data);
 				}
 
 				yield return new WaitUntil(() => placesShown.All(p => !p.isLoading));
@@ -193,21 +200,21 @@ public class Sidebar : Gamelogic.Extensions.Singleton<Sidebar>
 		}
 		else
 		{
-			foreach (var place in item.placesData)
+			foreach (var place in itinerary.placesData)
 			{
 				AddPlaceListItem(place.place);
 			}
 		}
 
-		currentItinerary = item;
+		currentItinerary = itinerary;
 		ToggleLists();
 		if (placesShown.Count > 0)
 		{
 			// move camera to see all places
-			var positions = item.placesData.Select(p => p.pos);
+			var positions = itinerary.placesData.Select(p => p.pos);
 			Vector3 center = positions
 			.Aggregate(Vector3.zero, (total, next) => total + next)
-			/ item.placesData.Count;
+			/ itinerary.placesData.Count;
 			float maxDist = positions
 			.Aggregate(0f, (total, next) =>
 			{
@@ -220,7 +227,10 @@ public class Sidebar : Gamelogic.Extensions.Singleton<Sidebar>
 
 	IEnumerator GetPlaceCoroutine(string place_id)
 	{
-		string url = string.Format(PlaceDetails.URL, WWW.EscapeURL(place_id), "name,geometry,place_id");
+		string url = string.Format(
+			PlaceDetails.URL,
+			WWW.EscapeURL(place_id),
+			"name,geometry,place_id");
 		WWW www = new WWW(PHPProxy.Escape(url));
 		yield return www;
 		if (www.error != null)
@@ -243,7 +253,11 @@ public class Sidebar : Gamelogic.Extensions.Singleton<Sidebar>
 	IEnumerator AddItineraryCoroutine(string itineraryName)
 	{
 		LoginResult user = PersistentUser.User;
-		string url = string.Format(AddItineraryResult.URL, WWW.EscapeURL(user.userid), WWW.EscapeURL(itineraryName), AddItineraryResult.DefaultColors);
+		string url = string.Format(
+			AddItineraryResult.URL,
+			WWW.EscapeURL(user.userid),
+			WWW.EscapeURL(itineraryName),
+			AddItineraryResult.DefaultColors);
 		WWW www = new WWW(url);
 		yield return www;
 
@@ -266,7 +280,10 @@ public class Sidebar : Gamelogic.Extensions.Singleton<Sidebar>
 	IEnumerator AddPlaceCoroutine(ItineraryListItem itinerary, PlaceDetails place)
 	{
 		LoginResult user = PersistentUser.User;
-		string url = string.Format(AddPlaceResult.URL, WWW.EscapeURL(itinerary.itinerary.itineraryid), WWW.EscapeURL(place.result.place_id));
+		string url = string.Format(
+			AddPlaceResult.URL,
+			WWW.EscapeURL(itinerary.itinerary.itineraryid),
+			WWW.EscapeURL(place.result.place_id));
 		WWW www = new WWW(url);
 		yield return www;
 
@@ -285,9 +302,38 @@ public class Sidebar : Gamelogic.Extensions.Singleton<Sidebar>
 		else if (json.places.Length > 0)
 		{
 			var newItem = AddPlaceListItem(json.places[0]);
-			var data = new PlaceListItemData();
-			data = newItem.data;
-			itinerary.placesData.Add(data);
+			itinerary.placesData.Add(newItem.data);
+		}
+	}
+
+	IEnumerator RemovePlaceCoroutine(ItineraryListItem itinerary, PlaceDetails placeDetails)
+	{
+		LoginResult user = PersistentUser.User;
+		string url = string.Format(RemovePlaceResult.URL,
+			WWW.EscapeURL(itinerary.itinerary.itineraryid),
+			WWW.EscapeURL(placeDetails.result.place_id));
+		WWW www = new WWW(url);
+		yield return www;
+
+		if (www.error != null)
+		{
+			Debug.Log(www.error);
+			yield break;
+		}
+
+		RemovePlaceResult json = JsonUtility.FromJson<RemovePlaceResult>(www.text);
+		if (json.error != null)
+		{
+			Debug.Log(json.error);
+			yield break;
+		}
+		else if (www.text == "OK")
+		{
+			foreach (var place in json.places)
+			{
+				var newItem = AddPlaceListItem(place);
+				itinerary.placesData.Add(new PlaceListItemData(newItem.data));
+			}
 		}
 	}
 

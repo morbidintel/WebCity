@@ -1,17 +1,20 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using GoogleMaps;
+﻿using System;
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.UI;
 
 public class TooltipManager : Gamelogic.Extensions.Singleton<TooltipManager>
 {
 	[SerializeField]
-	TooltipWorld AddPlaceTooltip;
+	TooltipWorld AddPlaceTooltip = null, RemovePlaceTooltip = null;
 
 	public void OpenAddPlaceTooltip(MapTag tag)
 	{
+		AddPlaceTooltip.action = place => Sidebar.Instance.OnClickAddPlaceTooltip(place);
 		AddPlaceTooltip.OpenTooltip(tag);
+	}
+
+	public void OpenRemovePlaceTooltip(MapTag tag)
+	{
+		//RemovePlaceTooltip.action = place => 
+		RemovePlaceTooltip.OpenTooltip(tag);
 	}
 }

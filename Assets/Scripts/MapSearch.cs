@@ -10,7 +10,7 @@ public class MapSearch : MonoBehaviour
 {
 	protected internal class DropdownItem : MonoBehaviour, IPointerEnterHandler, ICancelHandler
 	{
-		public Text text;
+		public Text main_text, secondary_text;
 		public Button button;
 		public int index;
 
@@ -37,15 +37,10 @@ public class MapSearch : MonoBehaviour
 	QueryAutocomplete result = null;
 	Coroutine coroutine;
 	GameObject blocker = null;
-	MapTag currentTag = null;
+	List<MapTag> currentTags = new List<MapTag>();
 
 	bool isSearchSelected
-	{
-		get
-		{
-			return EventSystem.current.currentSelectedGameObject == input.gameObject;
-		}
-	}
+	{ get { return EventSystem.current.currentSelectedGameObject == input.gameObject; } }
 
 	// Use this for initialization
 	void Start()
@@ -68,15 +63,17 @@ public class MapSearch : MonoBehaviour
 		}
 	}
 
-	void AddItems(IEnumerable<string> texts)
+	void AddItems(QueryAutocomplete autocomplete)
 	{
-		foreach (string t in texts)
+		foreach (var p in autocomplete.predictions)
 		{
 			DropdownItem item = Instantiate(itemTemplate, dropdownHolder).AddComponent<DropdownItem>();
 			item.button = item.GetComponentInChildren<Button>();
 			item.button.onClick.AddListener(() => SelectAutocomplete(item.index));
-			item.text = item.GetComponentInChildren<Text>();
-			item.text.text = t;
+			item.main_text = item.transform.Find("Main").GetComponent<Text>();
+			item.secondary_text = item.transform.Find("Secondary").GetComponent<Text>();
+			item.main_text.text = p.structured_formatting.main_text;
+			item.secondary_text.text = p.structured_formatting.secondary_text;
 			item.index = items.Count;
 			item.gameObject.SetActive(true);
 			item.name = "Item " + items.Count;
@@ -112,6 +109,12 @@ public class MapSearch : MonoBehaviour
 	// called by the InputField.OnValueChanged(string)
 	public void Autocomplete(string value)
 	{
+		if (value == "")
+		{
+			currentTags.ForEach(t => MapTagManager.Instance.ClearMapTag(t));
+			currentTags.Clear();
+		}
+
 		if (coroutine != null) StopCoroutine(coroutine);
 		coroutine = StartCoroutine(AutocompleteCoroutine(value));
 	}
@@ -120,8 +123,15 @@ public class MapSearch : MonoBehaviour
 	public void SelectAutocomplete(int index)
 	{
 		HideDropdown();
+
+		var choice = result.predictions[index];
+		input.text = choice.description;
+
 		if (coroutine != null) StopCoroutine(coroutine);
-		coroutine = StartCoroutine(GoToPlaceCoroutine(index));
+		if (choice.place_id != null)
+			coroutine = StartCoroutine(GoToPlaceCoroutine(choice.place_id));
+		else
+			coroutine = StartCoroutine(ShowPlaceSearchCoroutine(choice.description));
 	}
 
 	GameObject CreateBlocker(Canvas rootCanvas)
@@ -188,7 +198,7 @@ public class MapSearch : MonoBehaviour
 		}
 
 		ClearDropdown();
-		if (result != null) AddItems(result.predictions?.Select(p => p.description));
+		if (result != null) AddItems(result);
 		if (isSearchSelected) ShowDropdown();
 
 		input.MoveTextEnd(false);
@@ -196,11 +206,8 @@ public class MapSearch : MonoBehaviour
 		coroutine = null;
 	}
 
-	IEnumerator GoToPlaceCoroutine(int index)
+	IEnumerator GoToPlaceCoroutine(string place_id)
 	{
-		input.text = result.predictions[index].description;
-		string place_id = result != null ? result.predictions[index].place_id : "";
-		if (place_id == "") yield break;
 		string url = string.Format(PlaceDetails.URL, WWW.EscapeURL(place_id), "name,geometry,place_id");
 		WWW www = new WWW(PHPProxy.Escape(url));
 		yield return www;
@@ -221,9 +228,47 @@ public class MapSearch : MonoBehaviour
 		if (place?.result?.geometry != null)
 			MapCamera.Instance.SetCameraViewport(place.result.geometry);
 		EventSystem.current.SetSelectedGameObject(null);
-		if (currentTag) MapTagManager.Instance.ClearMapTag(currentTag);
-		currentTag = MapTagManager.Instance.ShowPlaceOnMap(place);
-		currentTag.place = place;
+
+		currentTags.ForEach(t => MapTagManager.Instance.ClearMapTag(t));
+		currentTags.Clear();
+
+		currentTags.Add(MapTagManager.Instance.ShowPlaceOnMap(place));
+		currentTags[0].place = place;
+
+		coroutine = null;
+	}
+
+	IEnumerator ShowPlaceSearchCoroutine(string keyword)
+	{
+		string url = NearbySearch.BuildURL(
+			MapCamera.UnityToLatLong(MapCamera.Instance.TargetPosition),
+			MapCamera.Instance.Distance * 1000f,
+			keyword);
+		WWW www = new WWW(PHPProxy.Escape(url));
+		yield return www;
+		if (www.error != null)
+		{
+			Debug.Log(www.error);
+			yield break;
+		}
+
+		Debug.Log(url);
+		Debug.Log(www.text);
+		NearbySearch nearby = JsonUtility.FromJson<NearbySearch>(www.text);
+
+		if (nearby.status != "OK")
+		{
+			Debug.Log(nearby.error_message);
+			yield break;
+		}
+
+		currentTags.ForEach(t => MapTagManager.Instance.ClearMapTag(t));
+		currentTags.Clear();
+
+		foreach (var result in nearby.results)
+		{
+			currentTags.Add(MapTagManager.Instance.ShowPlaceOnMap(result.geometry.location, result.name));
+		}
 
 		coroutine = null;
 	}

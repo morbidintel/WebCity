@@ -524,7 +524,7 @@ public class MapCamera : MonoBehaviour
 		return UnityToLatLong(targetPosition);
 	}
 
-	public void SetCameraViewport(GoogleMaps.PlaceDetails.Geometry geometry, float dist = -1)
+	public void SetCameraViewport(GoogleMaps.Geometry geometry, float dist = -1)
 	{
 		var location = geometry.location;
 		var viewport = geometry.viewport;

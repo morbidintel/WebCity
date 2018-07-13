@@ -38,6 +38,20 @@ public class MapTagManager : Gamelogic.Extensions.Singleton<MapTagManager>
 		return tag;
 	}
 
+	public MapTag ShowPlaceOnMap(Coords location, string name, Color? color = null)
+	{
+		if (location == null || name == null) return null;
+
+		Vector3 pos = MapCamera.LatLongToUnity(location);
+		MapTag tag = Instantiate(tagPrefab, tagsHolder).GetComponent<MapTag>();
+		tag.transform.position = pos;
+		tag.placeName.text = name;
+		tag.placeName.color = color.HasValue ? color.Value : tag.placeName.color;
+
+		tags.Add(tag);
+		return tag;
+	}
+
 	public void ClearMapTag(MapTag tag)
 	{
 		if (tags.Remove(tag)) Destroy(tag);

@@ -31,6 +31,7 @@ namespace GoogleMaps
 		public class Prediction
 		{
 			public string description, id, place_id, reference;
+			public string[] types;
 			public Substring[] matched_substrings;
 			public Formatting structured_formatting;
 			public Term[] terms;
