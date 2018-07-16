@@ -19,7 +19,9 @@ public class Sidebar : Gamelogic.Extensions.Singleton<Sidebar>
 	[SerializeField]
 	GameObject itineraryItemPrefab = null, placeItemPrefab = null;
 	[SerializeField]
-	Text itineraryTitle = null;
+	InputField itineraryInput = null;
+	[SerializeField]
+	Toggle itineraryInputToggle = null;
 
 	List<ItineraryListItem> itineraries = new List<ItineraryListItem>();
 	List<PlaceListItem> placesShown = new List<PlaceListItem>();
@@ -103,7 +105,7 @@ public class Sidebar : Gamelogic.Extensions.Singleton<Sidebar>
 
 	public void OnClickItineraryItem(ItineraryListItem item)
 	{
-		itineraryTitle.text = item.itinerary.name;
+		itineraryInput.text = item.itinerary.name;
 		StartCoroutine(GetPlacesInItineraryCoroutine(item));
 	}
 
@@ -134,6 +136,18 @@ public class Sidebar : Gamelogic.Extensions.Singleton<Sidebar>
 	public void OnClickRemovePlaceTooltip(PlaceDetails place)
 	{
 		StartCoroutine(RemovePlaceCoroutine(currentItinerary, place));
+	}
+
+	public void OnSubmitRenameItinerary()
+	{
+		itineraryInputToggle.isOn = false;
+		currentItinerary.itinerary.name = itineraryInput.text;
+		StartCoroutine(EditItineraryCoroutine(currentItinerary.itinerary));
+	}
+
+	public void OnCancelRenameItinerary()
+	{
+		itineraryInputToggle.isOn = false;
 	}
 
 	IEnumerator GetItinerariesCoroutine()
@@ -308,7 +322,6 @@ public class Sidebar : Gamelogic.Extensions.Singleton<Sidebar>
 
 	IEnumerator RemovePlaceCoroutine(ItineraryListItem itinerary, PlaceDetails placeDetails)
 	{
-		LoginResult user = PersistentUser.User;
 		string url = string.Format(RemovePlaceResult.URL,
 			WWW.EscapeURL(itinerary.itinerary.itineraryid),
 			WWW.EscapeURL(placeDetails.result.place_id));
@@ -337,8 +350,32 @@ public class Sidebar : Gamelogic.Extensions.Singleton<Sidebar>
 		}
 	}
 
-	IEnumerator EditItineraryCoroutine()
+	IEnumerator EditItineraryCoroutine(Itinerary itinerary)
 	{
-		yield break;
+		string url = string.Format(EditItineraryResult.URL,
+			WWW.EscapeURL(itinerary.itineraryid),
+			WWW.EscapeURL(itinerary.name),
+			WWW.EscapeURL(itinerary.rating.ToString()),
+			WWW.EscapeURL(itinerary.is_public.ToString()),
+			WWW.EscapeURL(itinerary.deleted.ToString()),
+			WWW.EscapeURL(itinerary.colors));
+		WWW www = new WWW(url);
+		yield return www;
+
+		if (www.error != null)
+		{
+			Debug.Log(www.error);
+			yield break;
+		}
+
+		EditItineraryResult result = JsonUtility.FromJson<EditItineraryResult>(www.text);
+		if (result.error != null)
+		{
+			Debug.Log(result.error);
+			yield break;
+		}
+		else
+		{
+		}
 	}
 }

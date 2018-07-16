@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
+using Gamelogic.Extensions;
 
 namespace PhpDB
 {
@@ -17,7 +18,22 @@ namespace PhpDB
 	{
 		public string itineraryid, userid, name, createddate;
 		public int rating, is_public, deleted;
-		string colors;
+		public string colors;
+
+		public static string StandardColorsHex = "61BD4F,F2D600,FF9F1A,EB5A46,C377E0,0079BF,00C2E0,51E898,FF78CB,4D4D4D";
+		public static Color[] StandardColors =
+		{
+			new Color(97f/255f, 189f/255f, 79f/255f),
+			new Color(242f/255f, 214f/255f, 0f),
+			new Color(1f, 159f/255f, 26f/255f),
+			new Color(235f/255f, 90f/255f, 70f/255f),
+			new Color(195f/255f, 119f/255f, 224f/255f),
+			new Color(0f, 121f/255f, 191f/255f),
+			new Color(0f, 194f/255f, 224f/255f),
+			new Color(81f/255f, 232f/255f, 152f/255f),
+			new Color(1f, 120f/255f, 203f/255f),
+			new Color(77f/255f, 77f/255f, 77f/255f)
+		};
 
 		public Color[] GetColors()
 		{
@@ -30,6 +46,22 @@ namespace PhpDB
 					converted.Add(color);
 			}
 			return converted.ToArray();
+		}
+
+		public static string FromColors(Color[] colors)
+		{
+			string s = "";
+			string[] hex = StandardColorsHex.Split(',');
+
+			for (int i = 0; i < hex.Length; ++i)
+			{
+				if (i < colors.Length)
+					s += ColorUtility.ToHtmlStringRGB(colors[i]) + ",";
+				else
+					s += hex + ",";
+			}
+
+			return s.TrimEnd(',');
 		}
 	}
 
@@ -79,11 +111,18 @@ namespace PhpDB
 		public new static string URL =
 			"http://webcity.online/live/db/addplace.php?itineraryid={0}&googleid={1}";
 	}
-	
+
 	[Serializable]
 	public class RemovePlaceResult : GetPlacesResult
 	{
 		public new static string URL =
 			"http://webcity.online/live/db/removeplace.php?itineraryid={0}&googleid={1}";
+	}
+
+	[Serializable]
+	public class EditItineraryResult : GetItinerariesResult
+	{
+		public static string URL =
+			"http://webcity.online/live/db/edititinerary.php?itineraryid={0}&name={1}&rating={2}&is_public={3}&deleted={4}&colors={5}";
 	}
 }
