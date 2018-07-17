@@ -41,7 +41,6 @@ public class MapCamera : MonoBehaviour
 		get { return realTargetPosition; }
 	}
 
-
 	[SerializeField]
 	RectTransform clickableArea;
 
@@ -70,14 +69,14 @@ public class MapCamera : MonoBehaviour
 	public bool limitDistanceForEachAxis = false;
 
 	//allow people to adjust camera properties
-	float distance, azimuth, elevation;
-	public float Distance { get { return distance; } set { distance = value; } }
-	public float Azimuth { get { return azimuth; } set { azimuth = value; } }
-	public float Elevation { get { return elevation; } set { elevation = value; } }
+	public float TargetDistance { get; set; }
+	public float TargetAzimuth { get; set; }
+	public float TargetElevation { get; set; }
 
 	[ReadOnly]
 	[SerializeField]
 	float realDistance, realAzimuth, realElevation; //used to store the current orientation and distance of the camera
+	public float RealAzimuth { get { return realAzimuth; } }
 
 	//store mouse positions for this frame and last frame
 	Vector3 lastMousePos;
@@ -100,12 +99,12 @@ public class MapCamera : MonoBehaviour
 		lastMousePos = currMousePos = Vector3.zero;
 		dx = 0; dy = 0;
 		realTargetPosition = targetPosition;
-		elevation = Mathf.Repeat(gameObject.transform.eulerAngles.x, 360.0f);
-		realElevation = elevation;
-		azimuth = Mathf.Repeat(gameObject.transform.eulerAngles.y, 360.0f);
-		realAzimuth = azimuth;
-		distance = (gameObject.transform.position - targetPosition).magnitude;
-		realDistance = distance * 1.5f;
+		TargetElevation = Mathf.Repeat(gameObject.transform.eulerAngles.x, 360.0f);
+		realElevation = TargetElevation;
+		TargetAzimuth = Mathf.Repeat(gameObject.transform.eulerAngles.y, 360.0f);
+		realAzimuth = TargetAzimuth;
+		TargetDistance = (gameObject.transform.position - targetPosition).magnitude;
+		realDistance = TargetDistance * 1.5f;
 		HasRotated = false;
 		anchorPosition = transform.position;
 	}
@@ -121,11 +120,11 @@ public class MapCamera : MonoBehaviour
 	public void Reset(Vector3 tPos, Quaternion quat, float height)
 	{
 		targetPosition = tPos;
-		elevation = Mathf.Repeat(quat.eulerAngles.x, 360.0f);
-		azimuth = Mathf.Repeat(quat.eulerAngles.y, 360.0f);
-		if (realAzimuth - azimuth > 180.0f) azimuth += 360.0f;
-		else if (azimuth - realAzimuth > 180.0f) azimuth -= 360.0f;
-		this.distance = height;
+		TargetElevation = Mathf.Repeat(quat.eulerAngles.x, 360.0f);
+		TargetAzimuth = Mathf.Repeat(quat.eulerAngles.y, 360.0f);
+		if (realAzimuth - TargetAzimuth > 180.0f) TargetAzimuth += 360.0f;
+		else if (TargetAzimuth - realAzimuth > 180.0f) TargetAzimuth -= 360.0f;
+		this.TargetDistance = height;
 		HasRotated = false;
 	}
 
@@ -184,12 +183,12 @@ public class MapCamera : MonoBehaviour
 
 	public float GetZoom()
 	{
-		return Mathf.InverseLerp(minDistance, maxDistance, distance);
+		return Mathf.InverseLerp(minDistance, maxDistance, TargetDistance);
 	}
 
 	public float GetExpoZoom()
 	{
-		float zoomF = 8.0f - Mathf.Log(distance, 2.0f);
+		float zoomF = 8.0f - Mathf.Log(TargetDistance, 2.0f);
 		float zoomFmin = 8.0f - Mathf.Log(minDistance, 2.0f);
 		float zoomFmax = 8.0f - Mathf.Log(maxDistance, 2.0f);
 
@@ -204,13 +203,13 @@ public class MapCamera : MonoBehaviour
 		float zoomFmax = 8.0f - Mathf.Log(maxDistance, 2.0f);
 
 		float desiredZoomF = Mathf.Lerp(zoomFmin, zoomFmax, percentage);
-		distance = Mathf.Pow(2.0f, 8.0f - desiredZoomF);
+		TargetDistance = Mathf.Pow(2.0f, 8.0f - desiredZoomF);
 	}
 
 	//sets distance to a percentage between min and max
 	public void SetZoom(float percentage)
 	{
-		distance = Mathf.Lerp(minDistance, maxDistance, percentage);
+		TargetDistance = Mathf.Lerp(minDistance, maxDistance, percentage);
 	}
 
 	float GetPinchZoomAmount()
@@ -316,7 +315,7 @@ public class MapCamera : MonoBehaviour
 		float distChanged = 0;
 		//zoom levels, ideally twice as slow when twice as near;
 		//we use 256 distance as a 1.0f baseline, so at 128 distance pan is 0.5f and at 512 distance pan is 2.0f
-		float zoomF = 8.0f - Mathf.Log(distance, 2.0f);
+		float zoomF = 8.0f - Mathf.Log(TargetDistance, 2.0f);
 		float scaleFactor = Mathf.Pow(0.5f, zoomF);
 		if (Input.mouseScrollDelta != Vector2.zero && PointInClickArea(Input.mousePosition))
 		{
@@ -333,9 +332,9 @@ public class MapCamera : MonoBehaviour
 		{
 			hasMoved = true;
 		}
-		if (!((distance <= minDistance && distChanged < 0) || (distance >= maxDistance && distChanged > 0)))
+		if (!((TargetDistance <= minDistance && distChanged < 0) || (TargetDistance >= maxDistance && distChanged > 0)))
 		{
-			distance += distChanged;
+			TargetDistance += distChanged;
 			realDistance += distChanged * 0.9f;
 		}
 
@@ -415,14 +414,14 @@ public class MapCamera : MonoBehaviour
 			if (!MapRaycaster.IsPointerOverUIObject())
 			{
 				float elevationChange = -dy * rotateSensitivity;
-				if (!((elevation <= minAngleAtCurrentZoom && elevationChange < 0) || (elevation >= maxAngle && elevationChange > 0)))
+				if (!((TargetElevation <= minAngleAtCurrentZoom && elevationChange < 0) || (TargetElevation >= maxAngle && elevationChange > 0)))
 				{
-					elevation += elevationChange;
+					TargetElevation += elevationChange;
 					realElevation += elevationChange * 0.7f;
 				}
 
 				float azimuthChange = dx * rotateSensitivity;
-				azimuth += azimuthChange;
+				TargetAzimuth += azimuthChange;
 				realAzimuth += azimuthChange * 0.7f;
 
 				if (dx != 0 || dy != 0)
@@ -434,27 +433,27 @@ public class MapCamera : MonoBehaviour
 
 		//clamp elevation and zoom distance to sensible values
 
-		elevation = Mathf.Clamp(elevation, minAngleAtCurrentZoom, maxAngle);
-		if ((realAzimuth < 0.0f && azimuth < 0.0f) || (realAzimuth > 360.0f && azimuth > 360.0f))
+		TargetElevation = Mathf.Clamp(TargetElevation, minAngleAtCurrentZoom, maxAngle);
+		if ((realAzimuth < 0.0f && TargetAzimuth < 0.0f) || (realAzimuth >= 360.0f && TargetAzimuth >= 360.0f))
 		{
-			azimuth = Mathf.Repeat(azimuth, 360.0f);
+			TargetAzimuth = Mathf.Repeat(TargetAzimuth, 360.0f);
 			realAzimuth = Mathf.Repeat(realAzimuth, 360.0f);
 		}
 
-		realElevation = Mathf.Lerp(realElevation, elevation, Mathf.Clamp(Time.deltaTime * rotateAnimationSpeed, 0.0f, 0.15f));
-		realAzimuth = Mathf.Lerp(realAzimuth, azimuth, Mathf.Clamp(Time.deltaTime * rotateAnimationSpeed, 0.0f, 0.15f));
+		realElevation = Mathf.Lerp(realElevation, TargetElevation, Mathf.Clamp(Time.deltaTime * rotateAnimationSpeed, 0.0f, 0.15f));
+		realAzimuth = Mathf.Lerp(realAzimuth, TargetAzimuth, Mathf.Clamp(Time.deltaTime * rotateAnimationSpeed, 0.0f, 0.15f));
 
 
 		//update the camera with the new values
 		gameObject.transform.rotation = Quaternion.Euler(realElevation, realAzimuth, 0);
-		distance = Mathf.Clamp(distance, minDistance, maxDistance);
-		realDistance = Mathf.Lerp(realDistance, distance, Mathf.Clamp(Time.deltaTime * zoomAnimationSpeed, 0.0f, 0.15f));
+		TargetDistance = Mathf.Clamp(TargetDistance, minDistance, maxDistance);
+		realDistance = Mathf.Lerp(realDistance, TargetDistance, Mathf.Clamp(Time.deltaTime * zoomAnimationSpeed, 0.0f, 0.15f));
 
 		float snapLimit = 0.3f;
 		float snapLimitD = 0.01f;
-		if (Mathf.Abs(realElevation - elevation) < snapLimit) { realElevation = elevation; }
-		if (Mathf.Abs(realAzimuth - azimuth) < snapLimit) { realAzimuth = azimuth; }
-		if (Mathf.Abs(realDistance - distance) < snapLimitD) { realDistance = distance; }
+		if (Mathf.Abs(realElevation - TargetElevation) < snapLimit) { realElevation = TargetElevation; }
+		if (Mathf.Abs(realAzimuth - TargetAzimuth) < snapLimit) { realAzimuth = TargetAzimuth; }
+		if (Mathf.Abs(realDistance - TargetDistance) < snapLimitD) { realDistance = TargetDistance; }
 
 		Vector3 trackedPos;
 		if (transformToTrack != null)
@@ -531,18 +530,18 @@ public class MapCamera : MonoBehaviour
 		if (dist == -1)
 		{
 			float diag = (LatLongToUnity(viewport.northeast) - LatLongToUnity(viewport.southwest)).magnitude;
-			distance = Mathf.Clamp(diag, 0.5f, maxDistance);
+			TargetDistance = Mathf.Clamp(diag, 0.5f, maxDistance);
 		}
 		else
 		{
-			distance = dist;
+			TargetDistance = dist;
 		}
 		SetFocusTarget(LatLongToUnity(location.lat, location.lng));
-		azimuth = 0;
+		TargetAzimuth = 0;
 	}
 
 	public float GetRadius()
 	{
-		return distance * 2500f;
+		return TargetDistance * 2500f;
 	}
 }

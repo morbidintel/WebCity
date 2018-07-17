@@ -242,7 +242,7 @@ public class MapSearch : MonoBehaviour
 	{
 		string url = NearbySearch.BuildURL(
 			MapCamera.UnityToLatLong(MapCamera.Instance.TargetPosition),
-			MapCamera.Instance.Distance * 1000f,
+			MapCamera.Instance.TargetDistance * 1000f,
 			keyword);
 		WWW www = new WWW(PHPProxy.Escape(url));
 		yield return www;

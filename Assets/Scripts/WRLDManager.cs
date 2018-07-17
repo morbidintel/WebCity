@@ -23,7 +23,7 @@ public class WRLDManager : MonoBehaviour
 		var latlngalt = new Wrld.Space.LatLongAltitude(coord.lat, coord.lng, 0);
 		var latlng = new Wrld.Space.LatLong(coord.lat, coord.lng);
 
-		wrldMap.SetActive(mapCam.Distance < 5);
+		wrldMap.SetActive(mapCam.TargetDistance < 5);
 		transform.position = mapCam.TargetPosition.WithY(transform.position.y);
 		if (mapCam.TargetPosition.magnitude > 0)
 		{
@@ -32,7 +32,7 @@ public class WRLDManager : MonoBehaviour
 		}
 		else
 			transform.localScale = Vector3.one;
-		fixedCam.transform.position = fixedCam.transform.position.WithY(mapCam.Distance);
+		fixedCam.transform.position = fixedCam.transform.position.WithY(mapCam.TargetDistance);
 
 		Api.Instance.SetOriginPoint(latlngalt);
 
