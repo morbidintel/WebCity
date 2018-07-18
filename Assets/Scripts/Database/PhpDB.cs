@@ -9,8 +9,8 @@ namespace PhpDB
 	[Serializable]
 	public class Place
 	{
-		public string placeid, itineraryid, googleid, createddate;
-		int labelid;
+		public string placeid, itineraryid, googleid, arrivaltime, createddate;
+		public int labelid, itineraryindex;
 	}
 
 	[Serializable]
@@ -113,6 +113,20 @@ namespace PhpDB
 	}
 
 	[Serializable]
+	public class EditPlaceResult : GetPlacesResult
+	{
+		public new static string URL =
+			"http://webcity.online/live/db/addplace.php";
+
+		public static string BuildURL(Place place)
+		{
+			string query = URL + "?placeid={0}&googleid={1}&labelid={2}&itineraryindex={3}&arrivaltime={4}";
+			query = string.Format(query, place.placeid, place.googleid, place.labelid, place.itineraryindex, place.arrivaltime);
+			return query;
+		}
+	}
+
+	[Serializable]
 	public class RemovePlaceResult : GetPlacesResult
 	{
 		public new static string URL =
@@ -122,7 +136,7 @@ namespace PhpDB
 	[Serializable]
 	public class EditItineraryResult : GetItinerariesResult
 	{
-		public static string URL =
+		public new static string URL =
 			"http://webcity.online/live/db/edititinerary.php?itineraryid={0}&name={1}&rating={2}&is_public={3}&deleted={4}&colors={5}";
 	}
 }

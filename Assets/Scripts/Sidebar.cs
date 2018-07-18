@@ -172,12 +172,13 @@ public class Sidebar : Gamelogic.Extensions.Singleton<Sidebar>
 			yield break;
 		}
 
-		foreach (var itinerary in json.itineraries)
+		foreach (var itinerary in json.itineraries.OrderBy(i => i.name))
 		{
 			AddItineraryListItem(itinerary);
 		}
 
 		currentItinerary = null;
+		
 	}
 
 	IEnumerator GetPlacesInItineraryCoroutine(ItineraryListItem itinerary)
@@ -203,7 +204,7 @@ public class Sidebar : Gamelogic.Extensions.Singleton<Sidebar>
 			}
 			else
 			{
-				foreach (var place in json.places)
+				foreach (var place in json.places.OrderBy(p => p.itineraryindex))
 				{
 					var newItem = AddPlaceListItem(place);
 					itinerary.placesData.Add(newItem.data);

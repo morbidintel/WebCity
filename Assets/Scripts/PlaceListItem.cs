@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -30,7 +31,7 @@ public class PlaceListItem : MonoBehaviour
 	public PlaceListItemData data { get; private set; } = new PlaceListItemData();
 
 	[SerializeField]
-	Text nameLabel = null;
+	Text nameLabel = null, arrivalTimeLabel = null, travelTimeLabel = null;
 	[SerializeField]
 	Button button = null;
 
@@ -73,6 +74,17 @@ public class PlaceListItem : MonoBehaviour
 		}
 
 		nameLabel.text = data.placeDetails.result.name;
+		if (data.place.arrivaltime != null && data.place.arrivaltime != "")
+		{
+			DateTime arrival;
+			if (DateTime.TryParse(data.place.arrivaltime, out arrival))
+				arrivalTimeLabel.text = arrival.ToString("dd MMM HH:mm");
+		}
+		else
+		{
+			arrivalTimeLabel.text = "";
+		}
+		travelTimeLabel.text = "15 mins";
 		isLoading = false;
 		data.pos = MapCamera.LatLongToUnity(data.placeDetails.result.geometry.location);
 		MapTagManager.Instance.ShowPlaceOnMap(data.placeDetails);
