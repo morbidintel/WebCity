@@ -27,6 +27,7 @@ public class Sidebar : Gamelogic.Extensions.Singleton<Sidebar>
 	List<PlaceListItem> placesShown = new List<PlaceListItem>();
 
 	ItineraryListItem currentItinerary = null;
+	public DistanceMatrix currentDistanceMatrix { get; private set; } = null;
 
 	public bool IsHidden { get; private set; } = false;
 	public bool ShowItineraries { get; private set; } = true;
@@ -118,6 +119,7 @@ public class Sidebar : Gamelogic.Extensions.Singleton<Sidebar>
 	public void OnClickReturnToItineraries()
 	{
 		currentItinerary = null;
+		currentDistanceMatrix = null;
 		ToggleLists();
 		ClearPlaceItems();
 		MapTagManager.Instance.ClearMapTags();
@@ -178,7 +180,7 @@ public class Sidebar : Gamelogic.Extensions.Singleton<Sidebar>
 		}
 
 		currentItinerary = null;
-		
+
 	}
 
 	IEnumerator GetPlacesInItineraryCoroutine(ItineraryListItem itinerary)
@@ -204,6 +206,8 @@ public class Sidebar : Gamelogic.Extensions.Singleton<Sidebar>
 			}
 			else
 			{
+				StartCoroutine(GetTravelTimesCoroutine(json.places));
+
 				foreach (var place in json.places.OrderBy(p => p.itineraryindex))
 				{
 					var newItem = AddPlaceListItem(place);
@@ -377,6 +381,41 @@ public class Sidebar : Gamelogic.Extensions.Singleton<Sidebar>
 		}
 		else
 		{
+		}
+	}
+
+	IEnumerator GetTravelTimesCoroutine(Place[] places)
+	{
+		string[] placeIDs = places.Select(p => p.googleid).ToArray();
+		WWW www = new WWW(PHPProxy.Escape(DistanceMatrix.BuildURL(placeIDs, placeIDs)));
+		yield return www;
+
+		if (www.error != null)
+		{
+			Debug.Log(www.error);
+			yield break;
+		}
+		
+		DistanceMatrix dm = new DistanceMatrix();
+		try
+		{
+			dm = JsonUtility.FromJson<DistanceMatrix>(www.text);
+
+			if (dm.status != "OK")
+			{
+				Debug.Log(dm.error_message);
+				yield break;
+			}
+
+			for (int i = 0; i < places.Length; ++i)
+				dm.origin_addresses[i] = dm.destination_addresses[i] = places[i].googleid;
+
+			currentDistanceMatrix = dm;
+		}
+		catch (Exception e)
+		{
+			Debug.Log("Sidebar:GetTravelTimesCoroutine()\n" + e.Message + "\n" + e.StackTrace);
+			yield break;
 		}
 	}
 }

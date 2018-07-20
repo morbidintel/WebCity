@@ -44,7 +44,7 @@ public class PlaceListItem : MonoBehaviour
 
 	public void Init(Place place)
 	{
-		this.data.place = place;
+		data.place = place;
 		StartCoroutine(GetPlaceCoroutine(place.googleid));
 		button.onClick.AddListener(() => Sidebar.Instance.OnClickPlaceItem(this));
 		isLoading = true;
@@ -73,18 +73,38 @@ public class PlaceListItem : MonoBehaviour
 			yield break;
 		}
 
-		nameLabel.text = data.placeDetails.result.name;
-		if (data.place.arrivaltime != null && data.place.arrivaltime != "")
+		try
 		{
-			DateTime arrival;
-			if (DateTime.TryParse(data.place.arrivaltime, out arrival))
-				arrivalTimeLabel.text = arrival.ToString("dd MMM HH:mm");
+			nameLabel.text = data.placeDetails.result.name;
+			if (data.place?.arrivaltime != "")
+			{
+				DateTime arrival;
+				if (DateTime.TryParseExact(data.place.arrivaltime, "yyyy-MM-dd HH:mm:ss", null, System.Globalization.DateTimeStyles.None, out arrival))
+					arrivalTimeLabel.text = arrival.ToString("dd MMM HH:mm");
+			}
+			else
+			{
+				arrivalTimeLabel.text = "";
+			}
 		}
-		else
+		catch (Exception e)
 		{
+			Debug.Log("PlaceListItem:GetPlaceCoroutine() " + data.placeDetails.result.name + " " + data.place?.arrivaltime + "\n" + e.Message + "\n" + e.StackTrace);
 			arrivalTimeLabel.text = "";
 		}
-		travelTimeLabel.text = "15 mins";
+
+		yield return new WaitUntil(() => Sidebar.Instance.currentDistanceMatrix != null);
+		try
+		{
+			DistanceMatrix dm = Sidebar.Instance.currentDistanceMatrix;
+			int index = Array.IndexOf(dm.origin_addresses, data.place.googleid);
+			travelTimeLabel.text = dm.rows[index].elements[index + 1].duration.text;
+		}
+		catch
+		{
+			travelTimeLabel.text = "";
+		}
+
 		isLoading = false;
 		data.pos = MapCamera.LatLongToUnity(data.placeDetails.result.geometry.location);
 		MapTagManager.Instance.ShowPlaceOnMap(data.placeDetails);
