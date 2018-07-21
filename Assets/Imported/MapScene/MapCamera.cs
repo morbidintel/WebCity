@@ -76,6 +76,7 @@ public class MapCamera : MonoBehaviour
 	[ReadOnly]
 	[SerializeField]
 	float realDistance, realAzimuth, realElevation; //used to store the current orientation and distance of the camera
+	public float RealElevation { get { return realElevation; } }
 	public float RealAzimuth { get { return realAzimuth; } }
 
 	//store mouse positions for this frame and last frame

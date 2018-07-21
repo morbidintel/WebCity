@@ -9,7 +9,7 @@ public class TooltipWorld : TooltipMenu, IPointerClickHandler, IDragHandler, IPo
 {
 	GraphicRaycaster gRayCaster = null;
 
-	PlaceDetails place = null;
+	public PlaceDetails place = null;
 
 	public System.Action<PlaceDetails> action = null;
 
@@ -46,6 +46,7 @@ public class TooltipWorld : TooltipMenu, IPointerClickHandler, IDragHandler, IPo
 		place = tag.place;
 		OpenTooltip();
 		tooltipRoot.transform.position = tag.transform.position;
+		Update();
 	}
 
 	public void OnClick()

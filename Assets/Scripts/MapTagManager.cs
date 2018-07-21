@@ -33,6 +33,7 @@ public class MapTagManager : Gamelogic.Extensions.Singleton<MapTagManager>
 		tag.transform.position = pos;
 		tag.placeName.text = place.result.name;
 		tag.placeName.color = color.HasValue ? color.Value : tag.placeName.color;
+		tag.place = place;
 
 		tags.Add(tag);
 		return tag;
@@ -54,7 +55,7 @@ public class MapTagManager : Gamelogic.Extensions.Singleton<MapTagManager>
 
 	public void ClearMapTag(MapTag tag)
 	{
-		if (tags.Remove(tag)) Destroy(tag);
+		if (tag && tags.Remove(tag)) Destroy(tag);
 	}
 
 	public void ClearMapTags()

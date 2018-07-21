@@ -45,7 +45,6 @@ public class MapTag : MonoBehaviour, IPointerClickHandler, IDragHandler, IPointe
 		transform.position = transform.position.SetY(tagHeight);
 
 		line.SetPositions(new Vector3[] { transform.position, transform.position.SetY(0) });
-		//line.startWidth = line.endWidth = 1 / newScale.x;
 	}
 
 	void OnDestroy()
@@ -55,8 +54,13 @@ public class MapTag : MonoBehaviour, IPointerClickHandler, IDragHandler, IPointe
 
 	public void OnPointerClick(PointerEventData eventData)
 	{
-		if (place != null && !Sidebar.Instance.ShowItineraries)
-			TooltipManager.Instance.OpenAddPlaceTooltip(this);
+		if (place != null && !Sidebar.Instance.IsShowingItineraries)
+		{
+			if (Sidebar.Instance.IsOnCurrentItinerary(place))
+				TooltipManager.Instance.ToggleRemovePlaceTooltip(this);
+			else
+				TooltipManager.Instance.ToggleAddPlaceTooltip(this);
+		}
 	}
 
 	public void OnDrag(PointerEventData eventData)

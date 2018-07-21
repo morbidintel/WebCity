@@ -208,8 +208,10 @@ public class MapSearch : MonoBehaviour
 
 	IEnumerator GoToPlaceCoroutine(string place_id)
 	{
-		string url = string.Format(PlaceDetails.URL, WWW.EscapeURL(place_id), "name,geometry,place_id");
-		WWW www = new WWW(PHPProxy.Escape(url));
+		WWW www = new WWW(PHPProxy.Escape(PlaceDetails.BuildURL(place_id, 
+			PlaceDetails.Fields.name | 
+			PlaceDetails.Fields.geometry | 
+			PlaceDetails.Fields.place_id)));
 		yield return www;
 		if (www.error != null)
 		{
@@ -233,7 +235,6 @@ public class MapSearch : MonoBehaviour
 		currentTags.Clear();
 
 		currentTags.Add(MapTagManager.Instance.ShowPlaceOnMap(place));
-		currentTags[0].place = place;
 
 		coroutine = null;
 	}

@@ -35,10 +35,13 @@ public class PlaceListItem : MonoBehaviour
 	[SerializeField]
 	Button button = null;
 
+	MapTag mapTag = null;
+
 	public bool isLoading { get; private set; } = false;
 
 	void OnDestroy()
 	{
+		MapTagManager.Instance.ClearMapTag(mapTag);
 		Destroy(gameObject);
 	}
 
@@ -50,13 +53,23 @@ public class PlaceListItem : MonoBehaviour
 		isLoading = true;
 	}
 
+	public void Init(PlaceListItemData data)
+	{
+		this.data = data;
+		StartCoroutine(GetPlaceCoroutine(data.place.googleid));
+		button.onClick.AddListener(() => Sidebar.Instance.OnClickPlaceItem(this));
+		isLoading = true;
+	}
+
 	IEnumerator GetPlaceCoroutine(string place_id)
 	{
 		if (place_id == "") yield break;
 		if (data.placeDetails == null)
 		{
-			string url = string.Format(PlaceDetails.URL, WWW.EscapeURL(place_id), "name,geometry,place_id");
-			WWW www = new WWW(PHPProxy.Escape(url));
+			WWW www = new WWW(PHPProxy.Escape(PlaceDetails.BuildURL(place_id,
+			PlaceDetails.Fields.name |
+			PlaceDetails.Fields.geometry |
+			PlaceDetails.Fields.place_id)));
 			yield return www;
 			if (www.error != null)
 			{
@@ -72,24 +85,16 @@ public class PlaceListItem : MonoBehaviour
 			Debug.Log(data.placeDetails.error_message);
 			yield break;
 		}
-
-		try
+		
+		nameLabel.text = data.placeDetails.result.name;
+		if (data.place?.arrivaltime != "")
 		{
-			nameLabel.text = data.placeDetails.result.name;
-			if (data.place?.arrivaltime != "")
-			{
-				DateTime arrival;
-				if (DateTime.TryParseExact(data.place.arrivaltime, "yyyy-MM-dd HH:mm:ss", null, System.Globalization.DateTimeStyles.None, out arrival))
-					arrivalTimeLabel.text = arrival.ToString("dd MMM HH:mm");
-			}
-			else
-			{
-				arrivalTimeLabel.text = "";
-			}
+			DateTime arrival;
+			if (DateTime.TryParseExact(data.place.arrivaltime, "yyyy-MM-dd HH:mm:ss", null, System.Globalization.DateTimeStyles.None, out arrival))
+				arrivalTimeLabel.text = arrival.ToString("dd MMM HH:mm");
 		}
-		catch (Exception e)
+		else
 		{
-			Debug.Log("PlaceListItem:GetPlaceCoroutine() " + data.placeDetails.result.name + " " + data.place?.arrivaltime + "\n" + e.Message + "\n" + e.StackTrace);
 			arrivalTimeLabel.text = "";
 		}
 
@@ -107,6 +112,6 @@ public class PlaceListItem : MonoBehaviour
 
 		isLoading = false;
 		data.pos = MapCamera.LatLongToUnity(data.placeDetails.result.geometry.location);
-		MapTagManager.Instance.ShowPlaceOnMap(data.placeDetails);
+		mapTag = MapTagManager.Instance.ShowPlaceOnMap(data.placeDetails);
 	}
 }

@@ -23,7 +23,8 @@ public class Compass : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-		if (Mathf.Approximately(camera.TargetAzimuth, 0f) || Mathf.Approximately(camera.TargetAzimuth, 360f))
+		if ((Mathf.Approximately(camera.TargetAzimuth, 0f) || Mathf.Approximately(camera.TargetAzimuth, 360f)) &&
+			Mathf.Approximately(camera.TargetElevation, 89f))
 		{
 			if (compassImage.color.a == 1)
 				DOTween.PlayBackwards(compassImage.gameObject);
@@ -31,10 +32,11 @@ public class Compass : MonoBehaviour
 		else if (compassImage.color.a == 0)
 		{
 			DOTween.Restart(compassImage.gameObject);
-			//DOTween.PlayBackwards(gameObject);
 		}
 
-		compassTransform.rotation = Quaternion.Euler(compassTransform.transform.rotation.eulerAngles.SetZ(camera.RealAzimuth));
+		compassTransform.rotation = Quaternion.Euler(compassTransform.transform.rotation.eulerAngles
+			.SetX(90f - camera.RealElevation)
+			.SetZ(camera.RealAzimuth));
 	}
 
 	public void OnClickCompass()

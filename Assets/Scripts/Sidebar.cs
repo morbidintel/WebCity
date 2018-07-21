@@ -15,7 +15,7 @@ public class Sidebar : Gamelogic.Extensions.Singleton<Sidebar>
 		itinerariesTween = null, placesTween = null;
 
 	[SerializeField]
-	Transform itinerariesHolder = null, placeHolder = null;
+	Transform itinerariesHolder = null, placesHolder = null;
 	[SerializeField]
 	GameObject itineraryItemPrefab = null, placeItemPrefab = null;
 	[SerializeField]
@@ -30,7 +30,7 @@ public class Sidebar : Gamelogic.Extensions.Singleton<Sidebar>
 	public DistanceMatrix currentDistanceMatrix { get; private set; } = null;
 
 	public bool IsHidden { get; private set; } = false;
-	public bool ShowItineraries { get; private set; } = true;
+	public bool IsShowingItineraries { get; private set; } = true;
 	public float TweenMaxX { get { return sidebarTween.endValueV3.x; } }
 
 	// Use this for initialization
@@ -44,9 +44,37 @@ public class Sidebar : Gamelogic.Extensions.Singleton<Sidebar>
 		StartCoroutine(GetItinerariesCoroutine());
 	}
 
-	// Update is called once per frame
-	void Update()
+	ItineraryListItem AddItineraryListItem(Itinerary itinerary)
 	{
+		ItineraryListItem item = Instantiate(itineraryItemPrefab, itinerariesHolder)
+			.GetComponent<ItineraryListItem>();
+		item.Init(itinerary);
+		itineraries.Add(item);
+		return item;
+	}
+
+	PlaceListItem AddPlaceListItem(Place place)
+	{
+		PlaceListItem item = Instantiate(placeItemPrefab, placesHolder)
+			.GetComponent<PlaceListItem>();
+		item.Init(place);
+		placesShown.Add(item);
+		return item;
+	}
+
+	PlaceListItem AddPlaceListItem(PlaceListItemData data)
+	{
+		PlaceListItem item = Instantiate(placeItemPrefab, placesHolder)
+			.GetComponent<PlaceListItem>();
+		item.Init(data);
+		placesShown.Add(item);
+		return item;
+	}
+
+	void ClearPlaceItems()
+	{
+		foreach (var p in placesShown) Destroy(p);
+		placesShown.Clear();
 	}
 
 	public void ToggleSidebar()
@@ -61,13 +89,12 @@ public class Sidebar : Gamelogic.Extensions.Singleton<Sidebar>
 			sidebarTween.DOPlayBackwards();
 			arrowTween.DOPlayBackwards();
 		}
-
 		IsHidden = !IsHidden;
 	}
 
 	public void ToggleLists()
 	{
-		if (ShowItineraries)
+		if (IsShowingItineraries)
 		{
 			itinerariesTween.DOPlayForward();
 			placesTween.DOPlayForward();
@@ -77,33 +104,15 @@ public class Sidebar : Gamelogic.Extensions.Singleton<Sidebar>
 			itinerariesTween.DOPlayBackwards();
 			placesTween.DOPlayBackwards();
 		}
-		ShowItineraries = !ShowItineraries;
+		IsShowingItineraries = !IsShowingItineraries;
 	}
 
-	ItineraryListItem AddItineraryListItem(Itinerary itinerary)
+	public bool IsOnCurrentItinerary(PlaceDetails place)
 	{
-		ItineraryListItem item = Instantiate(itineraryItemPrefab, itinerariesHolder)
-			.GetComponent<ItineraryListItem>();
-		item.Init(itinerary);
-		itineraries.Add(item);
-		return item;
+		return IsShowingItineraries ? false : placesShown.Any(i => i.data.placeDetails.result.place_id == place.result.place_id);
 	}
 
-	PlaceListItem AddPlaceListItem(Place place)
-	{
-		PlaceListItem item = Instantiate(placeItemPrefab, placeHolder)
-			.GetComponent<PlaceListItem>();
-		item.Init(place);
-		placesShown.Add(item);
-		return item;
-	}
-
-	void ClearPlaceItems()
-	{
-		foreach (var p in placesShown) Destroy(p);
-		placesShown.Clear();
-	}
-
+	#region Triggers
 	public void OnClickItineraryItem(ItineraryListItem item)
 	{
 		itineraryInput.text = item.itinerary.name;
@@ -122,7 +131,6 @@ public class Sidebar : Gamelogic.Extensions.Singleton<Sidebar>
 		currentDistanceMatrix = null;
 		ToggleLists();
 		ClearPlaceItems();
-		MapTagManager.Instance.ClearMapTags();
 	}
 
 	public void OnSubmitNewItinerary(string itineraryName)
@@ -151,7 +159,9 @@ public class Sidebar : Gamelogic.Extensions.Singleton<Sidebar>
 	{
 		itineraryInputToggle.isOn = false;
 	}
+	#endregion
 
+	#region Coroutines
 	IEnumerator GetItinerariesCoroutine()
 	{
 		LoginResult user = PersistentUser.User;
@@ -206,24 +216,25 @@ public class Sidebar : Gamelogic.Extensions.Singleton<Sidebar>
 			}
 			else
 			{
-				StartCoroutine(GetTravelTimesCoroutine(json.places));
 
+				StartCoroutine(GetTravelTimesCoroutine(json.places));
 				foreach (var place in json.places.OrderBy(p => p.itineraryindex))
 				{
 					var newItem = AddPlaceListItem(place);
 					itinerary.placesData.Add(newItem.data);
 				}
-
-				yield return new WaitUntil(() => placesShown.All(p => !p.isLoading));
 			}
 		}
 		else
 		{
-			foreach (var place in itinerary.placesData)
+			foreach (var data in itinerary.placesData)
 			{
-				AddPlaceListItem(place.place);
+				AddPlaceListItem(data);
 			}
+			StartCoroutine(GetTravelTimesCoroutine(itinerary.placesData.Select(d => d.place).ToArray()));
 		}
+
+		yield return new WaitUntil(() => placesShown.All(p => !p.isLoading));
 
 		currentItinerary = itinerary;
 		ToggleLists();
@@ -325,10 +336,10 @@ public class Sidebar : Gamelogic.Extensions.Singleton<Sidebar>
 		}
 	}
 
-	IEnumerator RemovePlaceCoroutine(ItineraryListItem itinerary, PlaceDetails placeDetails)
+	IEnumerator RemovePlaceCoroutine(ItineraryListItem itineraryItem, PlaceDetails placeDetails)
 	{
 		string url = string.Format(RemovePlaceResult.URL,
-			WWW.EscapeURL(itinerary.itinerary.itineraryid),
+			WWW.EscapeURL(itineraryItem.itinerary.itineraryid),
 			WWW.EscapeURL(placeDetails.result.place_id));
 		WWW www = new WWW(url);
 		yield return www;
@@ -347,11 +358,7 @@ public class Sidebar : Gamelogic.Extensions.Singleton<Sidebar>
 		}
 		else if (www.text == "OK")
 		{
-			foreach (var place in json.places)
-			{
-				var newItem = AddPlaceListItem(place);
-				itinerary.placesData.Add(new PlaceListItemData(newItem.data));
-			}
+			Destroy(itineraryItem.gameObject);
 		}
 	}
 
@@ -395,7 +402,7 @@ public class Sidebar : Gamelogic.Extensions.Singleton<Sidebar>
 			Debug.Log(www.error);
 			yield break;
 		}
-		
+
 		DistanceMatrix dm = new DistanceMatrix();
 		try
 		{
@@ -418,4 +425,5 @@ public class Sidebar : Gamelogic.Extensions.Singleton<Sidebar>
 			yield break;
 		}
 	}
+	#endregion
 }

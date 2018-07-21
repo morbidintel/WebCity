@@ -88,18 +88,18 @@ namespace GoogleMaps
 	 * The Basic category includes the following fields:
 	 * address_component, adr_address, alt_id, formatted_address, geometry, icon, id, name, permanently_closed, photo, place_id, scope, type, url, utc_offset, vicinity
 	 * 
-	 * Contact
+	 * Contact (billed higher)
 	 * The Contact category includes the following fields:
 	 * formatted_phone_number, international_phone_number, opening_hours, website
 	 * 
-	 * Atmosphere
+	 * Atmosphere (billed higher)
 	 * The Atmosphere category includes the following fields:
 	 * price_level, rating, review
 	 */
 	[Serializable]
 	public class PlaceDetails
 	{
-		public static readonly string URL = "https://maps.googleapis.com/maps/api/place/details/json?key=AIzaSyBAm0l1jdDejOC9Smk9WviPNvjeAb2XBbI&placeid={0}&fields={1}";
+		public static readonly string URL = "https://maps.googleapis.com/maps/api/place/details/json?key=AIzaSyBAm0l1jdDejOC9Smk9WviPNvjeAb2XBbI";
 
 		[Serializable]
 		public class Result
@@ -112,7 +112,7 @@ namespace GoogleMaps
 			public float rating;
 			public Review[] reviews;
 			public string[] types;
-			public int utc_offset;
+			public int utc_offset, price_level;
 			public string adr_address,
 				formatted_address,
 				formatted_phone_number,
@@ -136,35 +136,42 @@ namespace GoogleMaps
 		{
 			NONE = -1,
 			// Basic
-			formatted_address = 1 << 0,
-			geometry = 1 << 1,
-			icon = 1 << 2,
-			id = 1 << 3,
-			name = 1 << 4,
-			permanently_closed = 1 << 5,
-			photos = 1 << 6,
-			place_id = 1 << 7,
-			plus_code = 1 << 8,
-			scope = 1 << 9,
-			types = 1 << 10,
+			address_component = 1 << 0,
+			adr_address = 1 << 1,
+			alt_id = 1 << 2,
+			formatted_address = 1 << 3,
+			geometry = 1 << 4,
+			icon = 1 << 5,
+			id = 1 << 6,
+			name = 1 << 7,
+			permanently_closed = 1 << 8,
+			photo = 1 << 9,
+			place_id = 1 << 10,
+			scope = 1 << 11,
+			type = 1 << 12,
+			url = 1 << 13,
+			utc_offset = 1 << 14,
+			vicinity = 1 << 15,
 			// Contact
-			opening_hours = 1 << 11,
+			formatted_phone_number = 1 << 16,
+			international_phone_number = 1 << 17,
+			opening_hours = 1 << 18,
+			website = 1 << 19,
 			// Atmosphere
-			price_level = 1 << 12,
-			rating = 1 << 13,
-			ALL = (1 << 14) - 1
+			price_level = 1 << 20,
+			rating = 1 << 21,
+			review = 1 << 22,
+			ALL = 1 << 23
 		}
 
 		public static string BuildURL(string placeid, Fields fields = Fields.geometry | Fields.place_id)
 		{
-			string query = "";
+			string query = "&placeid={0}&fields={1}";
 			string fieldsString = "";
 			foreach (var e in Enum.GetValues(typeof(Fields)))
 				if (fields.HasFlag((Enum)e) && e.ToString() != "ALL") fieldsString += e.ToString() + ',';
 
-			query = string.Format(URL, WWW.EscapeURL(placeid), WWW.EscapeURL(fieldsString.TrimEnd(',')));
-
-			return query;
+			return URL + string.Format(query, WWW.EscapeURL(placeid), WWW.EscapeURL(fieldsString.TrimEnd(',')));
 		}
 	}
 }
