@@ -34,7 +34,7 @@ public class ItineraryListItem : MonoBehaviour
 
 	IEnumerator StopLoadingImageCoroutine()
 	{
-		yield return new WaitUntil(() => !Sidebar.Instance.IsShowingItineraries);
+		yield return new WaitUntil(() => Sidebar.Instance.currentPage != Sidebar.Page.Itineraries);
 		loading.gameObject.SetActive(false);
 	}
 }

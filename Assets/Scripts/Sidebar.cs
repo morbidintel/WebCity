@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,31 +7,42 @@ using UnityEngine.UI;
 using DG.Tweening;
 using PhpDB;
 using GoogleMaps;
-using System;
 
 public class Sidebar : Gamelogic.Extensions.Singleton<Sidebar>
 {
 	[SerializeField]
 	DOTweenAnimation sidebarTween = null, arrowTween = null,
-		itinerariesTween = null, placesTween = null;
+		itinerariesTween = null, placesTween = null, placeDetailsTween = null;
 
+	[Space]
 	[SerializeField]
-	Transform itinerariesHolder = null, placesHolder = null;
+	Transform itinerariesHolder = null;
+	[SerializeField]
+	Transform placesHolder = null;
 	[SerializeField]
 	GameObject itineraryItemPrefab = null, placeItemPrefab = null;
+
+	[Space]
 	[SerializeField]
-	InputField itineraryInput = null;
+	InputField itineraryNameInput = null;
 	[SerializeField]
-	Toggle itineraryInputToggle = null;
+	Toggle itineraryRenameToggle = null;
+
+	[Space]
+	[SerializeField]
+	Text placeName = null;
+
+	public enum Page { Itineraries, Places, PlaceDetails }
+	public Page currentPage { get; private set; } = Page.Itineraries;
 
 	List<ItineraryListItem> itineraries = new List<ItineraryListItem>();
 	List<PlaceListItem> placesShown = new List<PlaceListItem>();
 
 	ItineraryListItem currentItinerary = null;
+	PlaceListItem currentPlace = null;
 	public DistanceMatrix currentDistanceMatrix { get; private set; } = null;
 
 	public bool IsHidden { get; private set; } = false;
-	public bool IsShowingItineraries { get; private set; } = true;
 	public float TweenMaxX { get { return sidebarTween.endValueV3.x; } }
 
 	// Use this for initialization
@@ -42,6 +54,11 @@ public class Sidebar : Gamelogic.Extensions.Singleton<Sidebar>
 #endif
 
 		StartCoroutine(GetItinerariesCoroutine());
+
+		float sidebarWidth = this.RectTransform().rect.width;
+		itinerariesTween.RectTransform().SetLocalPosX(0);
+		placesTween.RectTransform().SetLocalPosX(sidebarWidth);
+		placeDetailsTween.RectTransform().SetLocalPosX(sidebarWidth * 2);
 	}
 
 	ItineraryListItem AddItineraryListItem(Itinerary itinerary)
@@ -92,30 +109,35 @@ public class Sidebar : Gamelogic.Extensions.Singleton<Sidebar>
 		IsHidden = !IsHidden;
 	}
 
-	public void ToggleLists()
+	public bool GoToPage(Page page)
 	{
-		if (IsShowingItineraries)
-		{
-			itinerariesTween.DOPlayForward();
-			placesTween.DOPlayForward();
-		}
-		else
-		{
-			itinerariesTween.DOPlayBackwards();
-			placesTween.DOPlayBackwards();
-		}
-		IsShowingItineraries = !IsShowingItineraries;
+		if (Math.Abs(page - currentPage) != 1)
+			return false;
+
+		float sidebarWidth = this.RectTransform().rect.width;
+		itinerariesTween.endValueV3 =
+			placesTween.endValueV3 =
+			placeDetailsTween.endValueV3 =
+			new Vector3(sidebarWidth * (page > currentPage ? -1 : 1), 0, 0);
+
+		itinerariesTween.DORestart(true);
+		placesTween.DORestart(true);
+		placeDetailsTween.DORestart(true);
+		currentPage = page;
+		return true;
 	}
 
 	public bool IsOnCurrentItinerary(PlaceDetails place)
 	{
-		return IsShowingItineraries ? false : placesShown.Any(i => i.data.placeDetails.result.place_id == place.result.place_id);
+		return currentPage != Page.Itineraries ?
+			false :
+			placesShown.Any(i => i.data.placeDetails.result.place_id == place.result.place_id);
 	}
 
 	#region Triggers
 	public void OnClickItineraryItem(ItineraryListItem item)
 	{
-		itineraryInput.text = item.itinerary.name;
+		itineraryNameInput.text = item.itinerary.name;
 		StartCoroutine(GetPlacesInItineraryCoroutine(item));
 	}
 
@@ -123,19 +145,43 @@ public class Sidebar : Gamelogic.Extensions.Singleton<Sidebar>
 	{
 		if (item.data.placeDetails != null)
 			MapCamera.Instance.SetCameraViewport(item.data.placeDetails.result.geometry);
+
+		currentPlace = item;
+		placeName.text = item.data.placeDetails.result.name;
+		GoToPage(Page.PlaceDetails);
 	}
 
 	public void OnClickReturnToItineraries()
 	{
 		currentItinerary = null;
 		currentDistanceMatrix = null;
-		ToggleLists();
+		GoToPage(Page.Itineraries);
 		ClearPlaceItems();
+	}
+
+	public void OnClickReturnToPlaces()
+	{
+		currentPlace = null;
+		placeName.text = "";
+		GoToPage(Page.Places);
 	}
 
 	public void OnSubmitNewItinerary(string itineraryName)
 	{
 		StartCoroutine(AddItineraryCoroutine(itineraryName));
+	}
+
+	public void OnSubmitRenameItinerary()
+	{
+		itineraryRenameToggle.isOn = false;
+		currentItinerary.itinerary.name = itineraryNameInput.text;
+		StartCoroutine(EditItineraryCoroutine(currentItinerary.itinerary));
+	}
+
+	public void OnCancelRenameItinerary()
+	{
+		itineraryNameInput.text = currentItinerary.itinerary.name;
+		itineraryRenameToggle.isOn = false;
 	}
 
 	public void OnClickAddPlaceTooltip(PlaceDetails place)
@@ -146,18 +192,6 @@ public class Sidebar : Gamelogic.Extensions.Singleton<Sidebar>
 	public void OnClickRemovePlaceTooltip(PlaceDetails place)
 	{
 		StartCoroutine(RemovePlaceCoroutine(currentItinerary, place));
-	}
-
-	public void OnSubmitRenameItinerary()
-	{
-		itineraryInputToggle.isOn = false;
-		currentItinerary.itinerary.name = itineraryInput.text;
-		StartCoroutine(EditItineraryCoroutine(currentItinerary.itinerary));
-	}
-
-	public void OnCancelRenameItinerary()
-	{
-		itineraryInputToggle.isOn = false;
 	}
 	#endregion
 
@@ -237,7 +271,7 @@ public class Sidebar : Gamelogic.Extensions.Singleton<Sidebar>
 		yield return new WaitUntil(() => placesShown.All(p => !p.isLoading));
 
 		currentItinerary = itinerary;
-		ToggleLists();
+		GoToPage(Page.Places);
 		if (placesShown.Count > 0)
 		{
 			// move camera to see all places

@@ -41,7 +41,7 @@ public class PlaceListItem : MonoBehaviour
 
 	void OnDestroy()
 	{
-		MapTagManager.Instance.ClearMapTag(mapTag);
+		if (mapTag) MapTagManager.Instance?.ClearMapTag(mapTag);
 		Destroy(gameObject);
 	}
 
@@ -92,10 +92,6 @@ public class PlaceListItem : MonoBehaviour
 			DateTime arrival;
 			if (DateTime.TryParseExact(data.place.arrivaltime, "yyyy-MM-dd HH:mm:ss", null, System.Globalization.DateTimeStyles.None, out arrival))
 				arrivalTimeLabel.text = arrival.ToString("dd MMM HH:mm");
-		}
-		else
-		{
-			arrivalTimeLabel.text = "";
 		}
 
 		yield return new WaitUntil(() => Sidebar.Instance.currentDistanceMatrix != null);
