@@ -30,7 +30,7 @@ public class Sidebar : Gamelogic.Extensions.Singleton<Sidebar>
 
 	[Space]
 	[SerializeField]
-	Text placeName = null;
+	PlaceDetailsPage placeDetailsPage = null;
 
 	public enum Page { Itineraries, Places, PlaceDetails }
 	public Page currentPage { get; private set; } = Page.Itineraries;
@@ -147,7 +147,7 @@ public class Sidebar : Gamelogic.Extensions.Singleton<Sidebar>
 			MapCamera.Instance.SetCameraViewport(item.data.placeDetails.result.geometry);
 
 		currentPlace = item;
-		placeName.text = item.data.placeDetails.result.name;
+		placeDetailsPage.Init(item);
 		GoToPage(Page.PlaceDetails);
 	}
 
@@ -162,7 +162,6 @@ public class Sidebar : Gamelogic.Extensions.Singleton<Sidebar>
 	public void OnClickReturnToPlaces()
 	{
 		currentPlace = null;
-		placeName.text = "";
 		GoToPage(Page.Places);
 	}
 
@@ -295,7 +294,11 @@ public class Sidebar : Gamelogic.Extensions.Singleton<Sidebar>
 			PlaceDetails.URL,
 			WWW.EscapeURL(place_id),
 			"name,geometry,place_id");
-		WWW www = new WWW(PHPProxy.Escape(url));
+		WWW www = new WWW(PHPProxy.Escape(PlaceDetails.BuildURL(
+			place_id,
+			PlaceDetails.Fields.name |
+			PlaceDetails.Fields.geometry |
+			PlaceDetails.Fields.place_id)));
 		yield return www;
 		if (www.error != null)
 		{
