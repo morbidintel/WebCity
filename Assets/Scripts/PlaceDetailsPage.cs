@@ -11,30 +11,72 @@ public class PlaceDetailsPage : Singleton<PlaceDetailsPage>
 	Text title = null;
 	[SerializeField]
 	Image image = null, loading = null;
+	[SerializeField]
+	UI.Dates.DatePicker datePicker = null;
+	[SerializeField]
+	Dropdown hoursDropdown = null, minutesDropdown = null;
 
-	PlaceListItem place;
+	PlaceListItem currentPlace;
 
 	public bool IsLoading { get; private set; } = false;
 
 	public void Init(PlaceListItem place)
 	{
-		IsLoading = true;
-		this.place = place;
+		if (this.currentPlace == place) return;
 
+		IsLoading = true;
+		currentPlace = place;
+		title.text = place.data.placeDetails.result.name;
 		Destroy(image.sprite);
 		image.color = Color.clear;
 		loading.gameObject.SetActive(true);
-		image.rectTransform.sizeDelta = image.rectTransform.sizeDelta.SetY(loading.rectTransform.rect.height);
+
+		// TODO: get the time, set the time
+		if (place.data.place.arrivaltime != null)
+		{
+		}
 
 		StartCoroutine(GetPhotos(place.data.place.googleid));
 	}
 
 	IEnumerator GetPhotos(string place_id)
 	{
-		WWW www = new WWW(PHPProxy.Escape(PlaceDetails.BuildURL(
-			place_id,
-			PlaceDetails.Fields.photo |
-			PlaceDetails.Fields.place_id)));
+		WWW www;
+		string photo_reference = "";
+		if (currentPlace.data.placeDetails.result.photos == null)
+		{
+			www = new WWW(PHPProxy.Escape(PlaceDetails.BuildURL(
+				place_id,
+				PlaceDetails.Fields.photo |
+				PlaceDetails.Fields.place_id)));
+			yield return www;
+			if (www.error != null)
+			{
+				Debug.Log(www.error);
+				yield break;
+			}
+
+			PlaceDetails place = JsonUtility.FromJson<PlaceDetails>(www.text);
+
+			if (place.status != "OK")
+			{
+				Debug.Log(place.error_message);
+				yield break;
+			}
+
+			if (place.result?.photos?.Length == 0) yield break;
+
+			photo_reference = place.result.photos[0].photo_reference;
+		}
+		else
+		{
+			photo_reference = currentPlace.data.placeDetails.result.photos[0].photo_reference;
+		}
+
+
+		www = new WWW(PHPProxy.Escape(PlacePhotos.BuildURL(
+			photo_reference,
+			(int)this.RectTransform().rect.width, 0)));
 		yield return www;
 		if (www.error != null)
 		{
@@ -42,29 +84,9 @@ public class PlaceDetailsPage : Singleton<PlaceDetailsPage>
 			yield break;
 		}
 
-		PlaceDetails place = JsonUtility.FromJson<PlaceDetails>(www.text);
-
-		if (place.status != "OK")
-		{
-			Debug.Log(place.error_message);
-			yield break;
-		}
-
-		if (place.result?.photos?.Length == 0) yield break;
-
-		www = new WWW(PHPProxy.Escape(PlacePhotos.BuildURL(
-			place.result.photos[0].photo_reference,
-			(int)this.RectTransform().rect.width, 0)));
-		yield return www;
-		if (www.error != null)
-		{
-			Debug.Log(www.error + "\n" + www.url);
-			yield break;
-		}
-		
 		Rect rect = new Rect(0, 0, www.texture.width, www.texture.height);
 		image.sprite = Sprite.Create(www.texture, rect, new Vector2(.5f, .5f));
-		image.rectTransform.sizeDelta = image.rectTransform.sizeDelta.SetY(rect.height);
+		image.rectTransform.sizeDelta = rect.size;
 		image.color = Color.white;
 
 		loading.gameObject.SetActive(false);

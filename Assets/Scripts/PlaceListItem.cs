@@ -69,6 +69,7 @@ public class PlaceListItem : MonoBehaviour
 			WWW www = new WWW(PHPProxy.Escape(PlaceDetails.BuildURL(place_id,
 			PlaceDetails.Fields.name |
 			PlaceDetails.Fields.geometry |
+			PlaceDetails.Fields.photo |
 			PlaceDetails.Fields.place_id)));
 			yield return www;
 			if (www.error != null)
