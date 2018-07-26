@@ -49,6 +49,7 @@ public class PlaceListItem : MonoBehaviour
 	{
 		data.place = place;
 		StartCoroutine(GetPlaceCoroutine(place.googleid));
+		button.onClick.RemoveAllListeners();
 		button.onClick.AddListener(() => Sidebar.Instance.OnClickPlaceItem(this));
 		isLoading = true;
 	}
@@ -57,6 +58,7 @@ public class PlaceListItem : MonoBehaviour
 	{
 		this.data = data;
 		StartCoroutine(GetPlaceCoroutine(data.place.googleid));
+		button.onClick.RemoveAllListeners();
 		button.onClick.AddListener(() => Sidebar.Instance.OnClickPlaceItem(this));
 		isLoading = true;
 	}
@@ -64,7 +66,7 @@ public class PlaceListItem : MonoBehaviour
 	IEnumerator GetPlaceCoroutine(string place_id)
 	{
 		if (place_id == "") yield break;
-		if (data.placeDetails == null)
+		if (data.placeDetails == null || place_id != data.placeDetails.result.place_id)
 		{
 			WWW www = new WWW(PHPProxy.Escape(PlaceDetails.BuildURL(place_id,
 			PlaceDetails.Fields.name |
@@ -86,13 +88,11 @@ public class PlaceListItem : MonoBehaviour
 			Debug.Log(data.placeDetails.error_message);
 			yield break;
 		}
-		
+
 		nameLabel.text = data.placeDetails.result.name;
 		if (data.place?.arrivaltime != "")
 		{
-			DateTime arrival;
-			if (DateTime.TryParseExact(data.place.arrivaltime, "yyyy-MM-dd HH:mm:ss", null, System.Globalization.DateTimeStyles.None, out arrival))
-				arrivalTimeLabel.text = arrival.ToString("dd MMM HH:mm");
+			arrivalTimeLabel.text = data.place.ArrivalDateTime().ToString("dd MMM HH:mm");
 		}
 
 		yield return new WaitUntil(() => Sidebar.Instance.currentDistanceMatrix != null);

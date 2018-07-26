@@ -19,7 +19,7 @@ public class TextOverflowEllipsis : Text
 		if (scale < 1 && cachedTextGenerator.characterCount >= _THRESHOLD)
 		{
 			updatedText = base.text.Substring(0, cachedTextGenerator.characterCount - _THRESHOLD);
-			updatedText += "...";
+			updatedText += "…";
 		}
 
 		base.OnPopulateMesh(toFill);
@@ -30,7 +30,6 @@ public class TextOverflowEllipsis : Text
 		if (updatedText != "")
 		{
 			base.text = updatedText;
-			updatedText = "";
 		}
 	}
 }

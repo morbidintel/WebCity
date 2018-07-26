@@ -11,6 +11,31 @@ namespace PhpDB
 	{
 		public string placeid, itineraryid, googleid, arrivaltime, createddate;
 		public int labelid, itineraryindex;
+
+		DateTime? arrival = null;
+
+		/// <summary>
+		/// Retrieve the parsed arrival time
+		/// </summary>
+		/// <returns>the arrival time in DateTime, or DateTime.MinValue if unable to parse or arrivaltime is empty</returns>
+		public DateTime ArrivalDateTime()
+		{
+			if (arrival == null)
+			{
+				DateTime temp;
+				if (DateTime.TryParseExact(arrivaltime, "yyyy-MM-dd HH:mm:ss", null, System.Globalization.DateTimeStyles.None, out temp))
+					arrival = temp;
+				else
+					return DateTime.MinValue;
+			}
+
+			return arrival.Value;
+		}
+
+		public void SetArrivalTime(DateTime dateTime)
+		{
+			arrivaltime = dateTime.ToString("yyyy-MM-dd HH:mm:ss");
+		}
 	}
 
 	[Serializable]
@@ -113,15 +138,22 @@ namespace PhpDB
 	}
 
 	[Serializable]
-	public class EditPlaceResult : GetPlacesResult
+	public class EditPlaceResult
 	{
 		public new static string URL =
-			"http://webcity.online/live/db/addplace.php";
+			"http://webcity.online/live/db/editplace.php";
+		public Place place;
+		public string error;
 
 		public static string BuildURL(Place place)
 		{
 			string query = URL + "?placeid={0}&googleid={1}&labelid={2}&itineraryindex={3}&arrivaltime={4}";
-			query = string.Format(query, place.placeid, place.googleid, place.labelid, place.itineraryindex, place.arrivaltime);
+			query = string.Format(query,
+				WWW.EscapeURL(place.placeid),
+				WWW.EscapeURL(place.googleid),
+				place.labelid,
+				place.itineraryindex,
+				WWW.EscapeURL(place.arrivaltime));
 			return query;
 		}
 	}

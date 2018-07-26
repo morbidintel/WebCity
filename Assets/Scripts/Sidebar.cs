@@ -441,26 +441,19 @@ public class Sidebar : Gamelogic.Extensions.Singleton<Sidebar>
 		}
 
 		DistanceMatrix dm = new DistanceMatrix();
-		try
+		dm = JsonUtility.FromJson<DistanceMatrix>(www.text);
+
+
+		if (dm.status != "OK")
 		{
-			dm = JsonUtility.FromJson<DistanceMatrix>(www.text);
-
-			if (dm.status != "OK")
-			{
-				Debug.Log(dm.error_message);
-				yield break;
-			}
-
-			for (int i = 0; i < places.Length; ++i)
-				dm.origin_addresses[i] = dm.destination_addresses[i] = places[i].googleid;
-
-			currentDistanceMatrix = dm;
-		}
-		catch (Exception e)
-		{
-			Debug.Log("Sidebar:GetTravelTimesCoroutine()\n" + e.Message + "\n" + e.StackTrace);
+			Debug.Log(dm.error_message);
 			yield break;
 		}
+
+		for (int i = 0; i < places.Length; ++i)
+			dm.origin_addresses[i] = dm.destination_addresses[i] = places[i].googleid;
+
+		currentDistanceMatrix = dm;
 	}
 	#endregion
 }

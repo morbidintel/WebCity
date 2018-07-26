@@ -24,6 +24,7 @@ public class ItineraryListItem : MonoBehaviour
 		itinerary = data;
 		nameLabel.text = itinerary.name;
 		loading.gameObject.SetActive(false);
+		button.onClick.RemoveAllListeners();
 		button.onClick.AddListener(() =>
 		{
 			Sidebar.Instance.OnClickItineraryItem(this);

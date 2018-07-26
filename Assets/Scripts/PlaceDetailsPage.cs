@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using GoogleMaps;
 using Gamelogic.Extensions;
+using PhpDB;
+using System;
 
 public class PlaceDetailsPage : Singleton<PlaceDetailsPage>
 {
@@ -22,7 +24,7 @@ public class PlaceDetailsPage : Singleton<PlaceDetailsPage>
 
 	public void Init(PlaceListItem place)
 	{
-		if (this.currentPlace == place) return;
+		if (currentPlace == place) return;
 
 		IsLoading = true;
 		currentPlace = place;
@@ -32,11 +34,35 @@ public class PlaceDetailsPage : Singleton<PlaceDetailsPage>
 		loading.gameObject.SetActive(true);
 
 		// TODO: get the time, set the time
-		if (place.data.place.arrivaltime != null)
+		if (place.data.place?.arrivaltime != "")
 		{
+			DateTime arrival = place.data.place.ArrivalDateTime();
+			datePicker.SelectedDate = new UI.Dates.SerializableDate(arrival);
+			hoursDropdown.value = arrival.Hour;
+			minutesDropdown.value = Mathf.FloorToInt(arrival.Minute / 5f);
+		}
+		else
+		{
+			datePicker.SelectedDate = new UI.Dates.SerializableDate();
 		}
 
 		StartCoroutine(GetPhotos(place.data.place.googleid));
+		title.rectTransform.sizeDelta = title.rectTransform.sizeDelta.SetY(title.preferredHeight);
+	}
+
+	public void OnClickSubmit()
+	{
+		if (!datePicker.SelectedDate.HasValue)
+			return;
+
+		Place place = currentPlace.data.place;
+		DateTime arrival = datePicker.SelectedDate
+			.Date
+			.AddHours(hoursDropdown.value)
+			.AddMinutes(minutesDropdown.value * 5);
+		place.SetArrivalTime(arrival);
+
+		StartCoroutine(EditPlaceCoroutine(place));
 	}
 
 	IEnumerator GetPhotos(string place_id)
@@ -91,5 +117,27 @@ public class PlaceDetailsPage : Singleton<PlaceDetailsPage>
 
 		loading.gameObject.SetActive(false);
 		IsLoading = false;
+	}
+
+	IEnumerator EditPlaceCoroutine(Place place)
+	{
+		string url = EditPlaceResult.BuildURL(place);
+		WWW www = new WWW(url);
+		yield return www;
+
+		if (www.error != null)
+		{
+			Debug.Log(www.error);
+			yield break;
+		}
+
+		EditPlaceResult result = JsonUtility.FromJson<EditPlaceResult>(www.text);
+		if (result.error != null)
+		{
+			Debug.Log(result.error);
+			yield break;
+		}
+
+		currentPlace.Init(result.place);
 	}
 }
