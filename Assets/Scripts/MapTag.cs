@@ -56,7 +56,7 @@ public class MapTag : MonoBehaviour, IPointerClickHandler, IDragHandler, IPointe
 	{
 		if (place != null && Sidebar.Instance.currentPage != Sidebar.Page.Itineraries)
 		{
-			if (Sidebar.Instance.IsOnCurrentItinerary(place))
+			if (Sidebar.Instance.IsPlaceOnCurrentItinerary(place))
 				TooltipManager.Instance.ToggleRemovePlaceTooltip(this);
 			else
 				TooltipManager.Instance.ToggleAddPlaceTooltip(this);

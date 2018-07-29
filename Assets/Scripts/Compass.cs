@@ -41,6 +41,8 @@ public class Compass : MonoBehaviour
 
 	public void OnClickCompass()
 	{
+		// move the camera a bit to stop the camera spinning in Sidebar:Update()
+		camera.SetFocusTarget(camera.TargetPosition + new Vector3(camera.TargetDistance * .01f, 0, 0));
 		camera.TargetAzimuth = camera.RealAzimuth < 180f ? 0 : 360;
 		camera.TargetElevation = 89;
 	}

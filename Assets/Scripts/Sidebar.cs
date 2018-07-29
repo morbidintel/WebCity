@@ -61,6 +61,28 @@ public class Sidebar : Gamelogic.Extensions.Singleton<Sidebar>
 		placeDetailsTween.RectTransform().SetLocalPosX(sidebarWidth * 2);
 	}
 
+	void Update()
+	{
+		if (currentPlace != null)
+		{
+			MapCamera cam = MapCamera.Instance;
+			if (cam.TargetPosition ==
+				MapCamera.LatLongToUnity(currentPlace.data.placeDetails.result.geometry.location))
+			{
+				cam.TargetElevation = 45;
+				cam.TargetAzimuth -= Time.deltaTime * cam.rotateAnimationSpeed;
+			}
+		}
+
+		if (currentItinerary != null && Input.GetKeyDown(KeyCode.Space))
+		{
+			if (!Flyby.Instance.isDoingFlyby)
+				Flyby.Instance.StartFlyby(currentItinerary);
+			else
+				Flyby.Instance.StopFlyby();
+		}
+	}
+
 	ItineraryListItem AddItineraryListItem(Itinerary itinerary)
 	{
 		ItineraryListItem item = Instantiate(itineraryItemPrefab, itinerariesHolder)
@@ -127,7 +149,7 @@ public class Sidebar : Gamelogic.Extensions.Singleton<Sidebar>
 		return true;
 	}
 
-	public bool IsOnCurrentItinerary(PlaceDetails place)
+	public bool IsPlaceOnCurrentItinerary(PlaceDetails place)
 	{
 		return currentPage != Page.Itineraries ?
 			false :

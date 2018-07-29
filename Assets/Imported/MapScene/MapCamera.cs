@@ -524,7 +524,7 @@ public class MapCamera : MonoBehaviour
 		return UnityToLatLong(targetPosition);
 	}
 
-	public void SetCameraViewport(GoogleMaps.Geometry geometry, float dist = -1)
+	public void SetCameraViewport(GoogleMaps.Geometry geometry, float dist = -1, bool nospin = false)
 	{
 		var location = geometry.location;
 		var viewport = geometry.viewport;
@@ -538,7 +538,7 @@ public class MapCamera : MonoBehaviour
 			TargetDistance = dist;
 		}
 		SetFocusTarget(LatLongToUnity(location.lat, location.lng));
-		TargetAzimuth = 0;
+		if (!nospin) TargetAzimuth = 0;
 	}
 
 	public float GetRadius()
