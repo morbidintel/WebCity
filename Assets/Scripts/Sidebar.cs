@@ -161,6 +161,7 @@ public class Sidebar : Gamelogic.Extensions.Singleton<Sidebar>
 	{
 		itineraryNameInput.text = item.itinerary.name;
 		StartCoroutine(GetPlacesInItineraryCoroutine(item));
+		//UnityEngine.EventSystems.EventSystem.SetSelectedGameObject(null);
 	}
 
 	public void OnClickPlaceItem(PlaceListItem item)
