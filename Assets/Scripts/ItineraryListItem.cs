@@ -15,7 +15,7 @@ public class ItineraryListItem : MonoBehaviour
 	[SerializeField]
 	Button button = null;
 	[SerializeField]
-	Image loading = null;
+	GameObject loading = null;
 
 	public List<PlaceListItemData> placesData = new List<PlaceListItemData>();
 
@@ -35,7 +35,7 @@ public class ItineraryListItem : MonoBehaviour
 
 	IEnumerator StopLoadingImageCoroutine()
 	{
-		yield return new WaitUntil(() => Sidebar.Instance.currentPage != Sidebar.Page.Itineraries);
+		yield return new WaitUntil(() => Sidebar.Instance.currentPage == Sidebar.Page.Places);
 		loading.gameObject.SetActive(false);
 	}
 }

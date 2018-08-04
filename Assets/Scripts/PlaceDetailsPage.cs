@@ -202,6 +202,7 @@ public class PlaceDetailsPage : Singleton<PlaceDetailsPage>
 		}
 
 		LayoutRebuilder.ForceRebuildLayoutImmediate(GetComponentInChildren<ScrollRect>().content);
+		Sidebar.Instance.GoToPage(Sidebar.Page.PlaceDetails);
 		IsLoading = false;
 	}
 

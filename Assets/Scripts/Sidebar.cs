@@ -171,7 +171,7 @@ public class Sidebar : Gamelogic.Extensions.Singleton<Sidebar>
 
 		currentPlace = item;
 		placeDetailsPage.Init(item);
-		GoToPage(Page.PlaceDetails);
+		// Place Details Page will call GoToPage
 	}
 
 	public void OnClickReturnToItineraries()

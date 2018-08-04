@@ -34,6 +34,8 @@ public class PlaceListItem : MonoBehaviour
 	Text nameLabel = null, arrivalTimeLabel = null, travelTimeLabel = null;
 	[SerializeField]
 	Button button = null;
+	[SerializeField]
+	GameObject loading = null;
 
 	MapTag mapTag = null;
 
@@ -49,8 +51,14 @@ public class PlaceListItem : MonoBehaviour
 	{
 		data.place = place;
 		StartCoroutine(GetPlaceCoroutine(place.googleid));
+		loading.gameObject.SetActive(false);
 		button.onClick.RemoveAllListeners();
-		button.onClick.AddListener(() => Sidebar.Instance.OnClickPlaceItem(this));
+		button.onClick.AddListener(() =>
+		{
+			loading.gameObject.SetActive(true);
+			Sidebar.Instance.OnClickPlaceItem(this);
+			StartCoroutine(StopLoadingImageCoroutine());
+		});
 		isLoading = true;
 	}
 
@@ -58,8 +66,14 @@ public class PlaceListItem : MonoBehaviour
 	{
 		this.data = data;
 		StartCoroutine(GetPlaceCoroutine(data.place.googleid));
+		loading.gameObject.SetActive(false);
 		button.onClick.RemoveAllListeners();
-		button.onClick.AddListener(() => Sidebar.Instance.OnClickPlaceItem(this));
+		button.onClick.AddListener(() =>
+		{
+			loading.gameObject.SetActive(true);
+			Sidebar.Instance.OnClickPlaceItem(this);
+			StartCoroutine(StopLoadingImageCoroutine());
+		});
 		isLoading = true;
 	}
 
@@ -110,5 +124,11 @@ public class PlaceListItem : MonoBehaviour
 		isLoading = false;
 		data.pos = MapCamera.LatLongToUnity(data.placeDetails.result.geometry.location);
 		mapTag = MapTagManager.Instance.ShowPlaceOnMap(data.placeDetails);
+	}
+
+	IEnumerator StopLoadingImageCoroutine()
+	{
+		yield return new WaitUntil(() => Sidebar.Instance.currentPage == Sidebar.Page.PlaceDetails);
+		loading.gameObject.SetActive(false);
 	}
 }
