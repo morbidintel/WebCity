@@ -35,43 +35,56 @@ public class PlaceDetailsPage : Singleton<PlaceDetailsPage>
 
 	[Header("Arrival Time")]
 	[SerializeField]
+	Text arrivalTitle = null;
+	[SerializeField]
 	UI.Dates.DatePicker datePicker = null;
 	[SerializeField]
 	Dropdown hoursDropdown = null, minutesDropdown = null;
 
-	PlaceListItem currentPlace;
+	public PlaceListItem currentPlace { get; private set; } = null;
 
 	public bool IsLoading { get; private set; } = false;
 
+#if UNITY_WEBGL
+	[System.Runtime.InteropServices.DllImport("__Internal")]
+	private static extern void OpenLink(string url);
+#endif
+
 	public void Init(PlaceListItem place)
 	{
-		if (currentPlace == place) return;
-
-		IsLoading = true;
-		currentPlace = place;
-		title.text = place.data.placeDetails.result.name;
-		Destroy(image.sprite);
-		image.color = Color.clear;
-		loading.gameObject.SetActive(true);
-
-		if (place.data.place?.arrivaltime != "")
+		if (currentPlace != place)
 		{
-			DateTime arrival = place.data.place.ArrivalDateTime();
-			datePicker.SelectedDate = new UI.Dates.SerializableDate(arrival);
-			hoursDropdown.value = arrival.Hour;
-			minutesDropdown.value = Mathf.FloorToInt(arrival.Minute / 5f);
+			IsLoading = true;
+			currentPlace = place;
+			title.text = place.data.placeDetails.result.name;
+			Destroy(image.sprite);
+			image.color = Color.clear;
+			loading.gameObject.SetActive(true);
+			UpdateArrivalTime(place.data.place);
+
+			StartCoroutine(GetPhotos(place.data.place.googleid));
+			StartCoroutine(GetDetails(place.data.place.googleid));
 		}
 		else
 		{
-			datePicker.SelectedDate = new UI.Dates.SerializableDate();
+			IsLoading = false;
+			Sidebar.Instance.GoToPage(Sidebar.Page.PlaceDetails);
 		}
 
-		StartCoroutine(GetPhotos(place.data.place.googleid));
-		StartCoroutine(GetDetails(place.data.place.googleid));
 		title.rectTransform.sizeDelta = title.rectTransform.sizeDelta.SetY(title.preferredHeight);
+		GetComponentInChildren<ScrollRect>().verticalScrollbar.value = 1;
 	}
 
-	public void OnClickSubmit()
+	public void OnClickWebsite()
+	{
+#if UNITY_WEBGL && !UNITY_EDITOR
+		OpenLink(websiteText.text);
+#else
+		Application.OpenURL(websiteText.text);
+#endif
+	}
+
+	public void OnClickSave()
 	{
 		if (!datePicker.SelectedDate.HasValue)
 			return;
@@ -86,11 +99,28 @@ public class PlaceDetailsPage : Singleton<PlaceDetailsPage>
 		StartCoroutine(EditPlaceCoroutine(place));
 	}
 
+	void UpdateArrivalTime(Place place)
+	{
+		arrivalTitle.text = "Arrival Time";
+		if (place?.arrivaltime != "")
+		{
+			DateTime arrival = place.ArrivalDateTime();
+			arrivalTitle.text += ": " + arrival.ToString(Place.timeDisplayFormat);
+			datePicker.SelectedDate = new UI.Dates.SerializableDate(arrival);
+			hoursDropdown.value = arrival.Hour;
+			minutesDropdown.value = Mathf.FloorToInt(arrival.Minute / 5f);
+		}
+		else
+		{
+			datePicker.SelectedDate = new UI.Dates.SerializableDate();
+		}
+	}
+
 	IEnumerator GetPhotos(string place_id)
 	{
 		WWW www;
 		string photo_reference = "";
-		if (currentPlace.data.placeDetails.result.photos == null)
+		if (currentPlace?.data.placeDetails.result.photos == null)
 		{
 			www = new WWW(PHPProxy.Escape(PlaceDetails.BuildURL(
 				place_id,
@@ -142,8 +172,9 @@ public class PlaceDetailsPage : Singleton<PlaceDetailsPage>
 	IEnumerator GetDetails(string place_id)
 	{
 		WWW www;
-		PlaceDetails.Result result = currentPlace.data.placeDetails.result;
-		if (result.formatted_address == null || result.formatted_address == "" ||
+		PlaceDetails.Result result = currentPlace?.data.placeDetails.result;
+		if (result == null ||
+			result.formatted_address == null || result.formatted_address == "" ||
 			result.website == null || result.website == "" ||
 			result.international_phone_number == null || result.international_phone_number == "" ||
 			result.opening_hours.weekday_text == null)
@@ -155,7 +186,6 @@ public class PlaceDetailsPage : Singleton<PlaceDetailsPage>
 				PlaceDetails.Fields.international_phone_number |
 				PlaceDetails.Fields.opening_hours)));
 			yield return www;
-			Debug.Log(www.url);
 			if (www.error != null)
 			{
 				Debug.Log(www.error);
@@ -182,7 +212,9 @@ public class PlaceDetailsPage : Singleton<PlaceDetailsPage>
 		websiteGroup.SetActive(result.website != null && result.website != "");
 		if (websiteGroup.activeInHierarchy)
 		{
-			websiteText.text = result.website;
+			websiteText.text = new Regex(@"^(?:https?:\/\/)?(?:www\.)?")
+				.Replace(result.website, "")
+				.TrimEnd('/');
 		}
 
 		phoneGroup.SetActive(result.international_phone_number != null && result.international_phone_number != "");
@@ -225,6 +257,7 @@ public class PlaceDetailsPage : Singleton<PlaceDetailsPage>
 			yield break;
 		}
 
-		currentPlace.Init(result.place);
+		currentPlace.UpdatePlace(result.place);
+		UpdateArrivalTime(result.place);
 	}
 }

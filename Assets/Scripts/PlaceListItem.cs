@@ -77,6 +77,15 @@ public class PlaceListItem : MonoBehaviour
 		isLoading = true;
 	}
 
+	public void UpdatePlace(Place place)
+	{
+		data.place = place;
+		if (place?.arrivaltime != "")
+		{
+			arrivalTimeLabel.text = place.ArrivalDateTime().ToString(Place.timeDisplayFormat);
+		}
+	}
+
 	IEnumerator GetPlaceCoroutine(string place_id)
 	{
 		if (place_id == "") yield break;
@@ -106,7 +115,7 @@ public class PlaceListItem : MonoBehaviour
 		nameLabel.text = data.placeDetails.result.name;
 		if (data.place?.arrivaltime != "")
 		{
-			arrivalTimeLabel.text = data.place.ArrivalDateTime().ToString("dd MMM HH:mm");
+			arrivalTimeLabel.text = data.place.ArrivalDateTime().ToString(Place.timeDisplayFormat);
 		}
 
 		yield return new WaitUntil(() => Sidebar.Instance.currentDistanceMatrix != null);

@@ -39,7 +39,6 @@ public class Sidebar : Gamelogic.Extensions.Singleton<Sidebar>
 	List<PlaceListItem> placesShown = new List<PlaceListItem>();
 
 	ItineraryListItem currentItinerary = null;
-	PlaceListItem currentPlace = null;
 	public DistanceMatrix currentDistanceMatrix { get; private set; } = null;
 
 	public bool IsHidden { get; private set; } = false;
@@ -59,28 +58,6 @@ public class Sidebar : Gamelogic.Extensions.Singleton<Sidebar>
 		itinerariesTween.RectTransform().SetLocalPosX(0);
 		placesTween.RectTransform().SetLocalPosX(sidebarWidth);
 		placeDetailsTween.RectTransform().SetLocalPosX(sidebarWidth * 2);
-	}
-
-	void Update()
-	{
-		if (currentPlace != null)
-		{
-			MapCamera cam = MapCamera.Instance;
-			if (cam.TargetPosition ==
-				MapCamera.LatLongToUnity(currentPlace.data.placeDetails.result.geometry.location))
-			{
-				cam.TargetElevation = 45;
-				cam.TargetAzimuth -= Time.deltaTime * cam.rotateAnimationSpeed;
-			}
-		}
-
-		if (currentItinerary != null && Input.GetKeyDown(KeyCode.Space))
-		{
-			if (!Flyby.Instance.isDoingFlyby)
-				Flyby.Instance.StartFlyby(currentItinerary);
-			else
-				Flyby.Instance.StopFlyby();
-		}
 	}
 
 	ItineraryListItem AddItineraryListItem(Itinerary itinerary)
@@ -146,6 +123,14 @@ public class Sidebar : Gamelogic.Extensions.Singleton<Sidebar>
 		placesTween.DORestart(true);
 		placeDetailsTween.DORestart(true);
 		currentPage = page;
+
+		if (page == Page.Places && currentItinerary)
+			Flyby.Instance.StartFlyby(currentItinerary, 5f);
+		else if (page == Page.PlaceDetails && placeDetailsPage?.currentPlace?.data?.placeDetails != null)
+			Flyby.Instance.StartFlyby(placeDetailsPage.currentPlace.data.placeDetails);
+		else
+			Flyby.Instance.StopFlyby();
+
 		return true;
 	}
 
@@ -156,12 +141,26 @@ public class Sidebar : Gamelogic.Extensions.Singleton<Sidebar>
 			placesShown.Any(i => i.data.placeDetails.result.place_id == place.result.place_id);
 	}
 
+	void ZoomToSeeAllPlaces()
+	{
+		if (placesShown.Count > 0)
+		{
+			// move camera to see all places
+			var positions = placesShown.Select(p => p.data.pos);
+			Vector3 center = positions
+				.Aggregate(Vector3.zero, (total, next) => total + next)
+				/ placesShown.Count;
+			float maxDist = positions
+				.Aggregate(0f, (total, next) => Mathf.Clamp((next - center).magnitude, total, float.MaxValue));
+			MapCamera.Instance.Reset(center, Quaternion.Euler(90, 0, 0), maxDist * 2f);
+		}
+	}
+
 	#region Triggers
 	public void OnClickItineraryItem(ItineraryListItem item)
 	{
 		itineraryNameInput.text = item.itinerary.name;
 		StartCoroutine(GetPlacesInItineraryCoroutine(item));
-		//UnityEngine.EventSystems.EventSystem.SetSelectedGameObject(null);
 	}
 
 	public void OnClickPlaceItem(PlaceListItem item)
@@ -169,7 +168,6 @@ public class Sidebar : Gamelogic.Extensions.Singleton<Sidebar>
 		if (item.data.placeDetails != null)
 			MapCamera.Instance.SetCameraViewport(item.data.placeDetails.result.geometry);
 
-		currentPlace = item;
 		placeDetailsPage.Init(item);
 		// Place Details Page will call GoToPage
 	}
@@ -184,8 +182,8 @@ public class Sidebar : Gamelogic.Extensions.Singleton<Sidebar>
 
 	public void OnClickReturnToPlaces()
 	{
-		currentPlace = null;
 		GoToPage(Page.Places);
+		ZoomToSeeAllPlaces();
 	}
 
 	public void OnSubmitNewItinerary(string itineraryName)
@@ -294,21 +292,7 @@ public class Sidebar : Gamelogic.Extensions.Singleton<Sidebar>
 
 		currentItinerary = itinerary;
 		GoToPage(Page.Places);
-		if (placesShown.Count > 0)
-		{
-			// move camera to see all places
-			var positions = itinerary.placesData.Select(p => p.pos);
-			Vector3 center = positions
-			.Aggregate(Vector3.zero, (total, next) => total + next)
-			/ itinerary.placesData.Count;
-			float maxDist = positions
-			.Aggregate(0f, (total, next) =>
-			{
-				float dist = (next - center).magnitude;
-				return dist > total ? dist : total;
-			});
-			MapCamera.Instance.Reset(center, Quaternion.Euler(90, 0, 0), maxDist * 2f);
-		}
+		ZoomToSeeAllPlaces();
 	}
 
 	IEnumerator GetPlaceCoroutine(string place_id)

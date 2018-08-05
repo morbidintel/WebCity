@@ -14,6 +14,9 @@ namespace PhpDB
 
 		DateTime? arrival = null;
 
+		public static string timeDBFormat = "yyyy-MM-dd HH:mm:ss";
+		public static string timeDisplayFormat = "dd MMM HH:mm";
+
 		/// <summary>
 		/// Retrieve the parsed arrival time
 		/// </summary>
@@ -23,7 +26,7 @@ namespace PhpDB
 			if (arrival == null)
 			{
 				DateTime temp;
-				if (DateTime.TryParseExact(arrivaltime, "yyyy-MM-dd HH:mm:ss", null, System.Globalization.DateTimeStyles.None, out temp))
+				if (DateTime.TryParseExact(arrivaltime, timeDBFormat, null, System.Globalization.DateTimeStyles.None, out temp))
 					arrival = temp;
 				else
 					return DateTime.MinValue;
@@ -34,7 +37,7 @@ namespace PhpDB
 
 		public void SetArrivalTime(DateTime dateTime)
 		{
-			arrivaltime = dateTime.ToString("yyyy-MM-dd HH:mm:ss");
+			arrivaltime = dateTime.ToString(timeDBFormat);
 		}
 	}
 
