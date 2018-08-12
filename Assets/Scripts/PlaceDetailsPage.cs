@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using GoogleMaps;
@@ -7,13 +8,22 @@ using Gamelogic.Extensions;
 using PhpDB;
 using System;
 using System.Text.RegularExpressions;
+using DG.Tweening;
 
 public class PlaceDetailsPage : Singleton<PlaceDetailsPage>
 {
 	[SerializeField]
 	Text title = null;
 	[SerializeField]
-	Image image = null, loading = null;
+	RectTransform content = null;
+	[SerializeField]
+	GameObject loading = null;
+
+	[Header("Photos")]
+	[SerializeField]
+	Image currentPhoto = null;
+	[SerializeField]
+	Image photoLoading = null;
 
 	[Header("Place Information")]
 	[SerializeField]
@@ -37,6 +47,8 @@ public class PlaceDetailsPage : Singleton<PlaceDetailsPage>
 	[SerializeField]
 	Text arrivalTitle = null;
 	[SerializeField]
+	DOTweenAnimation[] arrivalAnims;
+	[SerializeField]
 	UI.Dates.DatePicker datePicker = null;
 	[SerializeField]
 	Dropdown hoursDropdown = null, minutesDropdown = null;
@@ -50,17 +62,18 @@ public class PlaceDetailsPage : Singleton<PlaceDetailsPage>
 	private static extern void OpenLink(string url);
 #endif
 
-	public void Init(PlaceListItem place)
+	public void Load(PlaceListItem place)
 	{
 		if (currentPlace != place)
 		{
 			IsLoading = true;
 			currentPlace = place;
 			title.text = place.data.placeDetails.result.name;
-			Destroy(image.sprite);
-			image.color = Color.clear;
+			Destroy(currentPhoto.sprite);
+			currentPhoto.color = Color.clear;
 			loading.gameObject.SetActive(true);
 			UpdateArrivalTime(place.data.place);
+			OnToggleArrivalContent(false);
 
 			StartCoroutine(GetPhotos(place.data.place.googleid));
 			StartCoroutine(GetDetails(place.data.place.googleid));
@@ -73,6 +86,28 @@ public class PlaceDetailsPage : Singleton<PlaceDetailsPage>
 
 		title.rectTransform.sizeDelta = title.rectTransform.sizeDelta.SetY(title.preferredHeight);
 		GetComponentInChildren<ScrollRect>().verticalScrollbar.value = 1;
+	}
+
+	void UpdateArrivalTime(Place place)
+	{
+		arrivalTitle.text = "Arrival Time";
+		if (place?.arrivaltime != "")
+		{
+			DateTime arrival = place.ArrivalDateTime();
+			arrivalTitle.text += ": " + arrival.ToString(Place.timeDisplayFormat);
+			datePicker.SelectedDate = new UI.Dates.SerializableDate(arrival);
+			hoursDropdown.value = arrival.Hour;
+			minutesDropdown.value = Mathf.FloorToInt(arrival.Minute / 5f);
+		}
+		else
+		{
+			datePicker.SelectedDate = new UI.Dates.SerializableDate();
+		}
+	}
+
+	public void ForceUpdateLayout()
+	{
+		LayoutRebuilder.MarkLayoutForRebuild(content);
 	}
 
 	public void OnClickWebsite()
@@ -99,21 +134,20 @@ public class PlaceDetailsPage : Singleton<PlaceDetailsPage>
 		StartCoroutine(EditPlaceCoroutine(place));
 	}
 
-	void UpdateArrivalTime(Place place)
+	public void OnToggleArrivalContent(bool on)
 	{
-		arrivalTitle.text = "Arrival Time";
-		if (place?.arrivaltime != "")
+		foreach (var anim in arrivalAnims)
 		{
-			DateTime arrival = place.ArrivalDateTime();
-			arrivalTitle.text += ": " + arrival.ToString(Place.timeDisplayFormat);
-			datePicker.SelectedDate = new UI.Dates.SerializableDate(arrival);
-			hoursDropdown.value = arrival.Hour;
-			minutesDropdown.value = Mathf.FloorToInt(arrival.Minute / 5f);
+			if (on) anim.DOPlayBackwards();
+			else anim.DORestart();
 		}
-		else
-		{
-			datePicker.SelectedDate = new UI.Dates.SerializableDate();
-		}
+	}
+
+	public void OnClickRemove()
+	{
+		Sidebar.Instance.OnClickRemovePlaceTooltip(currentPlace.data.placeDetails);
+		loading.SetActive(true);
+		StartCoroutine(RemovePlaceCoroutine());
 	}
 
 	IEnumerator GetPhotos(string place_id)
@@ -146,6 +180,10 @@ public class PlaceDetailsPage : Singleton<PlaceDetailsPage>
 
 			photo_reference = place.result.photos[0].photo_reference;
 		}
+		else if (currentPlace.data.placeDetails.result.photos.Length == 0)
+		{
+			yield break;
+		}
 		else
 		{
 			photo_reference = currentPlace.data.placeDetails.result.photos[0].photo_reference;
@@ -162,9 +200,10 @@ public class PlaceDetailsPage : Singleton<PlaceDetailsPage>
 		}
 
 		Rect rect = new Rect(0, 0, www.texture.width, www.texture.height);
-		image.sprite = Sprite.Create(www.texture, rect, new Vector2(.5f, .5f));
-		image.rectTransform.sizeDelta = rect.size;
-		image.color = Color.white;
+		currentPhoto.sprite = Sprite.Create(www.texture, rect, new Vector2(.5f, .5f));
+		currentPhoto.rectTransform.sizeDelta = rect.size;
+		currentPhoto.color = Color.white;
+		currentPhoto.name = photo_reference;
 
 		loading.gameObject.SetActive(false);
 	}
@@ -259,5 +298,12 @@ public class PlaceDetailsPage : Singleton<PlaceDetailsPage>
 
 		currentPlace.UpdatePlace(result.place);
 		UpdateArrivalTime(result.place);
+	}
+
+	IEnumerator RemovePlaceCoroutine()
+	{
+		yield return new WaitUntil(() => currentPlace == null);
+		Sidebar.Instance.GoToPage(Sidebar.Page.Places);
+		loading.SetActive(false);
 	}
 }

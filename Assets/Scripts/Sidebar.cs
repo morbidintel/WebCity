@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.UI.Extensions;
 using DG.Tweening;
 using PhpDB;
 using GoogleMaps;
@@ -156,6 +157,26 @@ public class Sidebar : Gamelogic.Extensions.Singleton<Sidebar>
 		}
 	}
 
+	void ValidateArrivalTimings(IOrderedEnumerable<PlaceListItem> placesOrdered)
+	{
+		List<DateTime> arrivals = placesOrdered
+			.Select(p => p.data.place.ArrivalDateTime())
+			.ToList();
+		for (int i = 0; i < arrivals.Count; ++i)
+		{
+			bool isValid = true;
+			for (int j = 0; j < i; ++j)
+			{
+				if (arrivals[i] < arrivals[j])
+				{
+					isValid = false;
+					break;
+				}
+			}
+			placesOrdered.ElementAt(i).SetArrivalValid(isValid);
+		}
+	}
+
 	#region Triggers
 	public void OnClickItineraryItem(ItineraryListItem item)
 	{
@@ -168,7 +189,7 @@ public class Sidebar : Gamelogic.Extensions.Singleton<Sidebar>
 		if (item.data.placeDetails != null)
 			MapCamera.Instance.SetCameraViewport(item.data.placeDetails.result.geometry);
 
-		placeDetailsPage.Init(item);
+		placeDetailsPage.Load(item);
 		// Place Details Page will call GoToPage
 	}
 
@@ -212,6 +233,48 @@ public class Sidebar : Gamelogic.Extensions.Singleton<Sidebar>
 	public void OnClickRemovePlaceTooltip(PlaceDetails place)
 	{
 		StartCoroutine(RemovePlaceCoroutine(currentItinerary, place));
+	}
+
+	public void OnElementAdded(ReorderableList.ReorderableListEventStruct e)
+	{
+		var placesOrdered = placesShown.OrderBy(p => p.transform.GetSiblingIndex());
+
+		// move around elements in the distance matrix
+		// don't have to call Google again, also instant change
+		var orig = new System.Collections.ObjectModel.ObservableCollection<string>(
+			currentDistanceMatrix.origin_addresses);
+		var dest = new System.Collections.ObjectModel.ObservableCollection<string>(
+			currentDistanceMatrix.destination_addresses);
+		var rows = new System.Collections.ObjectModel.ObservableCollection<DistanceMatrix.Row>(
+			currentDistanceMatrix.rows);
+		orig.Move(e.FromIndex, e.ToIndex);
+		dest.Move(e.FromIndex, e.ToIndex);
+		rows.Move(e.FromIndex, e.ToIndex);
+		foreach (var r in rows)
+		{
+			var elems = new System.Collections.ObjectModel.ObservableCollection<DistanceMatrix.Element>(
+				r.elements);
+			elems.Move(e.FromIndex, e.ToIndex);
+			r.elements = elems.ToArray();
+		}
+		currentDistanceMatrix.origin_addresses = orig.ToArray();
+		currentDistanceMatrix.destination_addresses = dest.ToArray();
+		currentDistanceMatrix.rows = rows.ToArray();
+
+		//currentDistanceMatrix = null;
+		//StartCoroutine(GetTravelTimesCoroutine(placesOrdered.Select(p => p.data.place)));
+
+		foreach (var p in placesOrdered)
+		{
+			int index = p.transform.GetSiblingIndex();
+			index = index > e.ToIndex ? index - 1 : index;
+
+			p.data.place.itineraryindex = index;
+			StartCoroutine(EditPlaceCoroutine(p));
+			StartCoroutine(p.GetTravelTimes());
+		}
+
+		ValidateArrivalTimings(placesOrdered);
 	}
 	#endregion
 
@@ -270,13 +333,15 @@ public class Sidebar : Gamelogic.Extensions.Singleton<Sidebar>
 			}
 			else
 			{
-
-				StartCoroutine(GetTravelTimesCoroutine(json.places));
-				foreach (var place in json.places.OrderBy(p => p.itineraryindex))
+				var placesOrdered = json.places.OrderBy(p => p.itineraryindex);
+				StartCoroutine(GetTravelTimesCoroutine(placesOrdered.ToList()));
+				foreach (var place in placesOrdered)
 				{
 					var newItem = AddPlaceListItem(place);
 					itinerary.placesData.Add(newItem.data);
 				}
+
+				ValidateArrivalTimings(placesShown.OrderBy(p => p.data.place.itineraryindex));
 			}
 		}
 		else
@@ -285,7 +350,7 @@ public class Sidebar : Gamelogic.Extensions.Singleton<Sidebar>
 			{
 				AddPlaceListItem(data);
 			}
-			StartCoroutine(GetTravelTimesCoroutine(itinerary.placesData.Select(d => d.place).ToArray()));
+			StartCoroutine(GetTravelTimesCoroutine(itinerary.placesData.Select(d => d.place).ToList()));
 		}
 
 		yield return new WaitUntil(() => placesShown.All(p => !p.isLoading));
@@ -435,7 +500,7 @@ public class Sidebar : Gamelogic.Extensions.Singleton<Sidebar>
 		}
 	}
 
-	IEnumerator GetTravelTimesCoroutine(Place[] places)
+	IEnumerator GetTravelTimesCoroutine(IEnumerable<Place> places)
 	{
 		string[] placeIDs = places.Select(p => p.googleid).ToArray();
 		WWW www = new WWW(PHPProxy.Escape(DistanceMatrix.BuildURL(placeIDs, placeIDs)));
@@ -450,17 +515,36 @@ public class Sidebar : Gamelogic.Extensions.Singleton<Sidebar>
 		DistanceMatrix dm = new DistanceMatrix();
 		dm = JsonUtility.FromJson<DistanceMatrix>(www.text);
 
-
 		if (dm.status != "OK")
 		{
 			Debug.Log(dm.error_message);
 			yield break;
 		}
 
-		for (int i = 0; i < places.Length; ++i)
-			dm.origin_addresses[i] = dm.destination_addresses[i] = places[i].googleid;
+		for (int i = 0; i < places.Count(); ++i)
+			dm.origin_addresses[i] = dm.destination_addresses[i] = places.ElementAt(i).googleid;
 
 		currentDistanceMatrix = dm;
+	}
+
+	IEnumerator EditPlaceCoroutine(PlaceListItem place)
+	{
+		string url = EditPlaceResult.BuildURL(place.data.place);
+		WWW www = new WWW(url);
+		yield return www;
+
+		if (www.error != null)
+		{
+			Debug.Log(www.error);
+			yield break;
+		}
+
+		EditPlaceResult result = JsonUtility.FromJson<EditPlaceResult>(www.text);
+		if (result.error != null)
+		{
+			Debug.Log(result.error);
+			yield break;
+		}
 	}
 	#endregion
 }

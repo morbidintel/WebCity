@@ -17,6 +17,14 @@ public class Flyby : Singleton<Flyby>
 	{
 		if (isDoingFlyby)
 		{
+			if (Input.GetMouseButton(0) ||
+				Input.GetMouseButton(1) ||
+				Input.GetMouseButton(2))
+			{
+				StopFlyby();
+				return;
+			}
+
 			MapCamera cam = MapCamera.Instance;
 			cam.TargetElevation = 30;
 			cam.TargetAzimuth -= Time.deltaTime * cam.rotateAnimationSpeed * 2;

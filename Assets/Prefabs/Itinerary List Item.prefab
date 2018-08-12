@@ -288,7 +288,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Lorem ipsum dolor s...
+  m_Text: 
 --- !u!114 &114483090422751704
 MonoBehaviour:
   m_ObjectHideFlags: 1

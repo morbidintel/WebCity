@@ -12,6 +12,7 @@ namespace PhpDB
 		public string placeid, itineraryid, googleid, arrivaltime, createddate;
 		public int labelid, itineraryindex;
 
+		[System.Runtime.Serialization.IgnoreDataMember]
 		DateTime? arrival = null;
 
 		public static string timeDBFormat = "yyyy-MM-dd HH:mm:ss";
@@ -26,7 +27,8 @@ namespace PhpDB
 			if (arrival == null)
 			{
 				DateTime temp;
-				if (DateTime.TryParseExact(arrivaltime, timeDBFormat, null, System.Globalization.DateTimeStyles.None, out temp))
+				if (!string.IsNullOrEmpty(arrivaltime) &&
+					DateTime.TryParseExact(arrivaltime, timeDBFormat, null, System.Globalization.DateTimeStyles.None, out temp))
 					arrival = temp;
 				else
 					return DateTime.MinValue;
@@ -165,7 +167,16 @@ namespace PhpDB
 	public class RemovePlaceResult : GetPlacesResult
 	{
 		public new static string URL =
-			"http://webcity.online/live/db/removeplace.php?itineraryid={0}&googleid={1}";
+			"http://webcity.online/live/db/removeplace.php";
+
+		public static string BuildURL(Place place)
+		{
+			string query = URL + "?itineraryid={0}&placeid={1}";
+			query = string.Format(query,
+				WWW.EscapeURL(place.itineraryid),
+				WWW.EscapeURL(place.placeid));
+			return query;
+		}
 	}
 
 	[Serializable]

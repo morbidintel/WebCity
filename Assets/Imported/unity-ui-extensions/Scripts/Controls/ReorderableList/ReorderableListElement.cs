@@ -28,7 +28,7 @@ namespace UnityEngine.UI.Extensions
         private RectTransform _fakeElement;
         private LayoutElement _fakeElementLE;
         private int _fromIndex;
-        private bool _isDragging;
+        public bool _isDragging { get; private set; }
         private RectTransform _rect;
         private ReorderableList _reorderableList;
         internal bool isValid;
@@ -181,7 +181,6 @@ namespace UnityEngine.UI.Extensions
                 RefreshSizes();
                 _fakeElement.SetSiblingIndex(targetIndex);
                 _fakeElement.gameObject.SetActive(true);
-
             }
         }
 
@@ -313,9 +312,14 @@ namespace UnityEngine.UI.Extensions
             }
 
             _draggingObject.sizeDelta = size;
-            _fakeElementLE.preferredHeight = _draggingObjectLE.preferredHeight = size.y;
-            _fakeElementLE.preferredWidth = _draggingObjectLE.preferredWidth = size.x;
-        }
+			if (_draggingObjectLE)
+			{
+				_draggingObjectLE.preferredHeight = size.y;
+				_draggingObjectLE.preferredWidth = size.x;
+			}
+			_fakeElementLE.preferredHeight = size.y;
+			_fakeElementLE.preferredWidth = size.x;
+		}
 
         public void Init(ReorderableList reorderableList)
         {

@@ -477,7 +477,7 @@ public class MapCamera : MonoBehaviour
 
 		// move viewport rect with sidebar movement
 		float sidebarx = Sidebar.Instance.RectTransform().anchoredPosition.x / Sidebar.Instance.TweenMaxX;
-		Camera.main.rect = new Rect(Mathf.Lerp(0, 0.245f, sidebarx), 0, Mathf.Lerp(0.751f, 1, 1 - sidebarx), 1);
+		Camera.main.rect = new Rect(Mathf.Lerp(0, 0.245f, sidebarx), 0, Mathf.Lerp(0.755f, 1, 1 - sidebarx), 1);
 	}
 
 	public static Vector3 LatLongToUnity(GoogleMaps.Coords coords)

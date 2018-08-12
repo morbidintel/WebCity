@@ -48,7 +48,7 @@ public class MapSceneController : Singleton<MapSceneController>
 			{
 				if (v) v.PruneInvisible();
 			}
-			Debug.Log("Pruned because all tiles = " + alltiles.Count);
+			//Debug.Log("Pruned because all tiles = " + alltiles.Count);
 			Resources.UnloadUnusedAssets();
 		}
 	}

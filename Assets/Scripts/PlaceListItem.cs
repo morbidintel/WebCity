@@ -3,8 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using PhpDB;
 using GoogleMaps;
+using UnityEngine.UI.Extensions;
 
 public class PlaceListItemData
 {
@@ -26,7 +28,7 @@ public class PlaceListItemData
 	}
 }
 
-public class PlaceListItem : MonoBehaviour
+public class PlaceListItem : MonoBehaviour//, IPointerDownHandler, IPointerUpHandler
 {
 	public PlaceListItemData data { get; private set; } = new PlaceListItemData();
 
@@ -36,15 +38,23 @@ public class PlaceListItem : MonoBehaviour
 	Button button = null;
 	[SerializeField]
 	GameObject loading = null;
+	[SerializeField]
+	ReorderableListElement reorderableListElement = null;
 
 	MapTag mapTag = null;
 
 	public bool isLoading { get; private set; } = false;
+	public bool isReordering { get; private set; } = false;
 
 	void OnDestroy()
 	{
 		if (mapTag) MapTagManager.Instance?.ClearMapTag(mapTag);
 		Destroy(gameObject);
+	}
+
+	void Update()
+	{
+		button.interactable = !reorderableListElement._isDragging;
 	}
 
 	public void Init(Place place)
@@ -60,21 +70,16 @@ public class PlaceListItem : MonoBehaviour
 			StartCoroutine(StopLoadingImageCoroutine());
 		});
 		isLoading = true;
+
+		if (place?.arrivaltime != "")
+		{
+			arrivalTimeLabel.text = place.ArrivalDateTime().ToString(Place.timeDisplayFormat);
+		}
 	}
 
 	public void Init(PlaceListItemData data)
 	{
-		this.data = data;
-		StartCoroutine(GetPlaceCoroutine(data.place.googleid));
-		loading.gameObject.SetActive(false);
-		button.onClick.RemoveAllListeners();
-		button.onClick.AddListener(() =>
-		{
-			loading.gameObject.SetActive(true);
-			Sidebar.Instance.OnClickPlaceItem(this);
-			StartCoroutine(StopLoadingImageCoroutine());
-		});
-		isLoading = true;
+		Init(data.place);
 	}
 
 	public void UpdatePlace(Place place)
@@ -83,6 +88,25 @@ public class PlaceListItem : MonoBehaviour
 		if (place?.arrivaltime != "")
 		{
 			arrivalTimeLabel.text = place.ArrivalDateTime().ToString(Place.timeDisplayFormat);
+		}
+	}
+
+	public void SetArrivalValid(bool valid)
+	{
+		// label color not directly change to preserve original color
+		if (valid)
+		{
+			arrivalTimeLabel.text =
+				arrivalTimeLabel.text
+				.Replace("<color=red>", "")
+				.Replace("</color>", "");
+		}
+		else
+		{
+			arrivalTimeLabel.text =
+				"<color=red>" +
+				arrivalTimeLabel.text +
+				"</color>";
 		}
 	}
 
@@ -112,12 +136,17 @@ public class PlaceListItem : MonoBehaviour
 			yield break;
 		}
 
-		nameLabel.text = data.placeDetails.result.name;
-		if (data.place?.arrivaltime != "")
-		{
-			arrivalTimeLabel.text = data.place.ArrivalDateTime().ToString(Place.timeDisplayFormat);
-		}
+		nameLabel.text = gameObject.name = data.placeDetails.result.name;
 
+		yield return GetTravelTimes();
+
+		isLoading = false;
+		data.pos = MapCamera.LatLongToUnity(data.placeDetails.result.geometry.location);
+		mapTag = MapTagManager.Instance.ShowPlaceOnMap(data.placeDetails);
+	}
+
+	public IEnumerator GetTravelTimes()
+	{
 		yield return new WaitUntil(() => Sidebar.Instance.currentDistanceMatrix != null);
 		try
 		{
@@ -129,10 +158,6 @@ public class PlaceListItem : MonoBehaviour
 		{
 			travelTimeLabel.text = "";
 		}
-
-		isLoading = false;
-		data.pos = MapCamera.LatLongToUnity(data.placeDetails.result.geometry.location);
-		mapTag = MapTagManager.Instance.ShowPlaceOnMap(data.placeDetails);
 	}
 
 	IEnumerator StopLoadingImageCoroutine()
