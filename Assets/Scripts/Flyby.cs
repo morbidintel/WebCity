@@ -13,21 +13,24 @@ public class Flyby : Singleton<Flyby>
 	List<GoogleMaps.Geometry> geometries;
 	public bool isDoingFlyby { get; private set; } = false;
 
+	float expectedAzimuth, expectedElevation;
+	Vector3 expectedPosition;
+
 	void Update()
 	{
 		if (isDoingFlyby)
 		{
-			if (Input.GetMouseButton(0) ||
-				Input.GetMouseButton(1) ||
-				Input.GetMouseButton(2))
+			MapCamera cam = MapCamera.Instance;
+
+			if (cam.HasMoved)
 			{
 				StopFlyby();
-				return;
 			}
-
-			MapCamera cam = MapCamera.Instance;
-			cam.TargetElevation = 30;
-			cam.TargetAzimuth -= Time.deltaTime * cam.rotateAnimationSpeed * 2;
+			else
+			{
+				cam.TargetAzimuth -= Time.deltaTime * cam.rotateAnimationSpeed * 2;
+				expectedAzimuth = Mathf.Repeat(cam.TargetAzimuth, 360f);
+			}
 		}
 	}
 
@@ -63,8 +66,13 @@ public class Flyby : Singleton<Flyby>
 		{
 			var viewport = g.viewport;
 			float diag = (MapCamera.LatLongToUnity(viewport.northeast) - MapCamera.LatLongToUnity(viewport.southwest)).magnitude;
-			float dist = Mathf.Clamp(diag, 0.5f, MapCamera.Instance.maxDistance) / 2f;
-			MapCamera.Instance.SetCameraViewport(g, dist, true);
+			float dist = Mathf.Clamp(diag / 2f, 0.5f, MapCamera.Instance.maxDistance);
+			MapCamera cam = MapCamera.Instance;
+			cam.SetCameraViewport(g, dist, true);
+
+			expectedPosition = cam.TargetPosition;
+			expectedAzimuth = cam.RealAzimuth;
+			expectedElevation = cam.TargetElevation = 30f;
 			yield return new WaitForSecondsRealtime(flybyInterval);
 		}
 

@@ -60,8 +60,6 @@ public class MapCamera : MonoBehaviour
 	float dx, dy; //stores the per frame delta mouse positions when clicked
 	float totalMovement = 0;
 	const float totalMovementThreshold = 18.0f;
-	bool hasMoved = false;
-
 	Vector3 anchorPosition;
 	//allow people to anchor the camera to prevent panning further than distance
 	public float anchorDistanceLimitAtMaxZoom = 0; //if non zero, limit distance
@@ -70,8 +68,8 @@ public class MapCamera : MonoBehaviour
 
 	//allow people to adjust camera properties
 	public float TargetDistance { get; set; }
-	public float TargetAzimuth { get; set; }
 	public float TargetElevation { get; set; }
+	public float TargetAzimuth { get; set; }
 
 	[ReadOnly]
 	[SerializeField]
@@ -87,7 +85,8 @@ public class MapCamera : MonoBehaviour
 	float lerpTargetPositionTimer;
 
 	public bool IsMoving { get { return (dx != 0 || dy != 0); } }
-	public bool HasMoved { get { return hasMoved; } }//applies to both pan and rotate
+	public bool HasMoved { get; private set; } = false;//applies to both pan and rotate
+
 	public bool HasRotated { get; private set; }
 
 	[SerializeField]
@@ -275,7 +274,7 @@ public class MapCamera : MonoBehaviour
 		if (!Input.GetKey(KeyCode.Mouse0) && !Input.GetKey(KeyCode.Mouse1))
 		{
 			totalMovement = 0;
-			hasMoved = false;
+			HasMoved = false;
 		}
 
 		//need at least 2 frames of valid data before we have valid deltas
@@ -286,7 +285,7 @@ public class MapCamera : MonoBehaviour
 			totalMovement += Mathf.Abs(dx) + Mathf.Abs(dy);
 			if (totalMovement > totalMovementThreshold)
 			{
-				hasMoved = true;
+				HasMoved = true;
 			}
 		}
 		else
@@ -307,7 +306,7 @@ public class MapCamera : MonoBehaviour
 			totalMovement += Mathf.Abs(dx) + Mathf.Abs(dy);
 			if (totalMovement > totalMovementThreshold)
 			{
-				hasMoved = true;
+				HasMoved = true;
 			}
 		}
 #endif
@@ -331,7 +330,7 @@ public class MapCamera : MonoBehaviour
 		totalMovement += Mathf.Abs(distChanged * 2);
 		if (totalMovement > totalMovementThreshold)
 		{
-			hasMoved = true;
+			HasMoved = true;
 		}
 		if (!((TargetDistance <= minDistance && distChanged < 0) || (TargetDistance >= maxDistance && distChanged > 0)))
 		{
