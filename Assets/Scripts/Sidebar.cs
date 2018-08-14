@@ -12,8 +12,7 @@ using GoogleMaps;
 public class Sidebar : Gamelogic.Extensions.Singleton<Sidebar>
 {
 	[SerializeField]
-	DOTweenAnimation sidebarTween = null, arrowTween = null,
-		itinerariesTween = null, placesTween = null, placeDetailsTween = null;
+	DOTweenAnimation[] HidingTweens, PagesTweens;
 
 	[Space]
 	[SerializeField]
@@ -43,7 +42,7 @@ public class Sidebar : Gamelogic.Extensions.Singleton<Sidebar>
 	public DistanceMatrix currentDistanceMatrix { get; private set; } = null;
 
 	public bool IsHidden { get; private set; } = false;
-	public float TweenMaxX { get { return sidebarTween.endValueV3.x; } }
+	public float TweenMaxX { get { return HidingTweens.FirstOrDefault().endValueV3.x; } }
 
 	// Use this for initialization
 	void Start()
@@ -56,9 +55,8 @@ public class Sidebar : Gamelogic.Extensions.Singleton<Sidebar>
 		StartCoroutine(GetItinerariesCoroutine());
 
 		float sidebarWidth = this.RectTransform().rect.width;
-		itinerariesTween.RectTransform().SetLocalPosX(0);
-		placesTween.RectTransform().SetLocalPosX(sidebarWidth);
-		placeDetailsTween.RectTransform().SetLocalPosX(sidebarWidth * 2);
+		for (int i = 0; i < PagesTweens.Length; ++i)
+			PagesTweens[i].RectTransform().SetLocalPosX(sidebarWidth * i);
 	}
 
 	ItineraryListItem AddItineraryListItem(Itinerary itinerary)
@@ -96,16 +94,9 @@ public class Sidebar : Gamelogic.Extensions.Singleton<Sidebar>
 
 	public void ToggleSidebar()
 	{
-		if (IsHidden)
-		{
-			sidebarTween.DOPlayForward();
-			arrowTween.DOPlayForward();
-		}
-		else
-		{
-			sidebarTween.DOPlayBackwards();
-			arrowTween.DOPlayBackwards();
-		}
+		foreach (var a in HidingTweens)
+			if (IsHidden) a.DOPlayForward();
+			else a.DOPlayBackwards();
 		IsHidden = !IsHidden;
 	}
 
@@ -115,14 +106,12 @@ public class Sidebar : Gamelogic.Extensions.Singleton<Sidebar>
 			return false;
 
 		float sidebarWidth = this.RectTransform().rect.width;
-		itinerariesTween.endValueV3 =
-			placesTween.endValueV3 =
-			placeDetailsTween.endValueV3 =
-			new Vector3(sidebarWidth * (page > currentPage ? -1 : 1), 0, 0);
+		foreach (var a in PagesTweens)
+		{
+			a.endValueV3 = new Vector3(sidebarWidth * (page > currentPage ? -1 : 1), 0, 0);
+			a.DORestart(true);
+		}
 
-		itinerariesTween.DORestart(true);
-		placesTween.DORestart(true);
-		placeDetailsTween.DORestart(true);
 		currentPage = page;
 
 		if (page == Page.Places && currentItinerary)
