@@ -347,6 +347,7 @@ public class Sidebar : Gamelogic.Extensions.Singleton<Sidebar>
 		currentItinerary = itinerary;
 		GoToPage(Page.Places);
 		ZoomToSeeAllPlaces();
+		ItineraryLabels.Instance.Init(itinerary.itinerary);
 	}
 
 	IEnumerator GetPlaceCoroutine(string place_id)

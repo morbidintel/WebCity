@@ -39,6 +39,8 @@ public class PlaceListItem : MonoBehaviour//, IPointerDownHandler, IPointerUpHan
 	[SerializeField]
 	GameObject loading = null;
 	[SerializeField]
+	Image labelColor = null;
+	[SerializeField]
 	ReorderableListElement reorderableListElement = null;
 
 	MapTag mapTag = null;
@@ -74,6 +76,10 @@ public class PlaceListItem : MonoBehaviour//, IPointerDownHandler, IPointerUpHan
 		if (place?.arrivaltime != "")
 		{
 			arrivalTimeLabel.text = place.ArrivalDateTime().ToString(Place.timeDisplayFormat);
+		}
+		if (place?.labelid != null && place?.labelid < ItineraryLabels.colors.Length)
+		{
+			labelColor.color = ItineraryLabels.colors[place.labelid];
 		}
 	}
 

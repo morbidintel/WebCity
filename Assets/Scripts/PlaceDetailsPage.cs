@@ -18,6 +18,8 @@ public class PlaceDetailsPage : Singleton<PlaceDetailsPage>
 	RectTransform content = null;
 	[SerializeField]
 	GameObject loading = null;
+	[SerializeField]
+	Image labelColor = null;
 
 	[Header("Photos")]
 	[SerializeField]
@@ -72,6 +74,11 @@ public class PlaceDetailsPage : Singleton<PlaceDetailsPage>
 			Destroy(currentPhoto.sprite);
 			currentPhoto.color = Color.clear;
 			loading.gameObject.SetActive(true);
+			labelColor.color = 
+				(place.data.place?.labelid != null &&
+				place.data.place.labelid < ItineraryLabels.colors.Length) ? 
+				ItineraryLabels.colors[place.data.place.labelid] :
+				Color.white;
 			UpdateArrivalTime(place.data.place);
 			OnToggleArrivalContent(false);
 

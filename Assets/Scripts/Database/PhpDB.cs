@@ -50,48 +50,9 @@ namespace PhpDB
 		public int rating, is_public, deleted;
 		public string colors;
 
-		public static string StandardColorsHex = "61BD4F,F2D600,FF9F1A,EB5A46,C377E0,0079BF,00C2E0,51E898,FF78CB,4D4D4D";
-		public static Color[] StandardColors =
+		public string[] GetLabels()
 		{
-			new Color(97f/255f, 189f/255f, 79f/255f),
-			new Color(242f/255f, 214f/255f, 0f),
-			new Color(1f, 159f/255f, 26f/255f),
-			new Color(235f/255f, 90f/255f, 70f/255f),
-			new Color(195f/255f, 119f/255f, 224f/255f),
-			new Color(0f, 121f/255f, 191f/255f),
-			new Color(0f, 194f/255f, 224f/255f),
-			new Color(81f/255f, 232f/255f, 152f/255f),
-			new Color(1f, 120f/255f, 203f/255f),
-			new Color(77f/255f, 77f/255f, 77f/255f)
-		};
-
-		public Color[] GetColors()
-		{
-			string[] split = colors.Split(',');
-			List<Color> converted = new List<Color>();
-			foreach (string s in split)
-			{
-				Color color = Color.white;
-				if (ColorUtility.TryParseHtmlString("#" + s, out color))
-					converted.Add(color);
-			}
-			return converted.ToArray();
-		}
-
-		public static string FromColors(Color[] colors)
-		{
-			string s = "";
-			string[] hex = StandardColorsHex.Split(',');
-
-			for (int i = 0; i < hex.Length; ++i)
-			{
-				if (i < colors.Length)
-					s += ColorUtility.ToHtmlStringRGB(colors[i]) + ",";
-				else
-					s += hex + ",";
-			}
-
-			return s.TrimEnd(',');
+			return colors.Split(',');
 		}
 	}
 
