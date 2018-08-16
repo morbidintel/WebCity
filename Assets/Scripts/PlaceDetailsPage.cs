@@ -58,11 +58,9 @@ public class PlaceDetailsPage : Singleton<PlaceDetailsPage>
 	public PlaceListItem currentPlace { get; private set; } = null;
 
 	public bool IsLoading { get; private set; } = false;
-
-#if UNITY_WEBGL
+	
 	[System.Runtime.InteropServices.DllImport("__Internal")]
 	private static extern void OpenLink(string url);
-#endif
 
 	public void Load(PlaceListItem place)
 	{
@@ -120,7 +118,8 @@ public class PlaceDetailsPage : Singleton<PlaceDetailsPage>
 	public void OnClickWebsite()
 	{
 #if UNITY_WEBGL && !UNITY_EDITOR
-		OpenLink(websiteText.text);
+		OpenLink("http://" + websiteText.text);
+		Debug.Log("Opening website: " + websiteText.text);
 #else
 		Application.OpenURL(websiteText.text);
 #endif
