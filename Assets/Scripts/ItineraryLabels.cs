@@ -10,6 +10,7 @@ public class SidebarLabel : MonoBehaviour
 {
 	public Image image;
 	public InputField input;
+	public int id;
 }
 
 public class ItineraryLabels : Singleton<ItineraryLabels>
@@ -55,6 +56,7 @@ public class ItineraryLabels : Singleton<ItineraryLabels>
 			SidebarLabel label = Instantiate(labelPrefab, labelsHolder).GetComponent<SidebarLabel>();
 			label.image.color = colors[i];
 			label.input.text = "";
+			label.id = i;
 			label.name = "Label " + (i + 1);
 			labels.Add(label);
 		}
@@ -72,11 +74,8 @@ public class ItineraryLabels : Singleton<ItineraryLabels>
 
 	void Update()
 	{
-		var sidebarTransform = transform.parent as RectTransform;
-		labelsHolder.position = PlacesPageTransform.position.WithIncX(
-			sidebarTransform.rect.width / 2);
 		maskImage.color = maskImage.color.WithAlpha(
-			labelsHolder.anchoredPosition.x == 0 ? 1 : 0);
+			Sidebar.Instance.currentPage == Sidebar.Page.Places ? 1 : 0);
 	}
 
 	public void Init(Itinerary itinerary)
@@ -87,5 +86,15 @@ public class ItineraryLabels : Singleton<ItineraryLabels>
 			labels[i].input.text =
 				i < labelNames.Length ? labelNames[i] : "";
 		}
+	}
+
+	public void OnSubmitRenameLabel(GameObject labelObject)
+	{
+
+	}
+	
+	public void OnCancelRenameLabel(GameObject labelObject)
+	{
+
 	}
 }
