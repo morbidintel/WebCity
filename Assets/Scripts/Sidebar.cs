@@ -38,7 +38,7 @@ public class Sidebar : Gamelogic.Extensions.Singleton<Sidebar>
 	List<ItineraryListItem> itineraries = new List<ItineraryListItem>();
 	List<PlaceListItem> placesShown = new List<PlaceListItem>();
 
-	ItineraryListItem currentItinerary = null;
+	public ItineraryListItem currentItinerary { get; private set; } = null;
 	public DistanceMatrix currentDistanceMatrix { get; private set; } = null;
 
 	public bool IsHidden { get; private set; } = false;
@@ -131,6 +131,12 @@ public class Sidebar : Gamelogic.Extensions.Singleton<Sidebar>
 			placesShown.Any(i => i.data.placeDetails.result.place_id == place.result.place_id);
 	}
 
+	public void UpdateCurrentItinerary(Itinerary itinerary)
+	{
+		StartCoroutine(EditItineraryCoroutine(itinerary));
+		currentItinerary.Init(itinerary);
+	}
+
 	void ZoomToSeeAllPlaces()
 	{
 		if (placesShown.Count > 0)
@@ -167,6 +173,17 @@ public class Sidebar : Gamelogic.Extensions.Singleton<Sidebar>
 	}
 
 	#region Triggers
+	public void OnToogleRemoveItineraries(bool isOn)
+	{
+		foreach (var i in itineraries)
+			i.ToggleRemoveButton(isOn);
+	}
+
+	public void OnClickRemoveItinerary(ItineraryListItem item)
+	{
+		StartCoroutine(RemoveItineraryCoroutine(item));
+	}
+
 	public void OnClickItineraryItem(ItineraryListItem item)
 	{
 		itineraryNameInput.text = item.itinerary.name;
@@ -264,6 +281,9 @@ public class Sidebar : Gamelogic.Extensions.Singleton<Sidebar>
 		}
 
 		ValidateArrivalTimings(placesOrdered);
+
+		currentItinerary.placesData = currentItinerary.placesData.OrderBy(p => p.place.itineraryindex).ToList();
+		Flyby.Instance.StartFlyby(currentItinerary);
 	}
 	#endregion
 
@@ -296,7 +316,6 @@ public class Sidebar : Gamelogic.Extensions.Singleton<Sidebar>
 		}
 
 		currentItinerary = null;
-
 	}
 
 	IEnumerator GetPlacesInItineraryCoroutine(ItineraryListItem itinerary)
@@ -437,9 +456,11 @@ public class Sidebar : Gamelogic.Extensions.Singleton<Sidebar>
 
 	IEnumerator RemovePlaceCoroutine(ItineraryListItem itineraryItem, PlaceDetails placeDetails)
 	{
-		string url = string.Format(RemovePlaceResult.URL,
-			WWW.EscapeURL(itineraryItem.itinerary.itineraryid),
-			WWW.EscapeURL(placeDetails.result.place_id));
+		Place place = itineraryItem?.placesData
+			?.SingleOrDefault(p => p.placeDetails == placeDetails)
+			?.place;
+		if (place == null) yield break;
+		string url = RemovePlaceResult.BuildURL(place);
 		WWW www = new WWW(url);
 		yield return www;
 
@@ -449,13 +470,7 @@ public class Sidebar : Gamelogic.Extensions.Singleton<Sidebar>
 			yield break;
 		}
 
-		RemovePlaceResult json = JsonUtility.FromJson<RemovePlaceResult>(www.text);
-		if (json.error != null)
-		{
-			Debug.Log(json.error);
-			yield break;
-		}
-		else if (www.text == "OK")
+		if (www.text == "OK")
 		{
 			Destroy(itineraryItem.gameObject);
 		}
@@ -463,13 +478,7 @@ public class Sidebar : Gamelogic.Extensions.Singleton<Sidebar>
 
 	IEnumerator EditItineraryCoroutine(Itinerary itinerary)
 	{
-		string url = string.Format(EditItineraryResult.URL,
-			WWW.EscapeURL(itinerary.itineraryid),
-			WWW.EscapeURL(itinerary.name),
-			WWW.EscapeURL(itinerary.rating.ToString()),
-			WWW.EscapeURL(itinerary.is_public.ToString()),
-			WWW.EscapeURL(itinerary.deleted.ToString()),
-			WWW.EscapeURL(itinerary.colors));
+		string url = EditItineraryResult.BuildURL(itinerary);
 		WWW www = new WWW(url);
 		yield return www;
 
@@ -487,6 +496,30 @@ public class Sidebar : Gamelogic.Extensions.Singleton<Sidebar>
 		}
 		else
 		{
+		}
+	}
+
+	IEnumerator RemoveItineraryCoroutine(ItineraryListItem item)
+	{
+		string url = RemoveItineraryResult.BuildURL(item.itinerary);
+		WWW www = new WWW(url);
+		yield return www;
+
+		if (www.error != null)
+		{
+			Debug.Log(www.error);
+			yield break;
+		}
+
+		RemoveItineraryResult result = JsonUtility.FromJson<RemoveItineraryResult>(www.text);
+		if (result.error != null)
+		{
+			Debug.Log(result.error);
+			yield break;
+		}
+		else
+		{
+			Destroy(item.gameObject);
 		}
 	}
 

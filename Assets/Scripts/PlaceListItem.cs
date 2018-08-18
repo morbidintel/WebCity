@@ -77,10 +77,8 @@ public class PlaceListItem : MonoBehaviour//, IPointerDownHandler, IPointerUpHan
 		{
 			arrivalTimeLabel.text = place.ArrivalDateTime().ToString(Place.timeDisplayFormat);
 		}
-		if (place?.labelid != null && place?.labelid < ItineraryLabels.colors.Length)
-		{
-			labelColor.color = ItineraryLabels.colors[place.labelid];
-		}
+
+		SetLabelId(place.labelid);
 	}
 
 	public void Init(PlaceListItemData data)
@@ -114,6 +112,13 @@ public class PlaceListItem : MonoBehaviour//, IPointerDownHandler, IPointerUpHan
 				arrivalTimeLabel.text +
 				"</color>";
 		}
+	}
+
+	public void SetLabelId(int labelId)
+	{
+		labelColor.color = labelId != -1 && labelId < ItineraryLabels.colors.Length ?
+			ItineraryLabels.colors[labelId] :
+			Color.white;
 	}
 
 	IEnumerator GetPlaceCoroutine(string place_id)

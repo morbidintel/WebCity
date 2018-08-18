@@ -9,8 +9,9 @@ using PhpDB;
 public class SidebarLabel : MonoBehaviour
 {
 	public Image image;
+	public Toggle toggle;
 	public InputField input;
-	public int id;
+	public int index;
 }
 
 public class ItineraryLabels : Singleton<ItineraryLabels>
@@ -49,6 +50,7 @@ public class ItineraryLabels : Singleton<ItineraryLabels>
 
 		SidebarLabel prefabScript = labelPrefab.AddComponent<SidebarLabel>();
 		prefabScript.image = labelPrefab.GetComponent<Image>();
+		prefabScript.toggle = labelPrefab.GetComponentInChildren<Toggle>();
 		prefabScript.input = labelPrefab.GetComponentInChildren<InputField>();
 
 		for (int i = 0; i < 10; ++i)
@@ -56,7 +58,7 @@ public class ItineraryLabels : Singleton<ItineraryLabels>
 			SidebarLabel label = Instantiate(labelPrefab, labelsHolder).GetComponent<SidebarLabel>();
 			label.image.color = colors[i];
 			label.input.text = "";
-			label.id = i;
+			label.index = i;
 			label.name = "Label " + (i + 1);
 			labels.Add(label);
 		}
@@ -90,11 +92,22 @@ public class ItineraryLabels : Singleton<ItineraryLabels>
 
 	public void OnSubmitRenameLabel(GameObject labelObject)
 	{
+		var itinerary = Sidebar.Instance.currentItinerary.itinerary;
+		var label = labelObject.GetComponent<SidebarLabel>();
+		if (itinerary == null || !label) return;
 
+		label.toggle.isOn = false;
+		itinerary.SetLabel(label.index, label.input.text);
+		Sidebar.Instance.UpdateCurrentItinerary(itinerary);
 	}
-	
+
 	public void OnCancelRenameLabel(GameObject labelObject)
 	{
+		var itinerary = Sidebar.Instance.currentItinerary.itinerary;
+		var label = labelObject.GetComponent<SidebarLabel>();
+		if (itinerary == null || !label) return;
 
+		label.toggle.isOn = false;
+		label.input.text = itinerary.GetLabels()[label.index];
 	}
 }

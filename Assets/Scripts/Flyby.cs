@@ -36,6 +36,7 @@ public class Flyby : Singleton<Flyby>
 
 	public void StartFlyby(ItineraryListItem itinerary, float delay = 0)
 	{
+		if (itinerary.placesData.Count == 0) return;
 		geometries = itinerary.placesData
 			.Select(d => d.placeDetails.result.geometry)
 			.ToList();
@@ -62,20 +63,21 @@ public class Flyby : Singleton<Flyby>
 		if (delay > 0) yield return new WaitForSecondsRealtime(delay);
 		isDoingFlyby = true;
 
-		foreach (var g in geometries)
+		while (true)
 		{
-			var viewport = g.viewport;
-			float diag = (MapCamera.LatLongToUnity(viewport.northeast) - MapCamera.LatLongToUnity(viewport.southwest)).magnitude;
-			float dist = Mathf.Clamp(diag / 2f, 0.5f, MapCamera.Instance.maxDistance);
-			MapCamera cam = MapCamera.Instance;
-			cam.SetCameraViewport(g, dist, true);
+			foreach (var g in geometries)
+			{
+				var viewport = g.viewport;
+				float diag = (MapCamera.LatLongToUnity(viewport.northeast) - MapCamera.LatLongToUnity(viewport.southwest)).magnitude;
+				float dist = Mathf.Clamp(diag / 2f, 0.5f, MapCamera.Instance.maxDistance);
+				MapCamera cam = MapCamera.Instance;
+				cam.SetCameraViewport(g, dist, true);
 
-			expectedPosition = cam.TargetPosition;
-			expectedAzimuth = cam.RealAzimuth;
-			expectedElevation = cam.TargetElevation = 30f;
-			yield return new WaitForSecondsRealtime(flybyInterval);
+				expectedPosition = cam.TargetPosition;
+				expectedAzimuth = cam.RealAzimuth;
+				expectedElevation = cam.TargetElevation = 30f;
+				yield return new WaitForSecondsRealtime(flybyInterval);
+			}
 		}
-
-		StartCoroutine(FlybyCoroutine(0f));
 	}
 }

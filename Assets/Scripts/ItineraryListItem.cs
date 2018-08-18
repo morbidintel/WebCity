@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using PhpDB;
 using GoogleMaps;
+using DG.Tweening;
 
 public class ItineraryListItem : MonoBehaviour
 {
@@ -16,6 +17,10 @@ public class ItineraryListItem : MonoBehaviour
 	Button button = null;
 	[SerializeField]
 	GameObject loading = null;
+	[SerializeField]
+	Button remove = null;
+	[SerializeField]
+	DOTweenAnimation removeAnimation = null;
 
 	public List<PlaceListItemData> placesData = new List<PlaceListItemData>();
 
@@ -31,6 +36,20 @@ public class ItineraryListItem : MonoBehaviour
 			loading.gameObject.SetActive(true);
 			StartCoroutine(StopLoadingImageCoroutine());
 		});
+		remove.onClick.RemoveAllListeners();
+		remove.onClick.AddListener(() =>
+		{
+			Sidebar.Instance.OnClickRemoveItinerary(this);
+			loading.gameObject.SetActive(true);
+		});
+	}
+
+	public void ToggleRemoveButton(bool isOn)
+	{
+		if (isOn)
+			removeAnimation.DORestart();
+		else
+			removeAnimation.DOPlayBackwards();
 	}
 
 	IEnumerator StopLoadingImageCoroutine()

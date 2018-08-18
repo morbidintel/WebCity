@@ -10,7 +10,7 @@ namespace PhpDB
 	public class Place
 	{
 		public string placeid, itineraryid, googleid, arrivaltime, createddate;
-		public int labelid, itineraryindex;
+		public int labelid = -1, itineraryindex = -1;
 
 		[System.Runtime.Serialization.IgnoreDataMember]
 		DateTime? arrival = null;
@@ -53,6 +53,21 @@ namespace PhpDB
 		public string[] GetLabels()
 		{
 			return colors.Split(',');
+		}
+
+		public void SetLabel(int index, string name)
+		{
+			string[] labels = GetLabels();
+			Debug.Assert(index > 0 && index < labels.Length);
+			labels[index] = name;
+			colors = string.Join(",", labels);
+		}
+
+		public void SetLabels(string[] labels)
+		{
+			Debug.Assert(labels != null &&
+				labels.Length == 10);
+			colors = string.Join(",", labels);
 		}
 	}
 
@@ -144,6 +159,34 @@ namespace PhpDB
 	public class EditItineraryResult : GetItinerariesResult
 	{
 		public new static string URL =
-			"http://webcity.online/live/db/edititinerary.php?itineraryid={0}&name={1}&rating={2}&is_public={3}&deleted={4}&colors={5}";
+			"http://webcity.online/live/db/edititinerary.php";
+
+		public static string BuildURL(Itinerary itinerary)
+		{
+			string query = URL + "?itineraryid={0}&name={1}&rating={2}&is_public={3}&deleted={4}&colors={5}";
+			query = string.Format(query,
+				WWW.EscapeURL(itinerary.itineraryid),
+				WWW.EscapeURL(itinerary.name),
+				WWW.EscapeURL(itinerary.rating.ToString()),
+				WWW.EscapeURL(itinerary.is_public.ToString()),
+				WWW.EscapeURL(itinerary.deleted.ToString()),
+				WWW.EscapeURL(itinerary.colors));
+			return query;
+		}
+	}
+
+	[Serializable]
+	public class RemoveItineraryResult : GetItinerariesResult
+	{
+		public new static string URL =
+			"http://webcity.online/live/db/removeitinerary.php";
+
+		public static string BuildURL(Itinerary itinerary)
+		{
+			string query = URL + "?itineraryid={0}";
+			query = string.Format(query,
+				WWW.EscapeURL(itinerary.itineraryid));
+			return query;
+		}
 	}
 }

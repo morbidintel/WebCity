@@ -1,14 +1,14 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
 using System.Linq;
+using System.Collections;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.UI;
-using GoogleMaps;
 using Gamelogic.Extensions;
-using PhpDB;
-using System;
-using System.Text.RegularExpressions;
 using DG.Tweening;
+using PhpDB;
+using GoogleMaps;
 
 public class PlaceDetailsPage : Singleton<PlaceDetailsPage>
 {
@@ -45,11 +45,19 @@ public class PlaceDetailsPage : Singleton<PlaceDetailsPage>
 	[SerializeField]
 	Text hoursText = null;
 
+	[Header("Labels")]
+	[SerializeField]
+	Text labelTitle = null;
+	[SerializeField]
+	ToggleGroup labelsToggleGroup = null;
+	[SerializeField]
+	DOTweenAnimation[] labelsAnims = null;
+
 	[Header("Arrival Time")]
 	[SerializeField]
 	Text arrivalTitle = null;
 	[SerializeField]
-	DOTweenAnimation[] arrivalAnims;
+	DOTweenAnimation[] arrivalAnims = null;
 	[SerializeField]
 	UI.Dates.DatePicker datePicker = null;
 	[SerializeField]
@@ -58,7 +66,7 @@ public class PlaceDetailsPage : Singleton<PlaceDetailsPage>
 	public PlaceListItem currentPlace { get; private set; } = null;
 
 	public bool IsLoading { get; private set; } = false;
-	
+
 	[System.Runtime.InteropServices.DllImport("__Internal")]
 	private static extern void OpenLink(string url);
 
@@ -72,13 +80,10 @@ public class PlaceDetailsPage : Singleton<PlaceDetailsPage>
 			Destroy(currentPhoto.sprite);
 			currentPhoto.color = Color.clear;
 			loading.gameObject.SetActive(true);
-			labelColor.color = 
-				(place.data.place?.labelid != null &&
-				place.data.place.labelid < ItineraryLabels.colors.Length) ? 
-				ItineraryLabels.colors[place.data.place.labelid] :
-				Color.white;
+			UpdateLabels(place.data.place);
 			UpdateArrivalTime(place.data.place);
 			OnToggleArrivalContent(false);
+			OnToggleLabelsContent(false);
 
 			StartCoroutine(GetPhotos(place.data.place.googleid));
 			StartCoroutine(GetDetails(place.data.place.googleid));
@@ -91,23 +96,6 @@ public class PlaceDetailsPage : Singleton<PlaceDetailsPage>
 
 		title.rectTransform.sizeDelta = title.rectTransform.sizeDelta.SetY(title.preferredHeight);
 		GetComponentInChildren<ScrollRect>().verticalScrollbar.value = 1;
-	}
-
-	void UpdateArrivalTime(Place place)
-	{
-		arrivalTitle.text = "Arrival Time";
-		if (place?.arrivaltime != "")
-		{
-			DateTime arrival = place.ArrivalDateTime();
-			arrivalTitle.text += ": " + arrival.ToString(Place.timeDisplayFormat);
-			datePicker.SelectedDate = new UI.Dates.SerializableDate(arrival);
-			hoursDropdown.value = arrival.Hour;
-			minutesDropdown.value = Mathf.FloorToInt(arrival.Minute / 5f);
-		}
-		else
-		{
-			datePicker.SelectedDate = new UI.Dates.SerializableDate();
-		}
 	}
 
 	public void ForceUpdateLayout()
@@ -140,6 +128,23 @@ public class PlaceDetailsPage : Singleton<PlaceDetailsPage>
 		StartCoroutine(EditPlaceCoroutine(place));
 	}
 
+	void UpdateArrivalTime(Place place)
+	{
+		arrivalTitle.text = "Arrival Time";
+		if (place?.arrivaltime != "")
+		{
+			DateTime arrival = place.ArrivalDateTime();
+			arrivalTitle.text += ": " + arrival.ToString(Place.timeDisplayFormat);
+			datePicker.SelectedDate = new UI.Dates.SerializableDate(arrival);
+			hoursDropdown.value = arrival.Hour;
+			minutesDropdown.value = Mathf.FloorToInt(arrival.Minute / 5f);
+		}
+		else
+		{
+			datePicker.SelectedDate = new UI.Dates.SerializableDate();
+		}
+	}
+
 	public void OnToggleArrivalContent(bool on)
 	{
 		foreach (var anim in arrivalAnims)
@@ -154,6 +159,51 @@ public class PlaceDetailsPage : Singleton<PlaceDetailsPage>
 		Sidebar.Instance.OnClickRemovePlaceTooltip(currentPlace.data.placeDetails);
 		loading.SetActive(true);
 		StartCoroutine(RemovePlaceCoroutine());
+	}
+
+	public void UpdateLabels(Place place, bool updateToggles = true)
+	{
+		bool validId =
+			place != null &&
+			place.labelid != -1 &&
+			place.labelid < ItineraryLabels.colors.Length;
+		labelColor.color = validId ?
+			ItineraryLabels.colors[place.labelid] : Color.white;
+		labelTitle.text = validId ?
+			Sidebar.Instance.currentItinerary.itinerary.GetLabels()[place.labelid] :
+			"No label";
+		currentPlace.SetLabelId(place.labelid);
+		if (updateToggles)
+			foreach (var toggle in labelsToggleGroup.GetAllToggles())
+				toggle.isOn = toggle.transform.GetSiblingIndex() == place.labelid;
+	}
+
+	public void OnToggleLabelsContent(bool on)
+	{
+		foreach (var anim in labelsAnims)
+		{
+			if (on) anim.DOPlayBackwards();
+			else anim.DORestart();
+		}
+	}
+
+	public void OnToggleLabelColor(Toggle toggle)
+	{
+		int index = toggle.transform.GetSiblingIndex(),
+			placelabelid = currentPlace.data.place.labelid,
+			newlabelid = -1;
+		Debug.Log(index + " " + toggle.isOn + " " + Time.frameCount);
+
+		newlabelid = toggle.isOn ? index : index == placelabelid ? -1 : placelabelid;
+
+		if (newlabelid != currentPlace.data.place.labelid)
+		{
+			currentPlace.data.place.labelid = newlabelid;
+			StopAllCoroutines();
+			StartCoroutine(EditPlaceCoroutine(currentPlace.data.place));
+		}
+
+		UpdateLabels(currentPlace.data.place, false);
 	}
 
 	IEnumerator GetPhotos(string place_id)
@@ -285,6 +335,7 @@ public class PlaceDetailsPage : Singleton<PlaceDetailsPage>
 
 	IEnumerator EditPlaceCoroutine(Place place)
 	{
+		yield return new WaitForEndOfFrame();
 		string url = EditPlaceResult.BuildURL(place);
 		WWW www = new WWW(url);
 		yield return www;
@@ -304,6 +355,7 @@ public class PlaceDetailsPage : Singleton<PlaceDetailsPage>
 
 		currentPlace.UpdatePlace(result.place);
 		UpdateArrivalTime(result.place);
+		UpdateLabels(result.place);
 	}
 
 	IEnumerator RemovePlaceCoroutine()
