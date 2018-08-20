@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
 using PhpDB;
 using GoogleMaps;
 using UnityEngine.UI.Extensions;
@@ -116,8 +114,8 @@ public class PlaceListItem : MonoBehaviour//, IPointerDownHandler, IPointerUpHan
 
 	public void SetLabelId(int labelId)
 	{
-		labelColor.color = labelId != -1 && labelId < ItineraryLabels.colors.Length ?
-			ItineraryLabels.colors[labelId] :
+		labelColor.color = labelId != -1 && labelId < ItineraryLabels.Colors.Length ?
+			ItineraryLabels.Colors[labelId] :
 			Color.white;
 	}
 

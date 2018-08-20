@@ -1,15 +1,19 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using Gamelogic.Extensions;
+﻿using Gamelogic.Extensions;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Parent class for tooltips
+/// </summary>
 public class TooltipMenu : MonoBehaviour
 {
+	/// <summary>
+	/// Root GameObject for the tooltip
+	/// </summary>
 	[SerializeField]
 	protected GameObject tooltipRoot = null;
 
-	public Text label;
+	//public Text label;
 
 	Vector2 spacingFromCursor = new Vector2(10, -10);
 

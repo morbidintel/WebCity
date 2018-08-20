@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Linq;
 using System.Collections;
-using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.UI;
@@ -166,9 +164,9 @@ public class PlaceDetailsPage : Singleton<PlaceDetailsPage>
 		bool validId =
 			place != null &&
 			place.labelid != -1 &&
-			place.labelid < ItineraryLabels.colors.Length;
+			place.labelid < ItineraryLabels.Colors.Length;
 		labelColor.color = validId ?
-			ItineraryLabels.colors[place.labelid] : Color.white;
+			ItineraryLabels.Colors[place.labelid] : Color.white;
 		labelTitle.text = validId ?
 			Sidebar.Instance.currentItinerary.itinerary.GetLabels()[place.labelid] :
 			"No label";

@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Security.Cryptography;
-using System.Text;
-using UnityEngine;
 
 public class PBKDF2Hash
 {
