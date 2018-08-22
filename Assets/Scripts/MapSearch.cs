@@ -118,7 +118,7 @@ public class MapSearch : MonoBehaviour
 		coroutine = StartCoroutine(AutocompleteCoroutine(value));
 	}
 
-	// called by the Button.OnClick()
+	// called by the Button.OnClick
 	public void SelectAutocomplete(int index)
 	{
 		HideDropdown();

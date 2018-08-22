@@ -77,7 +77,7 @@ public class Sidebar : Gamelogic.Extensions.Singleton<Sidebar>
 		return item;
 	}
 
-	PlaceListItem AddPlaceListItem(PlaceListItemData data)
+	PlaceListItem AddPlaceListItem(PlaceData data)
 	{
 		PlaceListItem item = Instantiate(placeItemPrefab, placesHolder)
 			.GetComponent<PlaceListItem>();
@@ -168,7 +168,7 @@ public class Sidebar : Gamelogic.Extensions.Singleton<Sidebar>
 					break;
 				}
 			}
-			placesOrdered.ElementAt(i).SetArrivalValid(isValid);
+			placesOrdered.ElementAt(i).SetArrivalTextValid(isValid);
 		}
 	}
 
@@ -361,7 +361,7 @@ public class Sidebar : Gamelogic.Extensions.Singleton<Sidebar>
 			StartCoroutine(GetTravelTimesCoroutine(itinerary.placesData.Select(d => d.place).ToList()));
 		}
 
-		yield return new WaitUntil(() => placesShown.All(p => !p.isLoading));
+		yield return new WaitUntil(() => placesShown.All(p => !p.IsLoading));
 
 		currentItinerary = itinerary;
 		GoToPage(Page.Places);

@@ -61,5 +61,18 @@ namespace GoogleMaps
 			destinations.TrimEnd('|');
 			return URL + string.Format(query, origins, destinations);
 		}
+
+		public string GetDurationToNextPlace(string place_id)
+		{
+			try // lazy checks
+			{
+				int index = Array.IndexOf(origin_addresses, place_id);
+				return rows[index].elements[index + 1].duration.text;
+			}
+			catch
+			{
+				return "";
+			}
+		}
 	}
 }

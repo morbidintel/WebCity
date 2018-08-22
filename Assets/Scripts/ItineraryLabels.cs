@@ -11,40 +11,18 @@ using PhpDB;
 public class ItineraryLabels : Singleton<ItineraryLabels>
 {
 	/// <summary>
-	/// Element class to hold each of the inner components of each Label.
+	/// Instantiated class to hold each of the inner components of each Label.
 	/// </summary>
 	class SidebarLabel : MonoBehaviour
 	{
 		public Image image;
 		public Toggle toggle;
 		public InputField input;
-		public int index; // from 0 to 9, for easy referencing of ItineraryLabels.Colors
+		public int index; // [0-9], for easy referencing of ItineraryLabels.Colors
 	}
 
-	/// <summary>
-	/// Parent Transform that holds all the Labels.
-	/// </summary>
-	[SerializeField]
-	RectTransform labelsHolder = null;
-
-	/// <summary>
-	/// Prefab GameObject of the Label for instantiation.
-	/// </summary>
-	[SerializeField]
-	GameObject labelPrefab = null;
-
-	/// <summary>
-	/// Image that serves as the Graphic to the Mask that constrains our Labels.
-	/// </summary>
-	Image maskImage;
-
-	/// <summary>
-	/// The instantiated Labels.
-	/// </summary>
-	List<SidebarLabel> labels = new List<SidebarLabel>();
-
-	/// <summary>
-	/// The standard 10 label colors.
+	/// <summary
+	// The standard 10 label colors.
 	/// </summary>
 	public static readonly Color[] Colors = new Color[10]
 	{
@@ -59,6 +37,21 @@ public class ItineraryLabels : Singleton<ItineraryLabels>
 		new Color(1, 120/255f, 203/255f),
 		new Color(122/255f, 1, 1)
 	};
+
+	/// <summary>
+	/// Parent Transform that holds all the Labels.
+	/// </summary>
+	[SerializeField] RectTransform labelsHolder = null;
+	/// <summary>
+	/// Prefab GameObject of the Label for instantiation.
+	/// </summary>
+	[SerializeField] GameObject labelPrefab = null;
+	
+	// Image that serves as the Graphic to the Mask that constrains our Labels.
+	Image maskImage;
+	
+	// The instantiated Labels.
+	List<SidebarLabel> labels = new List<SidebarLabel>();
 
 	void Start()
 	{
@@ -99,6 +92,7 @@ public class ItineraryLabels : Singleton<ItineraryLabels>
 	/// <param name="itinerary"></param>
 	public void Init(Itinerary itinerary)
 	{
+		// populate our labels with the Itinerary's label names
 		string[] labelNames = itinerary.GetLabels();
 		for (int i = 0; i < labels.Count; ++i)
 		{
@@ -112,7 +106,7 @@ public class ItineraryLabels : Singleton<ItineraryLabels>
 	/// </summary>
 	/// <param name="labelObject">The Label GameObject that has a SidebarLabel component.</param>
 	/// <remarks>
-	/// Called by Label -> InputField -> RenameHandler.OnEnter() event.
+	/// Called by Label -> InputField -> RenameHandler.OnEnter event.
 	/// Parameter is GameObject because SidebarLabel class is added in runtime.
 	/// </remarks>
 	public void OnSubmitRenameLabel(GameObject labelObject)
@@ -121,7 +115,7 @@ public class ItineraryLabels : Singleton<ItineraryLabels>
 		var label = labelObject.GetComponent<SidebarLabel>();
 		if (itinerary == null || !label) return;
 
-		label.toggle.isOn = false;
+		label.toggle.isOn = false; // disable the Inputfield
 		itinerary.SetLabel(label.index, label.input.text);
 		Sidebar.Instance.UpdateCurrentItinerary(itinerary);
 	}
@@ -131,7 +125,7 @@ public class ItineraryLabels : Singleton<ItineraryLabels>
 	/// </summary>
 	/// <param name="labelObject">The Label GameObject that has a SidebarLabel component.</param>
 	/// <remarks>
-	/// Called by Label -> InputField -> RenameHandler.OnCancel() event.
+	/// Called by Label -> InputField -> RenameHandler.OnCancel event.
 	/// Parameter is GameObject because SidebarLabel class is added in runtime.
 	/// </remarks>
 	public void OnCancelRenameLabel(GameObject labelObject)
@@ -140,8 +134,8 @@ public class ItineraryLabels : Singleton<ItineraryLabels>
 		var label = labelObject.GetComponent<SidebarLabel>();
 		if (itinerary == null || !label) return;
 
-		label.toggle.isOn = false;
-		label.input.text = itinerary.GetLabels()[label.index];
+		label.toggle.isOn = false; // disable the Inputfield
+		label.input.text = itinerary.GetLabels()[label.index]; // reset the label name
 	}
 
 	/// <summary>
@@ -149,14 +143,17 @@ public class ItineraryLabels : Singleton<ItineraryLabels>
 	/// </summary>
 	/// <param name="labelObject">The Label GameObject that has a SidebarLabel component.</param>
 	/// <remarks>
-	/// Called by Label -> Toggle.OnValueChanged() event.
+	/// Called by Label -> Toggle.OnValueChanged event.
 	/// Parameter is GameObject because SidebarLabel class is added in runtime.
+	/// This has to be separate, Toggle.OnValueChanged is invoked for both turning on and off.
 	/// </remarks>
 	public void OnLabelToggleValueChanged(GameObject labelObject)
 	{
 		var itinerary = Sidebar.Instance.currentItinerary.itinerary;
 		var label = labelObject.GetComponent<SidebarLabel>();
+		// skip calls when label is being toggled on
 		if (itinerary == null || !label || label.toggle.isOn) return;
+
 		label.input.text = itinerary.GetLabels()[label.index];
 	}
 }

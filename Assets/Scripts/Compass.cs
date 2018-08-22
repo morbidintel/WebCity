@@ -10,14 +10,11 @@ public class Compass : MonoBehaviour
 	/// <summary>
 	/// The transform of the on screen compass; used to contorl the rotations of the compass.
 	/// </summary>
-	[SerializeField]
-	Transform compassTransform = null;
-
+	[SerializeField] Transform compassTransform = null;
 	/// <summary>
 	/// UI Image of the on screen compaas; used to control the DOTween fading animation.
 	/// </summary>
-	[SerializeField]
-	Image compassImage = null;
+	[SerializeField] Image compassImage = null;
 
 	// reference of the MapCamera
 	new MapCamera camera;

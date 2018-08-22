@@ -170,7 +170,7 @@ public class PlaceDetailsPage : Singleton<PlaceDetailsPage>
 		labelTitle.text = validId ?
 			Sidebar.Instance.currentItinerary.itinerary.GetLabels()[place.labelid] :
 			"No label";
-		currentPlace.SetLabelId(place.labelid);
+		currentPlace.SetLabel(place.labelid);
 		if (updateToggles)
 			foreach (var toggle in labelsToggleGroup.GetAllToggles())
 				toggle.isOn = toggle.transform.GetSiblingIndex() == place.labelid;
