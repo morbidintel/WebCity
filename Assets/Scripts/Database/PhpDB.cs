@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Linq;
-using System.Collections.Generic;
 using UnityEngine;
-using Gamelogic.Extensions;
 
 namespace PhpDB
 {
+	/// <summary>
+	/// JSON serializable class for a row in the <code>places</code> table.
+	/// </summary>
 	[Serializable]
 	public class Place
 	{
@@ -13,22 +13,30 @@ namespace PhpDB
 		public int labelid = -1, itineraryindex = -1;
 
 		[System.Runtime.Serialization.IgnoreDataMember]
-		DateTime? arrival = null;
+		private DateTime? arrival = null; // don't serialize this
 
+		/// <summary>
+		/// DateTime format used to parse strings from database.
+		/// </summary>
 		public static string timeDBFormat = "yyyy-MM-dd HH:mm:ss";
+		/// <summary>
+		/// DateTime format used for displaying within the application.
+		/// </summary>
 		public static string timeDisplayFormat = "dd MMM HH:mm";
 
 		/// <summary>
-		/// Retrieve the parsed arrival time
+		/// Retrieve the parsed arrival time.
+		/// <para></para>Note: Does not retrieve the value from database.
 		/// </summary>
-		/// <returns>the arrival time in DateTime, or DateTime.MinValue if unable to parse or arrivaltime is empty</returns>
+		/// <returns>The arrival time in DateTime, or <code>DateTime.MinValue</code>
+		/// if unable to parse or <code>arrivaltime</code> is empty.</returns>
 		public DateTime ArrivalDateTime()
 		{
 			if (arrival == null)
 			{
 				DateTime temp;
-				if (!string.IsNullOrEmpty(arrivaltime) &&
-					DateTime.TryParseExact(arrivaltime, timeDBFormat, null, System.Globalization.DateTimeStyles.None, out temp))
+				if (!string.IsNullOrEmpty(arrivaltime) && 
+					DateTime.TryParseExact(arrivaltime, timeDBFormat, null, 0, out temp))
 					arrival = temp;
 				else
 					return DateTime.MinValue;
@@ -37,12 +45,20 @@ namespace PhpDB
 			return arrival.Value;
 		}
 
+		/// <summary>
+		/// Sets the arrivaltime string.
+		/// <para></para>Note: Does not sends the value to database.
+		/// </summary>
+		/// <param name="dateTime">The arrival time as a DateTime</param>
 		public void SetArrivalTime(DateTime dateTime)
 		{
 			arrivaltime = dateTime.ToString(timeDBFormat);
 		}
 	}
 
+	/// <summary>
+	/// JSON serializable class for a row in the <code>itineraries</code> table.
+	/// </summary>
 	[Serializable]
 	public class Itinerary
 	{
@@ -50,27 +66,44 @@ namespace PhpDB
 		public int rating, is_public, deleted;
 		public string colors;
 
+		/// <summary>
+		/// Get the names for every label for this itinerary.
+		/// </summary>
+		/// <returns>An array of 10 strings containing the name of each label.</returns>
 		public string[] GetLabels()
 		{
 			return colors.Split(',');
 		}
 
+		/// <summary>
+		/// Set the name for a specific label.
+		/// <para></para>Note: Does not sends the value to database.
+		/// </summary>
+		/// <param name="index">Index, from 0 to 9, of the specific label to be set.</param>
+		/// <param name="name">The name to be set for the label.</param>
 		public void SetLabel(int index, string name)
 		{
 			string[] labels = GetLabels();
-			Debug.Assert(index > 0 && index < labels.Length);
+			if (index > 0 && index < labels.Length) return;
 			labels[index] = name;
 			colors = string.Join(",", labels);
 		}
 
+		/// <summary>
+		/// Sets the names for all the labels.
+		/// <para></para>Note: Does not sends the values to database.
+		/// </summary>
+		/// <param name="labels">Array of 10 strings representing the name of each label.</param>
 		public void SetLabels(string[] labels)
 		{
-			Debug.Assert(labels != null &&
-				labels.Length == 10);
+			if (labels == null || labels.Length != 10) return;
 			colors = string.Join(",", labels);
 		}
 	}
 
+	/// <summary>
+	/// JSON serializable class for a row in the <code>users</code> table.
+	/// </summary>
 	[Serializable]
 	public class LoginResult
 	{
@@ -108,7 +141,7 @@ namespace PhpDB
 	{
 		public new static string URL =
 			"http://webcity.online/live/db/additinerary.php?userid={0}&name={1}&colors={2}";
-		public static string DefaultColors = "61BD4F%2CF2D600%2CFF9F1A%2CEB5A46%2CC377E0%2C0079BF%2C00C2E0%2C51E898%2CFF78CB%2C4D4D4D";
+		public static string DefaultColors = "%2C%2C%2C%2C%2C%2C%2C%2C%2C"; // nine commas
 	}
 
 	[Serializable]
