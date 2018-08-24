@@ -20,8 +20,11 @@ namespace GoogleMaps
 
 		[Serializable]
 		public class Duration : ValueText { }
+		[Serializable]
 		public class Distance : ValueText { }
+		[Serializable]
 		public class DurationInTraffic : ValueText { }
+		[Serializable]
 		public class Fare : ValueText
 		{
 			public new float value;

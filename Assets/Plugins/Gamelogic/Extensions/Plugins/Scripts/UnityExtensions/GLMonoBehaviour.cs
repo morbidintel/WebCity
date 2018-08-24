@@ -31,7 +31,7 @@ namespace Gamelogic.Extensions
 		/// <typeparam name="T"></typeparam>
 		/// <param name="prefab">The object.</param>
 		/// <returns>T.</returns>
-		public static T Instantiate<T>(T prefab) where T : Component
+		public static new T Instantiate<T>(T prefab) where T : Component
 		{
 			return (T) Object.Instantiate(prefab);
 		}

@@ -22,8 +22,6 @@ public class PlaceDetailsPage : Singleton<PlaceDetailsPage>
 	[Header("Photos")]
 	[SerializeField]
 	Image currentPhoto = null;
-	[SerializeField]
-	Image photoLoading = null;
 
 	[Header("Place Information")]
 	[SerializeField]

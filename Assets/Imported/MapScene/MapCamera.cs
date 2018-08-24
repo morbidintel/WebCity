@@ -42,7 +42,7 @@ public class MapCamera : MonoBehaviour
 	}
 
 	[SerializeField]
-	RectTransform clickableArea;
+	RectTransform clickableArea = null;
 
 	public float minDistance = 16, maxDistance = 40;
 	public float minAngleAtMinZoom = 20, minAngleAtMaxZoom = 20, maxAngle = 88;
@@ -80,9 +80,6 @@ public class MapCamera : MonoBehaviour
 	//store mouse positions for this frame and last frame
 	Vector3 lastMousePos;
 	Vector3 currMousePos;
-
-	float lerpTargetPositionTime = 0.6f;
-	float lerpTargetPositionTimer;
 
 	public bool IsMoving { get { return (dx != 0 || dy != 0); } }
 	public bool HasMoved { get; private set; } = false;//applies to both pan and rotate

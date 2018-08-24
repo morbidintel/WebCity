@@ -10,7 +10,8 @@ public class SpriteToggle : MonoBehaviour
 	Image image;
 
 	[SerializeField]
-	Sprite valueFalseSprite, valueTrueSprite;
+	Sprite valueFalseSprite = null,
+		valueTrueSprite = null;
 
 	public float fadeSpeed = 10.0f;
 

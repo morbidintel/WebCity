@@ -5,7 +5,7 @@ using UnityEngine;
 public class ActivationToggle : MonoBehaviour {
 
     [SerializeField]
-    GameObject[] objs;
+    GameObject[] objs = null;
 
     // Use this for initialization
     void Start() {

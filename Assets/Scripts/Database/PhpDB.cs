@@ -154,7 +154,7 @@ namespace PhpDB
 	[Serializable]
 	public class EditPlaceResult
 	{
-		public new static string URL =
+		public static string URL =
 			"http://webcity.online/live/db/editplace.php";
 		public Place place;
 		public string error;

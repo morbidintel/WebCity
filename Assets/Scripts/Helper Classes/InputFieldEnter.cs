@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class InputFieldEnter : MonoBehaviour
 {
 	[SerializeField]
-	Button button;
+	Button button = null;
 
 	// Update is called once per frame
 	void Update()

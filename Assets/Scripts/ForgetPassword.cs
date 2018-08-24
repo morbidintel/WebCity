@@ -10,13 +10,13 @@ public class ForgetPassword : MonoBehaviour
 	/// The InputField for username.
 	/// </summary>
 	[SerializeField]
-	InputField username;
+	InputField username = null;
 
 	/// <summary>
 	/// Text field to show some confirmation text.
 	/// </summary>
 	[SerializeField]
-	Text subtitle;
+	Text subtitle = null;
 
 	/// <summary>
 	/// URL of the PHP script on server.

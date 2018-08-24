@@ -12,7 +12,8 @@ using GoogleMaps;
 public class Sidebar : Gamelogic.Extensions.Singleton<Sidebar>
 {
 	[SerializeField]
-	DOTweenAnimation[] HidingTweens, PagesTweens;
+	DOTweenAnimation[] HidingTweens = null,
+		PagesTweens = null;
 
 	[Space]
 	[SerializeField]
@@ -371,10 +372,6 @@ public class Sidebar : Gamelogic.Extensions.Singleton<Sidebar>
 
 	IEnumerator GetPlaceCoroutine(string place_id)
 	{
-		string url = string.Format(
-			PlaceDetails.URL,
-			WWW.EscapeURL(place_id),
-			"name,geometry,place_id");
 		WWW www = new WWW(PHPProxy.Escape(PlaceDetails.BuildURL(
 			place_id,
 			PlaceDetails.Fields.name |
