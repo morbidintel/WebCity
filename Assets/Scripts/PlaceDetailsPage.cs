@@ -21,6 +21,8 @@ public class PlaceDetailsPage : Singleton<PlaceDetailsPage>
 
 	[Header("Photos")]
 	[SerializeField]
+	GameObject photoHolder = null;
+	[SerializeField]
 	Image currentPhoto = null;
 
 	[Header("Place Information")]
@@ -75,11 +77,11 @@ public class PlaceDetailsPage : Singleton<PlaceDetailsPage>
 			title.text = place.data.placeDetails.result.name;
 			Destroy(currentPhoto.sprite);
 			currentPhoto.color = Color.clear;
-			loading.gameObject.SetActive(true);
 			UpdateLabels(place.data.place);
 			UpdateArrivalTime(place.data.place);
 			OnToggleArrivalContent(false);
 			OnToggleLabelsContent(false);
+			photoHolder.SetActive(false);
 
 			StartCoroutine(GetPhotos(place.data.place.googleid));
 			StartCoroutine(GetDetails(place.data.place.googleid));
@@ -188,7 +190,6 @@ public class PlaceDetailsPage : Singleton<PlaceDetailsPage>
 		int index = toggle.transform.GetSiblingIndex(),
 			placelabelid = currentPlace.data.place.labelid,
 			newlabelid = -1;
-		Debug.Log(index + " " + toggle.isOn + " " + Time.frameCount);
 
 		newlabelid = toggle.isOn ? index : index == placelabelid ? -1 : placelabelid;
 
@@ -213,7 +214,6 @@ public class PlaceDetailsPage : Singleton<PlaceDetailsPage>
 				PlaceDetails.Fields.photo |
 				PlaceDetails.Fields.place_id)));
 			yield return www;
-			Debug.Log(www.url);
 			if (www.error != null)
 			{
 				Debug.Log(www.error);
@@ -228,7 +228,9 @@ public class PlaceDetailsPage : Singleton<PlaceDetailsPage>
 				yield break;
 			}
 
-			if (place.result?.photos?.Length == 0) yield break;
+			if (place.result?.photos == null ||
+				place.result?.photos.Length == 0)
+				yield break;
 
 			photo_reference = place.result.photos[0].photo_reference;
 		}
@@ -252,12 +254,11 @@ public class PlaceDetailsPage : Singleton<PlaceDetailsPage>
 		}
 
 		Rect rect = new Rect(0, 0, www.texture.width, www.texture.height);
-		currentPhoto.sprite = Sprite.Create(www.texture, rect, new Vector2(.5f, .5f));
 		currentPhoto.rectTransform.sizeDelta = rect.size;
 		currentPhoto.color = Color.white;
 		currentPhoto.name = photo_reference;
-
-		loading.gameObject.SetActive(false);
+		currentPhoto.sprite = Sprite.Create(www.texture, rect, new Vector2(.5f, .5f));
+		photoHolder.SetActive(true);
 	}
 
 	IEnumerator GetDetails(string place_id)

@@ -14,7 +14,7 @@ namespace GoogleMaps
 		[Serializable]
 		public class ValueText
 		{
-			public int value;
+			public float value;
 			public string text;
 		}
 
@@ -27,7 +27,6 @@ namespace GoogleMaps
 		[Serializable]
 		public class Fare : ValueText
 		{
-			public new float value;
 			public string currency;
 		}
 

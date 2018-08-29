@@ -467,9 +467,12 @@ public class Sidebar : Gamelogic.Extensions.Singleton<Sidebar>
 			yield break;
 		}
 
-		if (www.text == "OK")
+		var placeItem = placesShown.FirstOrDefault(p => p.data.placeDetails == placeDetails);
+		if (placeItem != null)
 		{
-			Destroy(itineraryItem.gameObject);
+			itineraryItem.placesData.Remove(placeItem.data);
+			placesShown.Remove(placeItem);
+			Destroy(placeItem.gameObject);
 		}
 	}
 
@@ -508,16 +511,8 @@ public class Sidebar : Gamelogic.Extensions.Singleton<Sidebar>
 			yield break;
 		}
 
-		RemoveItineraryResult result = JsonUtility.FromJson<RemoveItineraryResult>(www.text);
-		if (result.error != null)
-		{
-			Debug.Log(result.error);
-			yield break;
-		}
-		else
-		{
-			Destroy(item.gameObject);
-		}
+		itineraries.Remove(item);
+		Destroy(item.gameObject);
 	}
 
 	IEnumerator GetTravelTimesCoroutine(IEnumerable<Place> places)
